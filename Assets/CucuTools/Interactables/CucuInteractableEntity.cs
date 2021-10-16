@@ -10,6 +10,8 @@ namespace CucuTools.Interactables
     [AddComponentMenu(Cucu.AddComponent + Cucu.InteractableGroup + ObjectName, 0)]
     public class CucuInteractableEntity : CucuInteractable
     {
+        public const string ObjectName = "Interactable";
+        
         #region SerializeField
 
         [Space]
@@ -22,12 +24,18 @@ namespace CucuTools.Interactables
 
         #endregion
 
-        public const string ObjectName = "Interactable";
-        
-        public virtual bool IsEnabled
+        public override bool IsEnabled
         {
             get => isEnabled;
-            set => isEnabled = value;
+            set
+            {
+                if (isEnabled == value) return;
+                
+                isEnabled = !isEnabled;
+
+                if (isEnabled) InteractEvents.OnEnabled.Invoke();
+                else InteractEvents.OnDisabled.Invoke();
+            }
         }
 
         /// <inheritdoc />
@@ -119,18 +127,22 @@ namespace CucuTools.Interactables
     [Serializable]
     public class InteractEvents
     {
+        public UnityEvent OnEnabled => onEnabled ?? (onEnabled = new UnityEvent());
+        public UnityEvent OnDisabled => onDisabled ?? (onDisabled = new UnityEvent());
+        
         public UnityEvent OnIdleStart => onIdleStart ?? (onIdleStart = new UnityEvent());
-
         public UnityEvent OnIdleCancel => onIdleCancel ?? (onIdleCancel = new UnityEvent());
 
         public UnityEvent<ICucuContext> OnHoverStart => onHoverStart ?? (onHoverStart = new UnityEvent<ICucuContext>());
-
         public UnityEvent OnHoverCancel => onHoverCancel ?? (onHoverCancel = new UnityEvent());
 
         public UnityEvent<ICucuContext> OnPressStart => onPressStart ?? (onPressStart = new UnityEvent<ICucuContext>());
-
         public UnityEvent OnPressCancel => onPressCancel ?? (onPressCancel = new UnityEvent());
 
+        [Header("Enable")]
+        [SerializeField] private UnityEvent onEnabled;
+        [SerializeField] private UnityEvent onDisabled;
+        
         [Header("Idle")]
         [SerializeField] private UnityEvent onIdleStart;
         [SerializeField] private UnityEvent onIdleCancel;

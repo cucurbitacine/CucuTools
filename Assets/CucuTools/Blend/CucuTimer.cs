@@ -8,6 +8,8 @@ namespace CucuTools.Blend
     [AddComponentMenu(Cucu.AddComponent + Cucu.BlendGroup + ObjectName, 0)]
     public class CucuTimer : CucuBehaviour
     {
+        public const string ObjectName = "Timer";
+        
         #region SerializeField
 
         [CucuReadOnly]
@@ -18,8 +20,6 @@ namespace CucuTools.Blend
         [SerializeField] private TimerEvents events;
 
         #endregion
-
-        public const string ObjectName = "Timer";
         
         public bool IsPlaying
         {

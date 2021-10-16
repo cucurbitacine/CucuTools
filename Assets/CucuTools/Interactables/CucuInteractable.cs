@@ -4,6 +4,8 @@ namespace CucuTools.Interactables
     public abstract class CucuInteractable : CucuBehaviour, ICucuInteractable
     {
         /// <inheritdoc />
+        public abstract bool IsEnabled { get; set; }
+        /// <inheritdoc />
         public abstract InteractInfo InteractInfo { get; }
         /// <inheritdoc />
         public abstract void Idle();

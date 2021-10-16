@@ -9,6 +9,8 @@ namespace CucuTools.Interactables
     /// </summary>
     public interface ICucuInteractable
     {
+        bool IsEnabled { get; set; }
+        
         /// <summary>
         /// Interactable state
         /// </summary>

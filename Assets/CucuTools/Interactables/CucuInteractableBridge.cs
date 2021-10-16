@@ -13,7 +13,16 @@ namespace CucuTools.Interactables
         [SerializeField] private CucuInteractable target;
 
         public const string ObjectName = "Interactable Bridge";
-        
+
+        public override bool IsEnabled
+        {
+            get => Target?.IsEnabled ?? false;
+            set
+            {
+                if (Target != null) Target.IsEnabled = value;
+            }
+        }
+
         public CucuInteractable Target => target;
 
         public override InteractInfo InteractInfo => Target?.InteractInfo;

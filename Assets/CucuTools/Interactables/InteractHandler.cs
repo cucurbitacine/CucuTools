@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CucuTools.Interactables
 {
@@ -20,6 +21,11 @@ namespace CucuTools.Interactables
         private readonly ICucuInteractable[] emptyArray = Array.Empty<ICucuInteractable>();
         
         public void Update(ICucuContext context, bool pressing, params ICucuInteractable[] interactables)
+        {
+            Update(context, pressing, interactables?.Where(i => i != null));
+        }
+        
+        public void Update(ICucuContext context, bool pressing, IEnumerable<ICucuInteractable> interactables)
         {
             Context = context;
             Pressing = pressing;
