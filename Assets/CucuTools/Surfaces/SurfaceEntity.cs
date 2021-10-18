@@ -1,4 +1,4 @@
-using System;
+using CucuTools.Attributes;
 using UnityEngine;
 
 namespace CucuTools.Surfaces
@@ -86,6 +86,34 @@ namespace CucuTools.Surfaces
         
         #endregion
 
+        [CucuButton("Add", group: "Drawer")]
+        protected void AddDrawer()
+        {
+            var drawer = gameObject.GetComponent<SurfaceDrawer>();
+            if (drawer == null) drawer = gameObject.AddComponent<SurfaceDrawer>();
+        }
+
+        [CucuButton("Remove", group: "Drawer")]
+        protected void RemoveDrawer()
+        {
+            var drawer = gameObject.GetComponent<SurfaceDrawer>();
+            if (drawer != null) DestroyImmediate(drawer);
+        }
+        
+        [CucuButton("Add", group: "Debugger")]
+        protected void AddDebugger()
+        {
+            var debagger = gameObject.GetComponent<SurfaceDebug>();
+            if (debagger == null) debagger = gameObject.AddComponent<SurfaceDebug>();
+        }
+
+        [CucuButton("Remove", group: "Debugger")]
+        protected void RemoveDebugger()
+        {
+            var debagger = gameObject.GetComponent<SurfaceDebug>();
+            if (debagger != null) DestroyImmediate(debagger);
+        }
+        
         #region Static
 
         public static Vector3 LerpPoint(SurfaceEntity A, SurfaceEntity B, Vector2 uv, float t)
@@ -118,55 +146,6 @@ namespace CucuTools.Surfaces
         {
             localNormal = LerpLocalNormal(A, B, uv, t);
             return LerpLocalPoint(A, B, uv, t);
-        }
-        
-        #endregion
-        
-        #region MonoBehaviour
-
-        [SerializeField] protected GizmosSurface gizmosSurface;
-        [SerializeField] private DebugPoint debugPoint;
-        
-        protected virtual void OnValidate()
-        {
-        }
-        
-        protected virtual void OnDrawGizmos()
-        {
-            gizmosSurface?.OnDrawGizmos(this);
-        }
-
-        protected virtual void OnDrawGizmosSelected()
-        {
-            debugPoint?.OnDrawGizmos(this);
-        }
-
-        [Serializable]
-        private class DebugPoint
-        {
-            public bool showDebug;
-            
-            public Vector2 coordPoint = new Vector2(0.5f, 0.5f);
-            [Header("Point View")]
-            [Range(0.001f, 1f)]
-            public float radiusPoint = 0.01f;
-            public bool wiredPoint;
-            public Color colorPoint = Color.magenta;
-            [Header("Line View")]
-            public bool drawLineToPoint = true;
-            
-            public void OnDrawGizmos(SurfaceEntity surface)
-            {
-                if (!showDebug) return;   
-                
-                var point = surface.GetPoint(coordPoint);
-                
-                Gizmos.color = Color.Lerp(surface.gizmosSurface.GetUVColor(coordPoint), colorPoint, 0.5f);
-                if (wiredPoint) Gizmos.DrawWireSphere(point, radiusPoint);
-                else Gizmos.DrawSphere(point, radiusPoint);
-
-                if (drawLineToPoint) Gizmos.DrawLine(surface.position, point);
-            }
         }
         
         #endregion
