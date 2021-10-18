@@ -178,6 +178,11 @@ namespace CucuTools
         {
             return BezierLength(p[0], p[1], p[2], p[3], resolution);
         }
+
+        public static Vector3 Scale(this Vector3 vector3, float x, float y, float z)
+        {
+            return Vector3.Scale(vector3, new Vector3(x, y, z));
+        }
         
         #endregion
         
