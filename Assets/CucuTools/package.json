@@ -1,0 +1,16 @@
+{
+    "name": "com.cucurbitacine.cucutools",
+    "version": "0.1.0",
+    "displayName": "CucuTools",
+    "description": "This is the CucuTools",
+    "unity": "2019.1",
+    "dependencies": {   },
+   "keywords": [
+      "tools"
+    ],
+    "author": {
+      "name": "Monin Evgeny",
+      "email": "monin23.23@yandex.ru",
+      "url": "https://www.unity3d.com"
+    }
+  }
