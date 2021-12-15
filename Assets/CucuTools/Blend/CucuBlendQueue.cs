@@ -56,13 +56,9 @@ namespace CucuTools.Blend
             {
                 if (Units[i].entity != null)
                 {
-                    Units[i].entity.Blend = i.CompareTo(left) switch
-                    {
-                        -1 => 1f,
-                        0 => LocalBlend,
-                        1 => 0f,
-                        _ => Units[i].entity.Blend
-                    };
+                    var t = i.CompareTo(left);
+
+                    Units[i].entity.Blend = 0.5f * (t * t - t) - LocalBlend * (t * t - 1);
                 }
             }
         }

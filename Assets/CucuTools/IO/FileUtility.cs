@@ -60,7 +60,9 @@ namespace CucuTools.IO
         /// <param name="filePath">File path</param>
         public void CreateNew(string filePath)
         {
-            using var fs = new FileStream(filePath, FileMode.CreateNew);
+            using (var fs = new FileStream(filePath, FileMode.CreateNew))
+            {
+            }
         }
 
         /// <summary>
@@ -70,8 +72,10 @@ namespace CucuTools.IO
         /// <param name="content">Content</param>
         public void Create(string filePath, byte[] content)
         {
-            using var fs = new FileStream(filePath, FileMode.CreateNew);
-            fs.Write(content, 0, content.Length);
+            using (var fs = new FileStream(filePath, FileMode.CreateNew))
+            {
+                fs.Write(content, 0, content.Length);
+            }
         }
         
         /// <summary>
@@ -91,8 +95,10 @@ namespace CucuTools.IO
         /// <param name="content">Content</param>
         public async Task CreateAsync(string filePath, byte[] content)
         {
-            using var fs = new FileStream(filePath, FileMode.CreateNew);
-            await fs.WriteAsync(content, 0, content.Length);
+            using (var fs = new FileStream(filePath, FileMode.CreateNew))
+            {
+                await fs.WriteAsync(content, 0, content.Length);
+            }
         }
         
         /// <summary>
@@ -112,10 +118,12 @@ namespace CucuTools.IO
         /// <returns>Content</returns>
         public byte[] Read(string filePath)
         {
-            using var fs = new FileStream(filePath, FileMode.Open);
-            var bytes = new byte[fs.Length];
-            fs.Read(bytes, 0, bytes.Length);
-            return bytes;
+            using (var fs = new FileStream(filePath, FileMode.Open))
+            {
+                var bytes = new byte[fs.Length];
+                fs.Read(bytes, 0, bytes.Length);
+                return bytes;
+            }
         }
 
         /// <summary>
@@ -135,10 +143,12 @@ namespace CucuTools.IO
         /// <returns>Content</returns>
         public async Task<byte[]> ReadAsync(string filePath)
         {
-            using var fs = new FileStream(filePath, FileMode.Open);
-            var bytes = new byte[fs.Length];
-            await fs.ReadAsync(bytes, 0, bytes.Length);
-            return bytes;
+            using (var fs = new FileStream(filePath, FileMode.Open))
+            {
+                var bytes = new byte[fs.Length];
+                await fs.ReadAsync(bytes, 0, bytes.Length);
+                return bytes;
+            }
         }
 
         /// <summary>
@@ -158,8 +168,10 @@ namespace CucuTools.IO
         /// <param name="content">Content</param>
         public void Write(string filePath, byte[] content)
         {
-            using var fs = new FileStream(filePath, FileMode.Open);
-            fs.Write(content, 0, content.Length);
+            using (var fs = new FileStream(filePath, FileMode.Open))
+            {
+                fs.Write(content, 0, content.Length);
+            }
         }
 
         /// <summary>
@@ -179,8 +191,10 @@ namespace CucuTools.IO
         /// <param name="content">Content</param>
         public async Task WriteAsync(string filePath, byte[] content)
         {
-            using var fs = new FileStream(filePath, FileMode.Open);
-            await fs.WriteAsync(content, 0, content.Length);
+            using (var fs = new FileStream(filePath, FileMode.Open))
+            {
+                await fs.WriteAsync(content, 0, content.Length);
+            }
         }
 
         /// <summary>
@@ -200,8 +214,10 @@ namespace CucuTools.IO
         /// <param name="content">Content</param>
         public void Append(string filePath, byte[] content)
         {
-            using var fs = new FileStream(filePath, FileMode.Append);
-            fs.Write(content, 0, content.Length);
+            using (var fs = new FileStream(filePath, FileMode.Append))
+            {
+                fs.Write(content, 0, content.Length);
+            }
         }
 
         /// <summary>
@@ -221,8 +237,10 @@ namespace CucuTools.IO
         /// <param name="content">Content</param>
         public async Task AppendAsync(string filePath, byte[] content)
         {
-            using var fs = new FileStream(filePath, FileMode.Append);
-            await fs.WriteAsync(content, 0, content.Length);
+            using (var fs = new FileStream(filePath, FileMode.Append))
+            {
+                await fs.WriteAsync(content, 0, content.Length);
+            }
         }
 
         /// <summary>
