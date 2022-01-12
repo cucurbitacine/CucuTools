@@ -35,17 +35,11 @@ namespace CucuTools.Voxels
         public Vector3 Size
         {
             get => size;
-            set
-            {
-                size = new Vector3(
-                           Mathf.CeilToInt(value.x / SizeChunk),
-                           Mathf.CeilToInt(value.y / SizeChunk),
-                           Mathf.CeilToInt(value.z / SizeChunk)
-                       ) * SizeChunk;
-                return;
-                size = value;
-                size = (Vector3) ResolutionChunk * SizeChunk;
-            }
+            set => size = new Vector3(
+                              Mathf.CeilToInt(value.x / SizeChunk),
+                              Mathf.CeilToInt(value.y / SizeChunk),
+                              Mathf.CeilToInt(value.z / SizeChunk)
+                          ) * SizeChunk;
         }
 
         public Vector3 Position { get; set; }

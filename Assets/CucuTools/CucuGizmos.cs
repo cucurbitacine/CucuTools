@@ -90,5 +90,31 @@ namespace CucuTools
 
             DrawLines(points);
         }
+
+        public static void DrawSpheres(float radius, params Vector3[] centers)
+        {
+            DrawSpheres(centers, radius);
+        }
+        
+        public static void DrawSpheres(IEnumerable<Vector3> centers, float radius = 1f)
+        {
+            foreach (var center in centers)
+            {
+                Gizmos.DrawSphere(center, radius);
+            }
+        }
+        
+        public static void DrawWireSpheres(float radius, params Vector3[] centers)
+        {
+            DrawWireSpheres(centers, radius);
+        }
+        
+        public static void DrawWireSpheres(IEnumerable<Vector3> centers, float radius = 1f)
+        {
+            foreach (var center in centers)
+            {
+                Gizmos.DrawWireSphere(center, radius);
+            }
+        }
     }
 }

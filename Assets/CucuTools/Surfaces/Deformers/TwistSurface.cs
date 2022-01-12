@@ -49,9 +49,10 @@ namespace CucuTools.Surfaces.Deformers
         private bool haveCross;
         private Vector3 cross;
 
-        private void OnDrawGizmosSelected()
+        protected override void OnDrawGizmosSelected()
         {
-           
+            base.OnDrawGizmosSelected();
+            
             if (!haveCross)
             {
                 cross = Random.onUnitSphere;
