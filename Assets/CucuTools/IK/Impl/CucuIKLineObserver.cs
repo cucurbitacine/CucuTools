@@ -2,7 +2,7 @@
 
 namespace CucuTools.IK.Impl
 {
-    public class CucuIKLineEffect : CucuIKEffect
+    public sealed class CucuIKLineObserver : CucuIKObserver
     {
         [Header("Damp")]
         public bool UseDamp = false;
@@ -11,7 +11,7 @@ namespace CucuTools.IK.Impl
         [Header("Line")]
         public LineRenderer Line;
         
-        public override void OnSolved()
+        public override void UpdateObserver()
         {
             if (Line == null) return;
 
@@ -30,7 +30,7 @@ namespace CucuTools.IK.Impl
         
         private void OnValidate()
         {
-            if (Brain != null) OnSolved();
+            if (Brain != null) UpdateObserver();
         }
     }
 }

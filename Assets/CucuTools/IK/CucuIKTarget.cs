@@ -2,7 +2,7 @@
 
 namespace CucuTools.IK
 {
-    public abstract class CucuIKTarget : CucuIKBehaviour
+    public abstract class CucuIKTarget : CucuBehaviour
     {
         [Header("Target")]
         [SerializeField] private bool useWorldSpace = true;
@@ -12,21 +12,6 @@ namespace CucuTools.IK
             get => useWorldSpace;
             set => useWorldSpace = value;
         }
-        public abstract Vector3 Target { get; set; }
-
-        public virtual void UpdateTarget()
-        {
-            Brain?.SetTarget(Target, UseWorldSpace);
-        }
-
-        protected virtual void Start()
-        {
-            UpdateTarget();
-        }
-
-        protected virtual void LateUpdate()
-        {
-            UpdateTarget();
-        }
+        public abstract Vector3 TargetPosition { get; set; }
     }
 }

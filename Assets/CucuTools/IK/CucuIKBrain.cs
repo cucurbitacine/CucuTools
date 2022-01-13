@@ -21,10 +21,11 @@ namespace CucuTools.IK
         [SerializeField] private bool useInitialPoints = true;
         
         [Header("Target")]
-        [SerializeField] private Vector3 target = default;
+        [SerializeField] private Vector3 targetLocal = default;
+        [SerializeField] private CucuIKTarget targetIK = default;
         
         [Header("Points")]
-        [SerializeField] private Vector3[] points = default;
+        [SerializeField] private Vector3[] pointsLocal = default;
 
         #endregion
         
@@ -52,16 +53,22 @@ namespace CucuTools.IK
             set => useInitialPoints = value;
         }
 
-        private Vector3 Target
+        private Vector3 TargetLocal
         {
-            get => target;
-            set => target = value;
+            get => targetLocal;
+            set => targetLocal = value;
         }
 
-        private Vector3[] Points
+        public CucuIKTarget TargetIK
         {
-            get => points != null ? points : (points = Array.Empty<Vector3>());
-            set => points = value;
+            get => targetIK;
+            set => targetIK = value;
+        }
+        
+        private Vector3[] PointsLocal
+        {
+            get => pointsLocal != null ? pointsLocal : (pointsLocal = Array.Empty<Vector3>());
+            set => pointsLocal = value;
         }
         
         private Vector3[] InitialPoints
@@ -76,9 +83,7 @@ namespace CucuTools.IK
             set => _lengths = value;
         }
         
-        private Vector3 TargetWorld => transform.TransformPoint(Target);
-        
-        public int PointCount => Points.Length;
+        public int PointCount => PointsLocal.Length;
         
         #endregion
 
@@ -86,18 +91,41 @@ namespace CucuTools.IK
 
         public void SetTarget(Vector3 target, bool useWorldSpace = true)
         {
-            Target = useWorldSpace ? transform.InverseTransformPoint(target) : target;
+            TargetLocal = useWorldSpace ? transform.InverseTransformPoint(target) : target;
+            
+            if (TargetIK != null)
+            {
+                if (TargetIK.UseWorldSpace == useWorldSpace)
+                {
+                    TargetIK.TargetPosition = target;
+                }
+                else
+                {
+                    TargetIK.TargetPosition = TargetIK.UseWorldSpace
+                        ? transform.TransformPoint(target)
+                        : TargetLocal;
+                }
+            }
         }
         
         public Vector3 GetTarget(bool useWorldSpace = true)
         {
-            return useWorldSpace ? TargetWorld : Target;
+            if (TargetIK != null)
+            {
+                TargetLocal = TargetIK.UseWorldSpace
+                    ? transform.InverseTransformPoint(TargetIK.TargetPosition)
+                    : TargetIK.TargetPosition;
+
+                if (TargetIK.UseWorldSpace == useWorldSpace) return TargetIK.TargetPosition;
+            }
+            
+            return useWorldSpace ? transform.TransformPoint(TargetLocal) : TargetLocal;
         }
         
         public void SetPoints(Vector3[] points, bool useWorldSpace = true)
         {
             InitialPoints = new Vector3[points.Length];
-            Points = new Vector3[points.Length];
+            PointsLocal = new Vector3[points.Length];
 
             for (var i = 0; i < points.Length; i++)
             {
@@ -106,7 +134,7 @@ namespace CucuTools.IK
             
             if (Application.isEditor && !Application.isPlaying)
             {
-                Array.Copy(InitialPoints, Points, Points.Length);
+                Array.Copy(InitialPoints, PointsLocal, PointsLocal.Length);
             }
             
             Lengths = CucuIK.GetLengths(InitialPoints);
@@ -114,7 +142,7 @@ namespace CucuTools.IK
 
         public Vector3 GetPoint(int index, bool useWorldSpace = true)
         {
-            return useWorldSpace ? transform.TransformPoint(Points[index]) : Points[index];
+            return useWorldSpace ? transform.TransformPoint(PointsLocal[index]) : PointsLocal[index];
         }
         
         public bool Solve()
@@ -125,11 +153,11 @@ namespace CucuTools.IK
             {
                 for (var i = 0; i < InitialPoints.Length; i++)
                 {
-                    Points[i] = InitialPoints[i];
+                    PointsLocal[i] = InitialPoints[i];
                 }
             }
 
-            return CucuIK.Solve(Target, Points, Lengths);
+            return CucuIK.Solve(TargetLocal, PointsLocal, Lengths);
         }
 
         #endregion
@@ -140,7 +168,7 @@ namespace CucuTools.IK
 
         private void Awake()
         {
-            SetPoints(Points, true);
+            SetPoints(PointsLocal, true);
         }
 
         private void Update()
@@ -150,13 +178,21 @@ namespace CucuTools.IK
             Solved = Solve();
         }
 
+        private void OnValidate()
+        {
+            if (TargetIK != null)
+            {
+                GetTarget();
+            }
+        }
+
         private void OnDrawGizmos()
         {
-            if (Points.Length < 1) return;
+            if (PointsLocal.Length < 1) return;
             
-            if (_gizmosPoints == null) _gizmosPoints = new Vector3[Points.Length];
-            if (_gizmosPoints.Length != Points.Length) Array.Resize(ref _gizmosPoints, Points.Length);
-            Array.Copy(Points, _gizmosPoints, Points.Length);
+            if (_gizmosPoints == null) _gizmosPoints = new Vector3[PointsLocal.Length];
+            if (_gizmosPoints.Length != PointsLocal.Length) Array.Resize(ref _gizmosPoints, PointsLocal.Length);
+            Array.Copy(PointsLocal, _gizmosPoints, PointsLocal.Length);
             
             for (var i = 0; i < _gizmosPoints.Length; i++)
             {
@@ -167,9 +203,11 @@ namespace CucuTools.IK
             CucuGizmos.DrawLines(_gizmosPoints);
             CucuGizmos.DrawWireSpheres(_gizmosPoints, 0.1f);
 
+            var targetWorld = GetTarget(true);
+            
             if (!Application.isPlaying)
             {
-                CucuIK.Solve(TargetWorld, _gizmosPoints, CucuIK.GetLengths(_gizmosPoints));
+                CucuIK.Solve(targetWorld, _gizmosPoints, CucuIK.GetLengths(_gizmosPoints));
 
                 Gizmos.color = Color.yellow;
                 CucuGizmos.DrawLines(_gizmosPoints);
@@ -177,7 +215,7 @@ namespace CucuTools.IK
             }
 
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(TargetWorld, 0.1f);
+            Gizmos.DrawWireSphere(targetWorld, 0.1f);
         }
         
         #endregion

@@ -2,7 +2,7 @@
 
 namespace CucuTools.IK.Impl
 {
-    public class CucuIKTentacleSource : CucuIKSource
+    public sealed class CucuIKTentacleSource : CucuIKSource
     {
         [Header("Tentacle")]
         [Min(0f)]

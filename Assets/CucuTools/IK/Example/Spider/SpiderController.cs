@@ -34,25 +34,25 @@ namespace CucuTools.IK.Spider
             {
                 var leg = Legs[i];
                 if (leg == null) continue;
-                if (leg.ik == null) continue;
+                if (leg.brain == null) continue;
 
-                leg.ik.Brain.transform.localRotation = Quaternion.identity;
+                leg.brain.transform.localRotation = Quaternion.identity;
                 
                 if(i < 4)
                 {
-                    leg.ik.Brain.transform.Rotate(Vector3.up, (i + 1) * 36f, Space.Self);
+                    leg.brain.transform.Rotate(Vector3.up, (i + 1) * 36f, Space.Self);
                 }
                 else
                 {
-                    leg.ik.Brain.transform.Rotate(Vector3.up, -(i - 4 + 1) * 36f, Space.Self);
+                    leg.brain.transform.Rotate(Vector3.up, -(i - 4 + 1) * 36f, Space.Self);
                 }
                 
-                leg.offset = (leg.ik.Brain.transform.localRotation * Vector3.forward) * Radius;
+                leg.offset = (leg.brain.transform.localRotation * Vector3.forward) * Radius;
 
                 var point = transform.TransformPoint(leg.offset);
 
                 leg.position = point;
-                leg.ik.Target = leg.position;
+                leg.brain.TargetIK.TargetPosition = leg.position;
             }
         }
         
@@ -63,11 +63,11 @@ namespace CucuTools.IK.Spider
             foreach (var leg in Legs)
             {
                 if (leg == null) continue;
-                if (leg.ik == null) continue;
+                if (leg.brain == null) continue;
 
                 var bestPosition = transform.TransformPoint(leg.offset);
                 
-                var direction = leg.ik.Target - center;
+                var direction = leg.brain.GetTarget() - center;
                 var bestDirection = bestPosition - center;
 
                 var angle = Vector3.Angle(direction, bestDirection);
@@ -77,7 +77,7 @@ namespace CucuTools.IK.Spider
 
                 if (angleMax < angle || dot < dotMin || distance < MinRadius || MaxRadius < distance)
                 {
-                    var shift = bestPosition - leg.ik.Target;
+                    var shift = bestPosition - leg.brain.GetTarget();
                     var origin = bestPosition + shift * 0.5f + transform.up;
                     var dir = -transform.up;
                     var ray = new Ray(origin, dir);
@@ -92,7 +92,7 @@ namespace CucuTools.IK.Spider
                     }
                 }
                 
-                leg.ik.Target = leg.position;
+                leg.brain.SetTarget(leg.position);
             }
         }
 
@@ -149,7 +149,7 @@ namespace CucuTools.IK.Spider
             foreach (var leg in Legs)
             {
                 if (leg == null) continue;
-                if (leg.ik == null) continue;
+                if (leg.brain == null) continue;
                 
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireCube(leg.position, Vector3.one * 0.2f);
@@ -162,7 +162,7 @@ namespace CucuTools.IK.Spider
         [Serializable]
         public class LegIK
         {
-            public CucuIKTarget ik;
+            public CucuIKBrain brain;
             public Vector3 offset;
             public Vector3 position;
         }

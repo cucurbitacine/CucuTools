@@ -2,9 +2,9 @@
 
 namespace CucuTools.IK.Impl
 {
-    public class CucuIKJointTarget : CucuIKTarget
+    public sealed class CucuIKJointTarget : CucuIKTarget
     {
-        public override Vector3 Target
+        public override Vector3 TargetPosition
         {
             get => UseWorldSpace ? transform.position : transform.localPosition;
             set
