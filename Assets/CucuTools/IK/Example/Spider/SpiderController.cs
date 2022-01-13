@@ -2,7 +2,7 @@
 using CucuTools.Attributes;
 using UnityEngine;
 
-namespace CucuTools.IK.Spider
+namespace CucuTools.IK.Example.Spider
 {
     public class SpiderController : CucuBehaviour
     {
