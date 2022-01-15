@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CucuTools.Surfaces;
 using UnityEngine;
@@ -9,49 +8,70 @@ namespace CucuTools.Clothes
     {
         [Header("Simulation")]
         public int depthSimulation = 8;
+
+        public bool fixUp = true;
+        public bool fixDown = false;
+        public bool fixLeft = false;
+        public bool fixRight = false;
         
         [Space]
-        [Range(0f, 1f)]
-        public float fading = 0.01f;
-        
+        [Range(0f, 1f)] public float fading = 0.01f;
+
         [Space]
         public bool useKinematic = true;
-        [Range(0f, 1f)]
-        public float weightKinematic = 0.05f; 
-        
+        [Range(0f, 1f)] public float weightKinematic = 0.05f;
+
         [Space]
         public bool useGravity = true;
-        [Range(0f, 1f)]
-        public float weightGravity = 1f;
-        
+        [Range(0f, 1f)] public float weightGravity = 1f;
+
         [Space]
         public bool useWind = true;
-        [Range(0f, 1f)]
-        public float weightWind = 1f;
+        [Range(0f, 1f)] public float weightWind = 1f;
         public WindZone windZone;
-        
+
+        [Space]
+        public bool usePenetration = true;
+        [Range(0f, 1f)] public float weightPenetration = 1f;
+        [Range(0.001f, 0.1f)] public float radiusPenetration = 0.01f;
+
         [Header("Surface")]
         public bool useCrossing = true;
-        public SurfaceBehaviour surface;
-        
+        public SurfaceBehaviour surface = default;
+
         [Header("Gizmos")]
         public bool drawGizmos = true;
-        
-        private MeshFilter _meshFilter;
-        private Mesh _mesh;
-        private Vector3 _previous;
-        private Point[] _points;
-        private List<Connection> _connections;
+
+        private MeshFilter _meshFilter = default;
+        private Mesh _mesh = default;
+
+        private Vector3 _previous = default;
+
+        private Point[] _points = default;
+        private List<Connection> _connections = default;
+
+        private Vector3[] _vertices = default;
+        private int[] _triangles = default;
+        private Vector2[] _uv = default;
+
+        private SphereCollider _penetration = default;
+        private Collider[] _overlaps = default;
 
         private int GetPointIndex(int i, int j)
         {
             return i * surface.gizmos.SizeV + j;
         }
-        
-        private void Start()
+
+        #region Initiation
+
+        private void InitMesh()
         {
+            /*
+             * Init mesh
+             */
+
             _meshFilter = GetComponent<MeshFilter>();
-            
+
             if (_meshFilter != null)
             {
                 if (_meshFilter.sharedMesh != null) _mesh = _meshFilter.sharedMesh;
@@ -61,14 +81,21 @@ namespace CucuTools.Clothes
                     _mesh.name = _meshFilter.gameObject.name;
                 }
             }
-            
+
             var quadCount = (surface.gizmos.SizeU - 1) * (surface.gizmos.SizeV - 1);
-            vertices = new Vector3[surface.gizmos.SizeU * surface.gizmos.SizeV];
-            triangles = new int[quadCount * 2 * 3];
-            uv = new Vector2[vertices.Length];
-            
+            _vertices = new Vector3[surface.gizmos.SizeU * surface.gizmos.SizeV];
+            _triangles = new int[quadCount * 2 * 3];
+            _uv = new Vector2[_vertices.Length];
+        }
+
+        private void InitPoints()
+        {
+            /*
+             * Init points
+             */
+
             _points = new Point[surface.gizmos.SizeU * surface.gizmos.SizeV];
-            
+
             for (var i = 0; i < surface.gizmos.SizeU; i++)
             {
                 var u = surface.gizmos.GridU[i];
@@ -80,12 +107,24 @@ namespace CucuTools.Clothes
                     var point = surface.GetLocalPoint(u, v);
 
                     var index = GetPointIndex(i, j);
-                    _points[index] = new Point(point, j == surface.gizmos.SizeV - 1);
+                    _points[index] = new Point(point);
+
+                    if (fixUp) _points[index].locked |= j == surface.gizmos.SizeV - 1;
+                    if (fixDown) _points[index].locked |= j == 0;
+                    if (fixLeft) _points[index].locked |= i == 0;
+                    if (fixRight) _points[index].locked |= i == surface.gizmos.SizeU - 1;
                 }
             }
+        }
+
+        private void InitConnections()
+        {
+            /*
+             * Init connection
+             */
 
             _connections = new List<Connection>();
-            
+
             for (var i = 0; i < surface.gizmos.SizeU; i++)
             {
                 for (var j = 0; j < surface.gizmos.SizeV; j++)
@@ -98,7 +137,7 @@ namespace CucuTools.Clothes
                         var connection = new Connection(_points[index], _points[up]);
                         _connections.Add(connection);
                     }
-                    
+
                     if (i + 1 < surface.gizmos.SizeU)
                     {
                         var right = GetPointIndex(i + 1, j);
@@ -124,19 +163,87 @@ namespace CucuTools.Clothes
                     }
                 }
             }
-            
-            _previous = transform.position;
         }
 
-        private void FixedUpdate()
+        private void InitPenetration()
+        {
+            /*
+             * Init penetration
+             */
+
+            _overlaps = new Collider[8];
+            _penetration = new GameObject("Penetration").AddComponent<SphereCollider>();
+            _penetration.transform.SetParent(transform, false);
+            _penetration.enabled = false;
+            _penetration.radius = radiusPenetration;
+        }
+
+        #endregion
+
+        #region Computing
+        
+        private void UpdateMesh()
+        {
+            /*
+             * Update mesh
+             */
+
+            if (_meshFilter == null) return;
+
+            var tri = 0;
+
+            for (var i = 0; i < surface.gizmos.SizeU; i++)
+            {
+                var u = surface.gizmos.GridU[i];
+
+                for (var j = 0; j < surface.gizmos.SizeV; j++)
+                {
+                    var v = surface.gizmos.GridV[j];
+
+                    var index = GetPointIndex(i, j);
+
+                    _vertices[index] = _points[index].position;
+                    _uv[index] = new Vector2(u, v);
+
+                    if (i < surface.gizmos.SizeU - 1 && j < surface.gizmos.SizeV - 1)
+                    {
+                        var up = GetPointIndex(i, j + 1);
+                        var corner = GetPointIndex(i + 1, j + 1);
+                        var right = GetPointIndex(i + 1, j);
+
+                        _triangles[tri++] = index;
+                        _triangles[tri++] = up;
+                        _triangles[tri++] = corner;
+
+                        _triangles[tri++] = index;
+                        _triangles[tri++] = corner;
+                        _triangles[tri++] = right;
+                    }
+                }
+            }
+
+            _mesh.vertices = _vertices;
+            _mesh.triangles = _triangles;
+            _mesh.uv = _uv;
+            _mesh.RecalculateNormals();
+            _mesh.Optimize();
+
+            _meshFilter.sharedMesh = _mesh;
+        }
+
+        private void SimulatePoints()
         {
             if (depthSimulation > 0)
             {
+                /*
+                 * Computing external forces
+                 */
+
                 var position = transform.position;
 
-                var kinematic = -(position - _previous);//* Time.fixedDeltaTime;
+                var kinematic = -(position - _previous);
                 kinematic = transform.InverseTransformDirection(kinematic.normalized) * kinematic.magnitude;
-                
+
                 var gravity = Physics.gravity * (Time.fixedDeltaTime * Time.fixedDeltaTime);
                 gravity = transform.InverseTransformDirection(gravity.normalized) * gravity.magnitude;
 
@@ -153,10 +260,16 @@ namespace CucuTools.Clothes
                         var pow = Mathf.Max(windZone.radius - dir.magnitude, 0f) / windZone.radius;
                         if (pow > 0) wind = dir.normalized * (pow * windZone.windMain * Time.fixedDeltaTime);
                     }
-                    
+
                     wind = transform.InverseTransformDirection(wind.normalized) * wind.magnitude;
                 }
+
+                _penetration.radius = radiusPenetration;
                 
+                /*
+                 * Simulate physics per point
+                 */
+
                 foreach (var point in _points)
                 {
                     if (point.locked) continue;
@@ -172,18 +285,69 @@ namespace CucuTools.Clothes
                     {
                         step += weightGravity * gravity;
                     }
-                    
+
                     if (useWind && windZone != null)
                     {
                         step += weightWind * wind;
                     }
 
+                    if (usePenetration)
+                    {
+                        /*
+                        * Compute penetretion
+                        */
+                                    
+                        _penetration.transform.position = transform.TransformPoint(point.position);
+
+                        var spherePos = _penetration.transform.position;
+
+                        var count = Physics.OverlapSphereNonAlloc(spherePos, _penetration.radius, _overlaps);
+
+                        if (count > 0)
+                        {
+                            _penetration.enabled = true;
+
+                            var direction = Vector3.zero;
+
+                            for (var j = 0; j < count; j++)
+                            {
+                                var overlap = _overlaps[j];
+
+                                var overlapPos = overlap.transform.position;
+                                var overlapRot = overlap.transform.rotation;
+
+                                Physics.ComputePenetration(
+                                    _penetration, spherePos, Quaternion.identity,
+                                    overlap, overlapPos, overlapRot,
+                                    out var dir, out var dst);
+
+                                direction += dir * dst;
+                            }
+
+                            _penetration.enabled = false;
+                            
+                            direction /= count;
+                            direction += direction.normalized * radiusPenetration;
+                            direction *= weightPenetration;
+                            direction = transform.InverseTransformDirection(direction.normalized) * direction.magnitude;
+                            
+                            step += direction;
+                        }
+                    }
+
                     point.previousPosition = point.position;
                     point.position += step;
                 }
-
+                
                 _previous = position;
             }
+        }
+
+        private void SimulateConnections()
+        {
+            /*
+             * Simulate physics per connection
+             */
 
             for (var i = 0; i < depthSimulation; i++)
             {
@@ -194,59 +358,39 @@ namespace CucuTools.Clothes
             }
         }
 
-        private Vector3[] vertices = default;
-        private int[] triangles = default;
-        private Vector2[] uv = default;
-        
+        #endregion
+
+        #region MonoBehaviour
+
+        private void Start()
+        {
+            _previous = transform.position;
+
+            InitMesh();
+
+            InitPoints();
+
+            InitConnections();
+
+            InitPenetration();
+        }
+
         private void Update()
         {
-            if (_meshFilter == null) return;
-            
-            var tri = 0;
-            
-            for (var i = 0; i < surface.gizmos.SizeU; i++)
-            {
-                var u = surface.gizmos.GridU[i];
-                
-                for (var j = 0; j < surface.gizmos.SizeV; j++)
-                {
-                    var v = surface.gizmos.GridV[j];
-                    
-                    var index = GetPointIndex(i, j);
+            UpdateMesh();
+        }
 
-                    vertices[index] = _points[index].position;
-                    uv[index] = new Vector2(u, v);
+        private void FixedUpdate()
+        {
+            SimulateConnections();
 
-                    if (i < surface.gizmos.SizeU - 1 && j < surface.gizmos.SizeV - 1)
-                    {
-                        var up = GetPointIndex(i, j + 1);
-                        var corner = GetPointIndex(i + 1, j + 1);
-                        var right = GetPointIndex(i + 1, j);
-
-                        triangles[tri++] = index;
-                        triangles[tri++] = up;
-                        triangles[tri++] = corner;
-
-                        triangles[tri++] = index;
-                        triangles[tri++] = corner;
-                        triangles[tri++] = right;
-                    }
-                }
-            }
-
-            _mesh.vertices = vertices;
-            _mesh.triangles = triangles;
-            _mesh.uv = uv;
-            _mesh.RecalculateNormals();
-            _mesh.Optimize();
-
-            _meshFilter.sharedMesh = _mesh;
+            SimulatePoints();
         }
 
         private void OnDrawGizmos()
         {
             if (!drawGizmos) return;
-            
+
             Vector3 F(Vector3 pos)
             {
                 return transform.TransformPoint(pos);
@@ -276,47 +420,8 @@ namespace CucuTools.Clothes
                     Gizmos.DrawWireSphere(F(point.position), 0.02f);
                 }
             }
-            
-        }
-    }
-
-    [Serializable]
-    public class Point
-    {
-        public bool locked;
-        public Vector3 position;
-        public Vector3 previousPosition;
-
-        public Point(Vector3 position, bool locked = false)
-        {
-            this.locked = locked;
-            this.position = position;
-            this.previousPosition = position;
-        }
-    }
-
-    [Serializable]
-    public class Connection
-    {
-        public Point a;
-        public Point b;
-        public float length;
-
-        public Connection(Point a, Point b)
-        {
-            this.a = a;
-            this.b = b;
-
-            length = Vector3.Distance(a.position, b.position);
         }
 
-        public void Simulate()
-        {
-            var center = (a.position + b.position) * 0.5f;
-            var dir = (a.position - b.position).normalized;
-
-            if (!a.locked) a.position = center + dir * (length * 0.5f);
-            if (!b.locked) b.position = center - dir * (length * 0.5f);
-        }
+        #endregion
     }
 }
