@@ -54,8 +54,8 @@ namespace CucuTools.Clothes
         private int[] _triangles = default;
         private Vector2[] _uv = default;
 
-        private SphereCollider _penetration = default;
-        private Collider[] _overlaps = default;
+        private SphereCollider _penetrationCollider = default;
+        private Collider[] _penetrationOverlaps = default;
 
         private int GetPointIndex(int i, int j)
         {
@@ -171,11 +171,11 @@ namespace CucuTools.Clothes
              * Init penetration
              */
 
-            _overlaps = new Collider[8];
-            _penetration = new GameObject("Penetration").AddComponent<SphereCollider>();
-            _penetration.transform.SetParent(transform, false);
-            _penetration.enabled = false;
-            _penetration.radius = radiusPenetration;
+            _penetrationOverlaps = new Collider[8];
+            _penetrationCollider = new GameObject("Penetration").AddComponent<SphereCollider>();
+            _penetrationCollider.transform.SetParent(transform, false);
+            _penetrationCollider.enabled = false;
+            _penetrationCollider.radius = radiusPenetration;
         }
 
         #endregion
@@ -264,7 +264,7 @@ namespace CucuTools.Clothes
                     wind = transform.InverseTransformDirection(wind.normalized) * wind.magnitude;
                 }
 
-                _penetration.radius = radiusPenetration;
+                _penetrationCollider.radius = radiusPenetration;
                 
                 /*
                  * Simulate physics per point
@@ -297,41 +297,39 @@ namespace CucuTools.Clothes
                         * Compute penetretion
                         */
                                     
-                        _penetration.transform.position = transform.TransformPoint(point.position);
+                        _penetrationCollider.transform.position = transform.TransformPoint(point.position);
 
-                        var spherePos = _penetration.transform.position;
+                        var spherePos = _penetrationCollider.transform.position;
 
-                        var count = Physics.OverlapSphereNonAlloc(spherePos, _penetration.radius, _overlaps);
+                        var count = Physics.OverlapSphereNonAlloc(spherePos, _penetrationCollider.radius, _penetrationOverlaps);
 
                         if (count > 0)
                         {
-                            _penetration.enabled = true;
-
-                            var direction = Vector3.zero;
-
+                            var penetration = Vector3.zero;
+                            
+                            _penetrationCollider.enabled = true;
                             for (var j = 0; j < count; j++)
                             {
-                                var overlap = _overlaps[j];
+                                var overlap = _penetrationOverlaps[j];
 
                                 var overlapPos = overlap.transform.position;
                                 var overlapRot = overlap.transform.rotation;
 
                                 Physics.ComputePenetration(
-                                    _penetration, spherePos, Quaternion.identity,
+                                    _penetrationCollider, spherePos, Quaternion.identity,
                                     overlap, overlapPos, overlapRot,
                                     out var dir, out var dst);
 
-                                direction += dir * dst;
+                                penetration += dir * dst;
                             }
-
-                            _penetration.enabled = false;
+                            _penetrationCollider.enabled = false;
                             
-                            direction /= count;
-                            direction += direction.normalized * radiusPenetration;
-                            direction *= weightPenetration;
-                            direction = transform.InverseTransformDirection(direction.normalized) * direction.magnitude;
+                            penetration /= count;
+                            penetration += penetration.normalized * radiusPenetration;
+                            penetration *= weightPenetration;
+                            penetration = transform.InverseTransformDirection(penetration.normalized) * penetration.magnitude;
                             
-                            step += direction;
+                            step += penetration;
                         }
                     }
 
