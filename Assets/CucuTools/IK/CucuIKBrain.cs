@@ -12,9 +12,12 @@ namespace CucuTools.IK
     public sealed class CucuIKBrain : CucuBehaviour
     {
         #region SerializeField
-
+        
         [CucuReadOnly]
         [SerializeField] private bool solved = false;
+        
+        [Space]
+        [SerializeField] private bool pause = false;
         
         [Header("IK")]
         [SerializeField] private CucuIK cucuIK = default;
@@ -34,7 +37,7 @@ namespace CucuTools.IK
         private Vector3[] _initialPoints = default;
         private float[] _lengths = default;
         private Vector3[] _gizmosPoints = default;
-        
+
         public bool Solved
         {
             get => solved;
@@ -157,14 +160,18 @@ namespace CucuTools.IK
                 }
             }
 
-            return CucuIK.Solve(TargetLocal, PointsLocal, Lengths);
+            return CucuIK.Solve(GetTarget(false), PointsLocal, Lengths);
         }
 
         #endregion
 
         #region MonoBehaviour
 
-        public bool Pause { get; set; }
+        public bool Pause
+        {
+            get => pause;
+            set => pause = value;
+        }
 
         private void Awake()
         {
