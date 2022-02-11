@@ -27,24 +27,27 @@ namespace CucuTools.Editor
         {
             var buttons = GetButtons(targets);
             
-            if (buttons == null || !buttons.Any()) return;
+            if (buttons == null) return;
 
             var grouped = buttons.GroupBy(b => b.attribute.Group).OrderBy(g => g.Min(gr => gr.attribute.Order));
 
             foreach (var group in grouped)
             {
-                var groupName = string.IsNullOrEmpty(group.Key) ? DefaultButtonsGroupName : group.Key;
-                DrawGroup(group, groupName, targets);
+                DrawGroup(group.Key, group, targets);
             }
         }
 
-        private static void DrawGroup(IEnumerable<ButtonInfo> buttons, string groupName, params Object[] targets)
+        private static void DrawGroup(string groupName, IEnumerable<ButtonInfo> buttons, params Object[] targets)
         {
+            groupName = string.IsNullOrEmpty(groupName) ? DefaultButtonsGroupName : groupName;
+            
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField(groupName, GetHeaderGUIStyle());
+            EditorGUILayout.LabelField(groupName, GetHeaderGuiStyle());
 
             foreach (var button in buttons.OrderBy(b => b.attribute.Order))
+            {
                 DrawButton(button, targets);
+            }
         } 
         
         private static void DrawButton(ButtonInfo button, params Object[] targets)
@@ -59,9 +62,11 @@ namespace CucuTools.Editor
             {
                 if (!string.IsNullOrEmpty(button.attribute.ColorHex) &&
                     ColorUtility.TryParseHtmlString(button.attribute.ColorHex, out var color))
+                {
                     GUI.backgroundColor = color;
+                }
 
-                if (GUILayout.Button(buttonName, GetButtonGUIStyle()))
+                if (GUILayout.Button(buttonName, GetButtonGuiStyle()))
                 {
                     foreach (var target in targets)
                     {
@@ -79,36 +84,54 @@ namespace CucuTools.Editor
 
         #region Getter
 
-        private static IEnumerable<MethodInfo> GetButtonMethods(params Object[] targets)
+        private const BindingFlags methodsFilter =
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public; 
+        
+        private static IEnumerable<MethodInfo> GetMethods(params Object[] targets)
         {
             return targets.SelectMany(t => t.GetType()
-                .GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
-                .Where(m => m.GetCustomAttributes(typeof(CucuButtonAttribute), true).Length > 0));
+                    .GetMethods(methodsFilter)
+                    .Where(m => m.GetCustomAttribute<CucuButtonAttribute>(true) != null))
+                .Distinct()
+                .Where(m => m.GetParameters().All(p => p.IsOptional));
         }
         
         private static IEnumerable<ButtonInfo> GetButtons(params Object[] targets)
         {
-            var methods = GetButtonMethods(targets)
-                .Where(m => m.GetParameters().All(p => p.IsOptional));
+            var methods = GetMethods(targets);
 
-            return methods.Select(m => new ButtonInfo(m)).Where(b => b.attribute != null);
+            return methods.Select(m => new ButtonInfo(m));
         }
 
         #endregion
 
         #region GUIStyle
 
-        private static GUIStyle GetButtonGUIStyle()
-        {
-            return new GUIStyle(GUI.skin.button);;
-        }
+        private static GUIStyle buttonGuiStyle;
+        private static GUIStyle headerGuiStyle;
         
-        private static GUIStyle GetHeaderGUIStyle()
+        private static GUIStyle GetButtonGuiStyle()
         {
-            return new GUIStyle(EditorStyles.centeredGreyMiniLabel)
+            if (buttonGuiStyle == null)
             {
-                fontStyle = FontStyle.Bold, alignment = TextAnchor.UpperCenter
-            };
+                buttonGuiStyle = new GUIStyle(GUI.skin.button);
+            }
+
+            return buttonGuiStyle;
+        }
+
+        
+        private static GUIStyle GetHeaderGuiStyle()
+        {
+            if (headerGuiStyle == null)
+            {
+                headerGuiStyle = new GUIStyle(EditorStyles.centeredGreyMiniLabel)
+                {
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.UpperCenter
+                };
+            }
+            return headerGuiStyle;
         }
 
         #endregion
@@ -122,8 +145,7 @@ namespace CucuTools.Editor
             {
                 this.method = method;
 
-                attribute = (CucuButtonAttribute) this.method.GetCustomAttributes(typeof(CucuButtonAttribute), true)
-                    .SingleOrDefault();
+                attribute = this.method.GetCustomAttribute<CucuButtonAttribute>(true);
             }
         }
     }

@@ -2,7 +2,7 @@ using System;
 
 namespace CucuTools.Attributes
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class CucuButtonAttribute : Attribute
     {
         public string Name { get; }
@@ -15,7 +15,9 @@ namespace CucuTools.Attributes
             Name = name;
             Order = order;
             Group = group;
-            ColorHex = colorHex ?? "888888";
+            ColorHex = colorHex ?? "#e4e4e4";
+
+            if (!ColorHex.StartsWith("#")) ColorHex = $"#{ColorHex}";
         }
     }
 }
