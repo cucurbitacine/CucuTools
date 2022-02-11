@@ -1,13 +1,12 @@
-using System;
-using System.Linq;
+using System.IO;
+using CucuTools.Attributes;
 using UnityEngine;
+using File = UnityEngine.Windows.File;
 
 namespace CucuTools.Terrains
 {
-    public class MapGenerator : MonoBehaviour
+    public class MapGenerator : CucuBehaviour
     {
-        public bool autoUpdate = true;
-    
         [Space]
         public Vector2Int Resolution = Vector2Int.one * 32;
         [Min(0f)]
@@ -15,73 +14,58 @@ namespace CucuTools.Terrains
 
         [Space]
         public bool UpdateAsset;
-        public NoiseSeedAsset Noise;
-        public NoiseSeed Seed;
-
+        public MapSeedAsset Map;
+        public MapSeed Seed;
+        public ColorPalette Palette;
+        
         [Space]
-        public DisplayType DisplayType;
-        public TerrainType[] TerrainTypes;
-    
-        [Space] public MapDisplay MapDisplay;
+        public bool AutoBuild = false;
+        public MapConverter Converter;
+        public MapDisplayer Displayer;
 
+        public float[,] Generate()
+        {
+            return Map.Seed.GetMap(Resolution, Size);
+        }
+
+        [CucuButton()]
         public void Build()
         {
-            Resolution.x = Mathf.Max(2, Resolution.x);
-            Resolution.y = Mathf.Max(2, Resolution.y);
-
-            var map = (UpdateAsset ? Seed : Noise.Seed).GetMap(Resolution, Size);
-        
-            if (DisplayType == DisplayType.ColorMap)
-            {
-                var colorMap = new Color[Resolution.x,Resolution.y];
-                for (var i = 0; i < Resolution.x; i++)
-                {
-                    for (var j = 0; j < Resolution.y; j++)
-                    {
-                        colorMap[i, j] = Color.black;
-                        var height = map[i, j];
-                        for (var k = 0; k < TerrainTypes.Length; k++)
-                        {
-                            var array = Array.FindAll(TerrainTypes, tt => tt.height <= height);
-                            if (array.Length > 0)
-                            {
-                                var max = array.Select(a => a.height).Max();
-                                var terrain = Array.Find(array, tt => Math.Abs(tt.height - max) < float.Epsilon);
-                                colorMap[i, j] = terrain.color;
-                            }
-                        }
-                    }
-                }
-            
-                MapDisplay.DisplayFromColorMap(colorMap, Resolution);
-            }
-
-            if (DisplayType == DisplayType.NoiseMap)
-            {
-                MapDisplay.DisplayFromNoiseMap(map, Resolution);
-            }
+            var noiseMap = Generate();
+            var colorMap = Converter.Convert(noiseMap, Resolution);
+            Displayer.DisplayFromColorMap(colorMap, Resolution);
         }
 
+        [CucuButton(colorHex:"#ff0000")]
+        private void SaveTexture()
+        {
+            Build();
+            
+            var folder = Application.dataPath;
+            var fileName = "map.png";
+            var path = Path.Combine(folder, fileName);
+            File.WriteAllBytes(path, Displayer.Texture.EncodeToPNG());
+        }
+        
         private void OnValidate()
         {
-            if (autoUpdate) Build();
+            if (UpdateAsset)
+            {
+                Map.Seed = Seed;
+                Converter.TerrainColors.Palette = Palette;
 
-            if (UpdateAsset) Noise.Seed = Seed;
-            else Seed = Noise.Seed;
+#if UNITY_EDITOR
+                UnityEditor.EditorUtility.SetDirty(Converter.TerrainColors);
+#endif
+            }
+            else
+            {
+                Seed = Map.Seed;
+                Palette = Converter.TerrainColors.Palette;
+            }
+
+            
+            if (AutoBuild) Build();
         }
-    }
-
-    public enum DisplayType
-    {
-        NoiseMap,
-        ColorMap,
-    }
-
-    [Serializable]
-    public class TerrainType
-    {
-        public string name;
-        public float height;
-        public Color color;
     }
 }

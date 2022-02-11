@@ -4,15 +4,16 @@ using UnityEngine;
 namespace CucuTools.Terrains
 {
     [Serializable]
-    public struct NoiseSeed
+    public struct MapSeed
     {
-        public static NoiseSeed Default =>
-            new NoiseSeed
+        public static MapSeed Default =>
+            new MapSeed
             {
                 frequency = 0.125f,
                 amplitude = 1,
                 lacunarity = 2,
                 persistance = 0.5f,
+                offset = Vector2.zero,
                 octaveOffset = new Vector2[] {Vector2.zero,}
             };
     
@@ -24,6 +25,7 @@ namespace CucuTools.Terrains
         public float lacunarity;
         [Min(0f)]
         public float persistance;
+        public Vector2 offset;
         public Vector2[] octaveOffset;
     
         public float[,] GetMap(Vector2Int resolution, Vector2 size)
@@ -58,7 +60,7 @@ namespace CucuTools.Terrains
             {
                 var fr = Mathf.Pow(lacunarity, i);
                 var am = Mathf.Pow(persistance, i);
-                var point = (position + octaveOffset[i]) * (fr * frequency);
+                var point = (offset + position + octaveOffset[i]) * (fr * frequency);
 
                 height += am * Mathf.PerlinNoise(point.x, point.y);
             }

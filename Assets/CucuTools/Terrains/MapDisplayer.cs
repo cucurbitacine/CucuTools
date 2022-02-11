@@ -2,9 +2,9 @@
 
 namespace CucuTools.Terrains
 {
-    public class MapDisplay : MonoBehaviour
+    public class MapDisplayer : MonoBehaviour
     {
-        public Texture2D texture = default;
+        public Texture2D Texture = default;
         public Renderer Renderer = default;
 
         public void DisplayFromColors(Color[] colors, Vector2Int resolution)
@@ -12,15 +12,15 @@ namespace CucuTools.Terrains
             if (Renderer == null) return;
             var material = Renderer.sharedMaterial;
 
-            if (texture == null) texture = new Texture2D(resolution.x, resolution.y);
+            if (Texture == null) Texture = new Texture2D(resolution.x, resolution.y);
         
-            texture.Resize(resolution.x, resolution.y);
-            texture.SetPixels(colors);
-            texture.filterMode = FilterMode.Point;
-            texture.wrapMode = TextureWrapMode.Clamp;
-            texture.Apply();
+            Texture.Resize(resolution.x, resolution.y);
+            Texture.SetPixels(colors);
+            Texture.filterMode = FilterMode.Point;
+            Texture.wrapMode = TextureWrapMode.Clamp;
+            Texture.Apply();
 
-            material.mainTexture = texture;
+            material.mainTexture = Texture;
         }
     
         public void DisplayFromColorMap(Color[,] map, Vector2Int resolution)
