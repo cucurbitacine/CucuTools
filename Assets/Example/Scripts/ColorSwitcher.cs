@@ -10,11 +10,14 @@ namespace Example.Scripts
         public Color HoverColor = Color.red;
         public Color PressColor = Color.green;
 
-        public Renderer[] Renderers => GetComponentsInChildren<Renderer>();
-        public InteractableBehaviour Interactable => GetComponentInChildren<InteractableBehaviour>();
-
+        public InteractableBehaviour Interactable;
+        public Renderer[] Renderers;
+        
         private void Awake()
         {
+            if (Renderers == null || Renderers.Length == 0) Renderers = GetComponentsInChildren<Renderer>();
+            if (Interactable == null) Interactable = GetComponentInChildren<InteractableBehaviour>();
+
             Interactable.InteractEvents.OnIdleStart.AddListener(Idle);
             Interactable.InteractEvents.OnHoverStart.AddListener(Hover);
             Interactable.InteractEvents.OnPressStart.AddListener(Press);

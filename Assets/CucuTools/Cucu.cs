@@ -319,6 +319,16 @@ namespace CucuTools
             return transform.ToLocalVector(vector);
         }
 
+        public static Vector3 GetNearestPointOnVector(this Vector3 point, Vector3 vector)
+        {
+            return vector * Vector3.Dot(point, vector);
+        }
+        
+        public static Vector3 GetNearestPointOnLine(this Vector3 point, Vector3 originLine, Vector3 endLine)
+        {
+            return (point - originLine).GetNearestPointOnVector((endLine - originLine).normalized) + originLine;
+        }
+        
         public static T Clone<T>(T input) where T : class, new()
         {
             var output = new T();

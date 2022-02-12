@@ -6,42 +6,6 @@ namespace CucuTools.Clothes
 {
     public class CucuClothes : MonoBehaviour
     {
-        [Header("Simulation")]
-        public int depthSimulation = 8;
-
-        public bool fixUp = true;
-        public bool fixDown = false;
-        public bool fixLeft = false;
-        public bool fixRight = false;
-        
-        [Space]
-        [Range(0f, 1f)] public float fading = 0.01f;
-
-        [Space]
-        public bool useKinematic = true;
-        [Range(0f, 1f)] public float weightKinematic = 0.05f;
-
-        [Space]
-        public bool useGravity = true;
-        [Range(0f, 1f)] public float weightGravity = 1f;
-
-        [Space]
-        public bool useWind = true;
-        [Range(0f, 1f)] public float weightWind = 1f;
-        public WindZone windZone;
-
-        [Space]
-        public bool usePenetration = true;
-        [Range(0f, 1f)] public float weightPenetration = 1f;
-        [Range(0.001f, 0.1f)] public float radiusPenetration = 0.01f;
-
-        [Header("Surface")]
-        public bool useCrossing = true;
-        public SurfaceBehaviour surface = default;
-
-        [Header("Gizmos")]
-        public bool drawGizmos = true;
-
         private MeshFilter _meshFilter = default;
         private Mesh _mesh = default;
 
@@ -56,7 +20,68 @@ namespace CucuTools.Clothes
 
         private SphereCollider _penetrationCollider = default;
         private Collider[] _penetrationOverlaps = default;
+        
+        [Header("Simulation")]
+        public int depthSimulation = 8;
 
+        public bool fixUp = true;
+        public bool fixDown = false;
+        public bool fixLeft = false;
+        public bool fixRight = false;
+        
+        [Space]
+        [Range(0f, 1f)] public float fading = 0.01f;
+
+        [Space]
+        public bool useKinematic = true;
+        [Range(0f, 1f)] [SerializeField] private float weightKinematic = 0.05f;
+
+        [Space]
+        public bool useGravity = true;
+        [Range(0f, 1f)] [SerializeField] private float weightGravity = 1f;
+
+        [Space]
+        public bool useWind = true;
+        [Range(0f, 1f)] [SerializeField] private float weightWind = 1f;
+        [Range(0f , 1f)] public float smoothWind = 0.5f;
+        public WindZone windZone;
+
+        [Space]
+        public bool usePenetration = true;
+        [Range(0f, 1f)] [SerializeField] private float weightPenetration = 1f;
+        [Range(0.001f, 0.1f)] public float radiusPenetration = 0.01f;
+
+        [Header("Surface")]
+        public bool useCrossing = true;
+        public SurfaceBehaviour surface = default;
+
+        [Header("Gizmos")]
+        public bool drawGizmos = true;
+
+        public float WeightKinematic
+        {
+            get => weightKinematic;
+            set => weightKinematic = Mathf.Clamp01(value);
+        }
+
+        public float WeightGravity
+        {
+            get => weightGravity;
+            set => weightGravity = Mathf.Clamp01(value);
+        }
+
+        public float WeightWind
+        {
+            get => weightWind;
+            set => weightWind = Mathf.Clamp01(value);
+        }
+
+        public float WeightPenetration
+        {
+            get => weightPenetration;
+            set => weightPenetration = Mathf.Clamp01(value);
+        }
+        
         private int GetPointIndex(int i, int j)
         {
             return i * surface.gizmos.SizeV + j;
@@ -231,6 +256,10 @@ namespace CucuTools.Clothes
             _meshFilter.sharedMesh = _mesh;
         }
 
+        private float _lastWindMain = 0f;
+        private float _timerWindPulse = 0f;
+        private float _pulseMagnitudeTarget = 0f;
+        
         private void SimulatePoints()
         {
             if (depthSimulation > 0)
@@ -250,15 +279,32 @@ namespace CucuTools.Clothes
                 var wind = Vector3.zero;
                 if (windZone != null)
                 {
+                    var period = 1f / windZone.windPulseFrequency;
+                    
+                    var windMain = windZone.windMain;
+                    
+                    _timerWindPulse -= Time.fixedDeltaTime;
+                    if (_timerWindPulse <= 0f)
+                    {
+                        _pulseMagnitudeTarget = Random.value * windZone.windPulseMagnitude;
+                        _timerWindPulse = period;
+                    }
+                    var rad = 2 * Mathf.PI * _timerWindPulse / period;
+                    var pulseMagnitude = (Mathf.Sin(rad) + 1f) * 0.5f * _pulseMagnitudeTarget;
+                    windMain += pulseMagnitude;
+                    
+                    windMain = Mathf.Lerp(windMain, _lastWindMain, smoothWind);
+                    _lastWindMain = windMain;
+                    
                     if (windZone.mode == WindZoneMode.Directional)
                     {
-                        wind = windZone.transform.forward * (windZone.windMain * Time.fixedDeltaTime);
+                        wind = windZone.transform.forward * (windMain * Time.fixedDeltaTime);
                     }
                     else
                     {
                         var dir = transform.position - windZone.transform.position;
                         var pow = Mathf.Max(windZone.radius - dir.magnitude, 0f) / windZone.radius;
-                        if (pow > 0) wind = dir.normalized * (pow * windZone.windMain * Time.fixedDeltaTime);
+                        if (pow > 0) wind = dir.normalized * (pow * windMain * Time.fixedDeltaTime);
                     }
 
                     wind = transform.InverseTransformDirection(wind.normalized) * wind.magnitude;
@@ -311,7 +357,8 @@ namespace CucuTools.Clothes
                             for (var j = 0; j < count; j++)
                             {
                                 var overlap = _penetrationOverlaps[j];
-
+                                if (overlap.isTrigger) continue;
+                                
                                 var overlapPos = overlap.transform.position;
                                 var overlapRot = overlap.transform.rotation;
 

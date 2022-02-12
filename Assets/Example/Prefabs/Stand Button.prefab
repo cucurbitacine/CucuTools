@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5649473457976263058}
   - component: {fileID: 5649473457976263069}
   - component: {fileID: 5649473457976263068}
-  - component: {fileID: 5649473457976263071}
+  - component: {fileID: 62289884325311027}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -140,7 +140,7 @@ MonoBehaviour:
     onPressCancel:
       m_PersistentCalls:
         m_Calls: []
---- !u!114 &5649473457976263071
+--- !u!114 &62289884325311027
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,12 +149,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5649473457976263065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75929b5f31b4424ab61428ec0a6eb11c, type: 3}
+  m_Script: {fileID: 11500000, guid: f1eca968b7845d44aa9e94a75661f217, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IdleColor: {r: 1, g: 1, b: 1, a: 1}
-  HoverColor: {r: 1, g: 0, b: 0, a: 1}
-  PressColor: {r: 0, g: 1, b: 0, a: 1}
+  HoverColor: {r: 0.435, g: 0.972, b: 0.892, a: 1}
+  PressColor: {r: 0.973, g: 0.962, b: 0.31, a: 1}
+  IdleThickness: 0.02
+  HoverThickness: 0.06
+  PressThickness: 0.01
+  Interactable: {fileID: 0}
+  Renderers: []
 --- !u!1 &5649473458191151954
 GameObject:
   m_ObjectHideFlags: 0

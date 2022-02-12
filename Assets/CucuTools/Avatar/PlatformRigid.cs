@@ -17,6 +17,8 @@ namespace CucuTools.Avatar
         private Vector3 _cacheTargetOffsetParent;
         
         private Rigidbody _rigidbody;
+
+        [SerializeField] private bool paused;
         
         [Header("Info")]
         public float angle;
@@ -34,6 +36,12 @@ namespace CucuTools.Avatar
         
         public bool HaveParent => parent != null && parent != transform;
         [SerializeField] private Transform parent;
+
+        public bool Paused
+        {
+            get => paused;
+            set => paused = value;
+        }
 
         public Rigidbody Rigidbody => _rigidbody != null ? _rigidbody : (_rigidbody = GetComponent<Rigidbody>());
 
@@ -91,19 +99,26 @@ namespace CucuTools.Avatar
 
         public bool Smooth = false;
         public float SmoothDamp = 16f;
+
+        private float _timer;
         
         private void FixedUpdate()
         {
+            if (Paused) return;
+
+            var deltaTime = Time.fixedDeltaTime;
+            _timer += deltaTime;
+            
             if (rotationSpeed > 0)
             {
                 var axis = rotationAxis.normalized;
                 
-                angle += rotationSpeed * Time.deltaTime;
+                angle += rotationSpeed * deltaTime;
                 angle = Mathf.Repeat(angle, 360f);
                 _targetRotation = Quaternion.Euler(axis * angle);
 
                 var rot = _targetRotation;
-                if (Smooth) rot = Quaternion.Slerp(Rigidbody.transform.rotation, rot, SmoothDamp * Time.fixedDeltaTime);
+                if (Smooth) rot = Quaternion.Slerp(Rigidbody.transform.rotation, rot, SmoothDamp * deltaTime);
                 Rigidbody.MoveRotation(rot);
             }
 
@@ -113,13 +128,13 @@ namespace CucuTools.Avatar
                 var targetPoint = GetTargetPoint();
                 
                 var distance = Vector3.Distance(startPoint, targetPoint);
-                var t = Mathf.PingPong(Time.time * movementSpeed, distance) / distance;
+                var t = Mathf.PingPong(_timer * movementSpeed, distance) / distance;
                 t = Mathf.SmoothStep(0, 1, t);
                 position = Vector3.Lerp(startPoint, targetPoint, t);
                 _targetPosition = position;
 
                 var pos = _targetPosition;
-                if (Smooth) pos =  Vector3.Lerp(Rigidbody.transform.position, pos, SmoothDamp * Time.fixedDeltaTime);
+                if (Smooth) pos =  Vector3.Lerp(Rigidbody.transform.position, pos, SmoothDamp * deltaTime);
                 Rigidbody.MovePosition(pos);
             }
             else

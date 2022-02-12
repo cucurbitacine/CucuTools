@@ -25,7 +25,7 @@ namespace CucuTools.Interactables
         {
             if (IsGrabbed) return;
             
-            Interactable.Idle();
+            //Interactable.Idle();
             Interactable.IsEnabled = false;
             
             IsGrabbed = true;

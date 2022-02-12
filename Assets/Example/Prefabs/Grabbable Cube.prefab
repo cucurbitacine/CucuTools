@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5963112692284386732}
   - component: {fileID: 5963112692284386733}
   - component: {fileID: 5963112692284386734}
-  - component: {fileID: 5963112692284386720}
   - component: {fileID: 205757284599068729}
   - component: {fileID: 3681154781364578100}
+  - component: {fileID: 2857675498650269272}
   m_Layer: 0
   m_Name: Grabbable Cube
   m_TagString: Untagged
@@ -115,21 +115,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &5963112692284386720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5963112692284386721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75929b5f31b4424ab61428ec0a6eb11c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IdleColor: {r: 1, g: 1, b: 1, a: 1}
-  HoverColor: {r: 1, g: 0.9832626, b: 0, a: 1}
-  PressColor: {r: 0.6509804, g: 0.22745095, b: 0.22745095, a: 1}
 --- !u!114 &205757284599068729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,3 +170,23 @@ MonoBehaviour:
     onPressCancel:
       m_PersistentCalls:
         m_Calls: []
+--- !u!114 &2857675498650269272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5963112692284386721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1eca968b7845d44aa9e94a75661f217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IdleColor: {r: 0.435, g: 0.972, b: 0.892, a: 1}
+  HoverColor: {r: 0.435, g: 0.972, b: 0.463, a: 1}
+  PressColor: {r: 0.435, g: 0.972, b: 0.463, a: 1}
+  IdleThickness: 0.03
+  HoverThickness: 0.06
+  PressThickness: 0.005
+  Interactable: {fileID: 0}
+  Renderers: []
