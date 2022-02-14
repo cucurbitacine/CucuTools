@@ -28,7 +28,7 @@ namespace CucuTools.Avatar
 
         #region SerializeField
 
-        [SerializeField] private CucuBrain cucuBrain = default;
+        [SerializeField] private CucuBrain brain = default;
         [SerializeField] private Transform head = default;
         [SerializeField] private GroundInfo groundInfo = default;
         [SerializeField] private CharacterSetting characterSetting = default;
@@ -52,13 +52,13 @@ namespace CucuTools.Avatar
         
         #region Properties
 
-        public CucuBrain CucuBrain
+        public CucuBrain Brain
         {
-            get => cucuBrain != null ? cucuBrain : (cucuBrain = GetComponentInChildren<CucuBrain>());
-            set => cucuBrain = value;
+            get => brain != null ? brain : (brain = GetComponentInChildren<CucuBrain>());
+            set => brain = value;
         }
 
-        public InputInfo InputInfo => CucuBrain.InputInfo;
+        public InputInfo InputInfo => Brain.InputInfo;
 
         public GroundInfo GroundInfo
         {
@@ -170,11 +170,11 @@ namespace CucuTools.Avatar
 
                 if (head == null)
                 {
-                    if (CucuBrain != null)
+                    if (Brain != null)
                     {
-                        if (CucuBrain.transform.IsChildOf(Body.transform) && CucuBrain.transform != Body.transform)
+                        if (Brain.transform.IsChildOf(Body.transform) && Brain.transform != Body.transform)
                         {
-                            head = CucuBrain.transform;
+                            head = Brain.transform;
                         }
                     }
                 }
