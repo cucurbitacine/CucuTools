@@ -3,24 +3,24 @@ using UnityEngine;
 
 namespace Example.Scripts.DamageSystem
 {
-    public class DamageEffect : MonoBehaviour
+    public class DamageTypeEffect : MonoBehaviour
     {
         public DamageType State = DamageType.Physical;
         
         [Space]
         public HealthBehaviour Health = default;
         
-        public void ReceiveDamage(DamageCommand cmd)
+        public void ReceiveDamage(DamageEvent e)
         {
             if (State == DamageType.Physical)
             {
-                State = cmd.damage.type;
+                State = e.damage.type;
                 return;
             }
             
             if (State == DamageType.Fire)
             {
-                if (cmd.damage.type == DamageType.Water)
+                if (e.damage.type == DamageType.Water)
                 {
                     State = DamageType.Physical;
                     return;
@@ -32,20 +32,20 @@ namespace Example.Scripts.DamageSystem
             
             if (State == DamageType.Water)
             {
-                if (cmd.damage.type == DamageType.Fire)
+                if (e.damage.type == DamageType.Fire)
                 {
                     State = DamageType.Physical;
                     return;
                 }
                 
-                if (cmd.damage.type == DamageType.Lightning)
+                if (e.damage.type == DamageType.Lightning)
                 {
                     var dmg = new DamageInfo()
                     {
-                        amount = Mathf.CeilToInt( cmd.damage.amount * 0.5f),
+                        amount = Mathf.CeilToInt( e.damage.amount * 0.5f),
                         type = DamageType.Lightning,
                     };
-                    var actual = new DamageCommand(dmg, cmd);
+                    var actual = new DamageEvent(dmg, e);
                     Health.ApplyDamage(actual);
                     return;
                 }

@@ -9,9 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4805815890480866929}
-  - component: {fileID: 4805815890480866926}
   - component: {fileID: 4805815890480866927}
-  - component: {fileID: 4805815890480866928}
+  - component: {fileID: 2820229437263230324}
   m_Layer: 0
   m_Name: DamageSource
   m_TagString: Untagged
@@ -33,23 +32,6 @@ Transform:
   m_Father: {fileID: 4805815891734860775}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4805815890480866926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4805815890480866930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0bd4f8379c435bb533c740f3fb9f23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnabled: 1
-  DamageInfo:
-    amount: 5
-    type: 0
-    isCritical: 0
 --- !u!65 &4805815890480866927
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -58,12 +40,12 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4805815890480866930}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.075, z: 0.71526635}
-  m_Center: {x: 0, y: 0, z: 0.659599}
---- !u!114 &4805815890480866928
+  m_Size: {x: 0.2, y: 0.05, z: 0.7}
+  m_Center: {x: 0, y: 0, z: 0.65}
+--- !u!114 &2820229437263230324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,14 +54,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4805815890480866930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ce3ee52d40842128aa05fc0e13d354d, type: 3}
+  m_Script: {fileID: 11500000, guid: ddf12543f3b649fa8eef6ca72af75b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  computer: {fileID: 4805815890480866926}
-  Crit:
-    enabled: 1
-    chance: 0.1
-    crit: 1.5
+  isEnabled: 1
+  source: {fileID: 3486585875409239163}
 --- !u!1 &4805815890521260794
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +246,7 @@ BoxCollider:
   m_GameObject: {fileID: 4805815890539054297}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -362,7 +341,7 @@ BoxCollider:
   m_GameObject: {fileID: 4805815891115183519}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -474,6 +453,7 @@ GameObject:
   - component: {fileID: 4805815891734860772}
   - component: {fileID: 4805815891734860773}
   - component: {fileID: 4805815891734860774}
+  - component: {fileID: 3486585875409239163}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -498,6 +478,7 @@ Transform:
   - {fileID: 4805815890539054296}
   - {fileID: 4805815891115183518}
   - {fileID: 4805815890480866929}
+  - {fileID: 5597300250781231242}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -592,6 +573,23 @@ MonoBehaviour:
   PressThickness: 0.01
   Interactable: {fileID: 0}
   Renderers: []
+--- !u!114 &3486585875409239163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4805815891734860776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc0bd4f8379c435bb533c740f3fb9f23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 1
+  DamageInfo:
+    amount: 10
+    type: 0
+    isCritical: 0
 --- !u!1 &4805815892140362039
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,3 +685,51 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8771682019011732968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5597300250781231242}
+  - component: {fileID: 4516957243392449014}
+  m_Layer: 0
+  m_Name: Effects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5597300250781231242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8771682019011732968}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4805815891734860775}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4516957243392449014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8771682019011732968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ce3ee52d40842128aa05fc0e13d354d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effector: {fileID: 3486585875409239163}
+  Crit:
+    isEnabled: 1
+    chance: 0.1
+    crit: 1.5

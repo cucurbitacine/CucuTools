@@ -4,24 +4,24 @@ using UnityEngine;
 
 namespace Example.Scripts.DamageSystem.Filters
 {
-    public class ShieldBehaviour : DamageFilterBehaviour
+    public class ShieldBehaviour : DamageEffectBehaviour
     {
-        public ShieldProtection Shield;
+        public ShieldEffect Shield;
         
-        public override DamageFilter GetFilter()
+        public override IDamageEffect GetEffect()
         {
             return Shield;
         }
     }
     
     [Serializable]
-    public class ShieldProtection : DamageFilter
+    public class ShieldEffect : DamageEffect
     {
         [Min(0)]
         public int Amount = 1;
         public DamageType DamageType = DamageType.Physical;
 
-        public override DamageInfo Compute(DamageInfo damage)
+        public override DamageInfo Evaluate(DamageInfo damage)
         {
             if (DamageType == damage.type) damage.amount = Mathf.Max(0, damage.amount - Amount);
             return damage;

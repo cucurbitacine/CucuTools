@@ -12,7 +12,7 @@ namespace Example.Scripts.DamageSystem.Balloon
         
         public DamageReceiver Receiver = default;
         public HealthBehaviour Health = default;
-        public DamageEffect Effect = default;
+        public DamageTypeEffect Effect = default;
         public BalloonHealthViewer Viewer = default;
 
         private void Appear()

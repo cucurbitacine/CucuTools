@@ -5,18 +5,18 @@ using Random = UnityEngine.Random;
 
 namespace Example.Scripts.DamageSystem.Filters
 {
-    public class CritBehaviour : DamageFilterBehaviour
+    public class CriticalChanceBehaviour : DamageEffectBehaviour
     {
-        public CriticalChance Crit;
+        public CriticalChanceEffect Crit;
         
-        public override DamageFilter GetFilter()
+        public override IDamageEffect GetEffect()
         {
             return Crit;
         }
     }
     
     [Serializable]
-    public class CriticalChance : DamageFilter
+    public class CriticalChanceEffect : DamageEffect
     {
         [Range(0f, 1f)]
         public float chance = 0.1f;
@@ -24,7 +24,7 @@ namespace Example.Scripts.DamageSystem.Filters
         [Min(1f)]
         public float crit = 1.5f;
         
-        public override DamageInfo Compute(DamageInfo damage)
+        public override DamageInfo Evaluate(DamageInfo damage)
         {
             if (!damage.isCritical && Random.value < chance)
             {

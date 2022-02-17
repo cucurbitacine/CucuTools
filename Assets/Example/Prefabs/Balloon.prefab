@@ -82,13 +82,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Amount: 100
   Maximum: 100
-  Shield:
-    Amount: 1
-    DamageType: 0
-  OnDamageApplied:
+  OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
-  OnHealthChanged:
+  OnDamageApplied:
     m_PersistentCalls:
       m_Calls: []
   OnDied:
@@ -259,8 +256,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -276,7 +273,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f7bf7eaa4344e36a6104214d8efcd6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 0
+  isEnabled: 1
+  mode: 1
   hitMask:
     serializedVersion: 2
     m_Bits: 1

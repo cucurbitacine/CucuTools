@@ -12,24 +12,26 @@ namespace Example.Scripts.DamageSystem
 
         [Space]
         public UnityEvent<float> OnHealthChanged;
-        public UnityEvent<DamageCommand> OnDamageApplied;
+        public UnityEvent<DamageEvent> OnDamageApplied;
         public UnityEvent OnDied;
         
-        public void ReceiveDamage(DamageCommand cmd)
+        public void ReceiveDamage(DamageEvent e)
         {
             if (Amount > 0)
             {
-                ApplyDamage(cmd);
+                ApplyDamage(e);
             }
         }
 
-        public void ApplyDamage(DamageCommand cmd)
+        public void ApplyDamage(DamageEvent e)
         {
-            SetHealth(Amount - cmd.damage.amount);
+            if (e.damage.amount == 0) return;
             
-            OnDamageApplied.Invoke(cmd);
+            SetHealth(Amount - e.damage.amount);
             
-            DamageEventManager.WasApplied(cmd);
+            OnDamageApplied.Invoke(e);
+            
+            DamageEventManager.WasApplied(e);
             
             if (Amount == 0) OnDied.Invoke();
         }
