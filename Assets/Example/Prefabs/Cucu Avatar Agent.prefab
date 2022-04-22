@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7534247324044043323}
   m_RootOrder: 3
@@ -44,6 +45,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -109,35 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StringSource: {fileID: 11400000, guid: b97c94071550472429da67d1584c0c07, type: 2}
---- !u!114 &608306664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7534247322501282331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4efb95ae39940774d86796797a5e3350, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnabled: 1
-  inputInfo:
-    move: {x: 0, y: 0, z: 0}
-    view: {x: 0, y: 0}
-    sprint: 0
-    jump: 0
-    crouch: 0
-    sprintDown: 0
-    jumpDown: 0
-    crouchDown: 0
-  following: 0
-  view: {x: 0, y: 0}
-  target: {fileID: 0}
-  minDistance: 5
-  maxDistance: 25
-  colorBody: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
-  viewDamp: 4
 --- !u!1001 &4849284923450257730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -282,13 +255,42 @@ PrefabInstance:
     - {fileID: 3153391600523294066, guid: 6d86380b3e236ce45ac78096a70812e7, type: 3}
     - {fileID: 6866718385290457324, guid: 6d86380b3e236ce45ac78096a70812e7, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6d86380b3e236ce45ac78096a70812e7, type: 3}
---- !u!4 &7534247324044043323 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3153391600801797497, guid: 6d86380b3e236ce45ac78096a70812e7, type: 3}
-  m_PrefabInstance: {fileID: 4849284923450257730}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7534247322501282331 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3153391602341808985, guid: 6d86380b3e236ce45ac78096a70812e7, type: 3}
+  m_PrefabInstance: {fileID: 4849284923450257730}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &608306664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7534247322501282331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4efb95ae39940774d86796797a5e3350, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 1
+  inputInfo:
+    move: {x: 0, y: 0, z: 0}
+    view: {x: 0, y: 0}
+    sprint: 0
+    jump: 0
+    crouch: 0
+    sprintDown: 0
+    jumpDown: 0
+    crouchDown: 0
+  following: 0
+  view: {x: 0, y: 0}
+  target: {fileID: 0}
+  minDistance: 5
+  maxDistance: 25
+  colorBody: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
+  viewDamp: 4
+--- !u!4 &7534247324044043323 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3153391600801797497, guid: 6d86380b3e236ce45ac78096a70812e7, type: 3}
   m_PrefabInstance: {fileID: 4849284923450257730}
   m_PrefabAsset: {fileID: 0}

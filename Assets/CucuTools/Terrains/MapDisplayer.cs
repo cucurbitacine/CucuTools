@@ -14,7 +14,7 @@ namespace CucuTools.Terrains
 
             if (Texture == null) Texture = new Texture2D(resolution.x, resolution.y);
         
-            Texture.Resize(resolution.x, resolution.y);
+            Texture.Reinitialize(resolution.x, resolution.y);
             Texture.SetPixels(colors);
             Texture.filterMode = FilterMode.Point;
             Texture.wrapMode = TextureWrapMode.Clamp;
