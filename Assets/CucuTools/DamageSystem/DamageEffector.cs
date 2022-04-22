@@ -4,49 +4,50 @@ using UnityEngine;
 
 namespace CucuTools.DamageSystem
 {
+    /// <summary>
+    /// Behaviour which keep list of <see cref="IDamageEffect"/>
+    /// </summary>
     public abstract class DamageEffector : MonoBehaviour, IDamageEffect
     {
-        public abstract bool IsEnabled { get; set; }
+        private List<IDamageEffect> _effects { get; } = new List<IDamageEffect>();
 
-        private List<IDamageEffect> Effects { get; } = new List<IDamageEffect>();
-        
-        public void AddEffect(params IDamageEffect[] filters)
+        /// <summary>
+        /// All kept effects
+        /// </summary>
+        public IReadOnlyCollection<IDamageEffect> Effects => _effects;
+
+        public void AddEffect(params IDamageEffect[] effects)
         {
-            Effects.AddRange(filters.Where(m => !Effects.Contains(m)));
+            _effects.AddRange(effects.Where(e => !_effects.Contains(e)));
         }
         
-        public void RemoveEffect(params IDamageEffect[] filters)
+        public void RemoveEffect(params IDamageEffect[] effects)
         {
-            Effects.RemoveAll(filters.Contains);
+            _effects.RemoveAll(effects.Contains);
         }
 
-        public DamageInfo Evaluate(DamageInfo damage)
+        /// <inheritdoc />
+        public DamageInfo EvaluateDamage(DamageInfo damage)
         {
-            foreach (var modifier in Effects)
+            foreach (var effect in _effects)
             {
-                if (modifier.IsEnabled) damage = modifier.Evaluate(damage);
+                damage = effect.EvaluateDamage(damage);
             }
             
             return damage;
         }
     }
-    
-    public abstract class DamageEffect : IDamageEffect
-    {
-        [SerializeField] private bool isEnabled = true;
 
-        public bool IsEnabled
-        {
-            get => isEnabled;
-            set => isEnabled = value;
-        }
-
-        public abstract DamageInfo Evaluate(DamageInfo damage);
-    }
-    
+    /// <summary>
+    /// Some effect which able to evaluate damage
+    /// </summary>
     public interface IDamageEffect
     {
-        bool IsEnabled { get; set; }
-        DamageInfo Evaluate(DamageInfo damage);
+        /// <summary>
+        /// Evaluating damage
+        /// </summary>
+        /// <param name="damage">Input damage</param>
+        /// <returns>Output damage</returns>
+        DamageInfo EvaluateDamage(DamageInfo damage);
     }
 }

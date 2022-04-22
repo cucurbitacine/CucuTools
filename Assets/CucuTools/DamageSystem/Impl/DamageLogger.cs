@@ -2,24 +2,19 @@
 
 namespace CucuTools.DamageSystem.Impl
 {
+    /// <summary>
+    /// Damage logger which using <see cref="DamageEventNotificator"/>.
+    /// </summary>
+    [DisallowMultipleComponent]
     public sealed class DamageLogger : MonoBehaviour
     {
         private static DamageLogger Instance { get; set; }
         
         public bool isOn = true;
-        
-        [Space]
-        public bool onlyGenerated = false;
-        public bool onlyApplied = false;
 
-        public void OnGenerated(DamageEvent e)
+        public void OnDamageEvent(DamageEvent e)
         {
-            if (isOn && !onlyApplied) Log(GenerateMessage(e));
-        }
-
-        public void OnApplied(DamageEvent e)
-        {
-            if (isOn && !onlyGenerated) Log(ApplyMessage(e));
+            if (isOn) Log(DamageEventMessage(e));
         }
 
         public void Log(string msg)
@@ -32,20 +27,12 @@ namespace CucuTools.DamageSystem.Impl
             return $"{damage.amount} {damage.type}{(damage.isCritical ? " CRITICAL" : "")}";
         }
 
-        private string GenerateMessage(DamageEvent e)
+        private string DamageEventMessage(DamageEvent e)
         {
             if (e.source != null)
-                return $"[{e.source.name}] generated [{DamageMessage(e.damage)}] for [{e.receiver.name}]";
-            
-            return $"Generated [{DamageMessage(e.damage)}] for [{e.receiver.name}]";
-        }
+                return $"Receiver: {e.receiver.name} | Damage: {DamageMessage(e.damage)} | Source: {e.source.name}";
 
-        private string ApplyMessage(DamageEvent e)
-        {
-            if (e.source != null)
-                return $"[{e.receiver.name}] applied [{DamageMessage(e.damage)}] by [{e.source.name}]";
-            
-            return $"[{e.receiver.name}] applied [{DamageMessage(e.damage)}]";
+            return $"Receiver: {e.receiver.name} | Damage: {DamageMessage(e.damage)} | Source: NULL";
         }
 
         private void Awake()
@@ -63,14 +50,12 @@ namespace CucuTools.DamageSystem.Impl
 
         private void OnEnable()
         {
-            DamageEventManager.OnDamageGenerated += OnGenerated;
-            DamageEventManager.OnDamageApplied += OnApplied;
+            DamageEventNotificator.OnDamageEvent += OnDamageEvent;
         }
 
         private void OnDisable()
         {
-            DamageEventManager.OnDamageGenerated -= OnGenerated;
-            DamageEventManager.OnDamageApplied -= OnApplied;
+            DamageEventNotificator.OnDamageEvent -= OnDamageEvent;
         }
     }
 }

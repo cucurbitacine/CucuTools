@@ -2,6 +2,7 @@
 
 namespace CucuTools.DamageSystem.Impl
 {
+    /// <inheritdoc />
     [RequireComponent(typeof(Collider))]
     public class HitBox3D : HitBox
     {

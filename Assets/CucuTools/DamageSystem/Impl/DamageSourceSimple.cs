@@ -1,12 +1,12 @@
-﻿using CucuTools.DamageSystem;
-
-namespace Example.Scripts.DamageSystem
+﻿namespace CucuTools.DamageSystem.Impl
 {
+    /// <inheritdoc />
     public class DamageSourceSimple : DamageSource
     {
         public DamageInfo DamageInfo;
 
-        protected override DamageInfo GenerateClearDamage()
+        /// <inheritdoc />
+        public override DamageInfo GenerateDamage()
         {
             return DamageInfo;
         }

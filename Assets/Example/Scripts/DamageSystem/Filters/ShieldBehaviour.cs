@@ -15,13 +15,13 @@ namespace Example.Scripts.DamageSystem.Filters
     }
     
     [Serializable]
-    public class ShieldEffect : DamageEffect
+    public class ShieldEffect : IDamageEffect
     {
         [Min(0)]
         public int Amount = 1;
         public DamageType DamageType = DamageType.Physical;
 
-        public override DamageInfo Evaluate(DamageInfo damage)
+        public DamageInfo EvaluateDamage(DamageInfo damage)
         {
             if (DamageType == damage.type) damage.amount = Mathf.Max(0, damage.amount - Amount);
             return damage;

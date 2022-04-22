@@ -2,11 +2,25 @@
 
 namespace CucuTools.DamageSystem
 {
+    /// <summary>
+    /// Information about damage event
+    /// </summary>
     [Serializable]
     public struct DamageEvent
     {
+        /// <summary>
+        /// Damage which will be applied to receiver
+        /// </summary>
         public DamageInfo damage;
+
+        /// <summary>
+        /// Receiver of damage
+        /// </summary>
         public DamageReceiver receiver;
+
+        /// <summary>
+        /// Source of damage
+        /// </summary>
         public DamageSource source;
 
         public DamageEvent(DamageInfo damage, DamageEvent e) : this(damage, e.receiver, e.source)
@@ -23,23 +37,5 @@ namespace CucuTools.DamageSystem
             this.receiver = receiver;
             this.source = source;
         }
-    }
-
-    [Serializable]
-    public struct DamageInfo
-    {
-        public int amount;
-        public DamageType type;
-        public bool isCritical;
-    }
-
-    public enum DamageType
-    {
-        Physical,
-        Fire,
-        Water,
-        Earth,
-        Air,
-        Lightning,
     }
 }

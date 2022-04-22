@@ -16,7 +16,7 @@ namespace Example.Scripts.DamageSystem.Filters
     }
     
     [Serializable]
-    public class CriticalChanceEffect : DamageEffect
+    public class CriticalChanceEffect : IDamageEffect
     {
         [Range(0f, 1f)]
         public float chance = 0.1f;
@@ -24,7 +24,7 @@ namespace Example.Scripts.DamageSystem.Filters
         [Min(1f)]
         public float crit = 1.5f;
         
-        public override DamageInfo Evaluate(DamageInfo damage)
+        public DamageInfo EvaluateDamage(DamageInfo damage)
         {
             if (!damage.isCritical && Random.value < chance)
             {

@@ -17,21 +17,15 @@ namespace Example.Scripts.DamageSystem
         
         public void ReceiveDamage(DamageEvent e)
         {
-            if (Amount > 0)
-            {
-                ApplyDamage(e);
-            }
-        }
+            if (Amount <= 0) return;
 
-        public void ApplyDamage(DamageEvent e)
-        {
             if (e.damage.amount == 0) return;
             
             SetHealth(Amount - e.damage.amount);
             
             OnDamageApplied.Invoke(e);
             
-            DamageEventManager.WasApplied(e);
+            DamageEventNotificator.Notify(e);
             
             if (Amount == 0) OnDied.Invoke();
         }

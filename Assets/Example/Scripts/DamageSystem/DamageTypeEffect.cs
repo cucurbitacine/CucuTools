@@ -46,7 +46,7 @@ namespace Example.Scripts.DamageSystem
                         type = DamageType.Lightning,
                     };
                     var actual = new DamageEvent(dmg, e);
-                    Health.ApplyDamage(actual);
+                    Health.ReceiveDamage(actual);
                     return;
                 }
                 
