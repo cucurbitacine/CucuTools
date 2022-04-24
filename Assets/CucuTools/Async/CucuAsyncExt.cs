@@ -6,18 +6,18 @@ using UnityEngine.Events;
 
 namespace CucuTools.Async
 {
+    /// <summary>
+    /// Representing some objects to Tasks
+    /// </summary>
     public static class CucuAsyncExt
     {
-        public static async Task<TaskResult> WithTimeOut(this Task task, int milliseconds)
-        {
-            return new TaskResult(task, await Task.WhenAny(task, Task.Delay(milliseconds)) != task);
-        }
-
-        public static async Task<TaskResult<T>> WithTimeOut<T>(this Task<T> task, int milliseconds)
-        {
-            return new TaskResult<T>(task, await Task.WhenAny(task, Task.Delay(milliseconds)) != task);
-        }
-        
+        /// <summary>
+        /// Start enumerator as coroutine and return as task.
+        /// <paramref name="root"/> create coroutine
+        /// </summary>
+        /// <param name="enumerator"></param>
+        /// <param name="root"></param>
+        /// <returns>Task</returns>
         public static async Task ToTask(this IEnumerator enumerator, MonoBehaviour root)
         {
             var taskSource = new TaskCompletionSource<object>();
@@ -26,7 +26,15 @@ namespace CucuTools.Async
 
             await taskSource.Task;
         }
-    
+
+        /// <summary>
+        /// Start enumerator<T> as coroutine and return as task<T>.
+        /// <paramref name="root"/> create coroutine
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerator"></param>
+        /// <param name="root"></param>
+        /// <returns>Task</returns>
         public static async Task<T> ToTask<T>(this IEnumerator<T> enumerator, MonoBehaviour root)
         {
             var taskSource = new TaskCompletionSource<T>();
@@ -35,17 +43,33 @@ namespace CucuTools.Async
 
             return await taskSource.Task;
         }
-    
+
+        /// <summary>
+        /// Start enumerator as coroutine and return as task
+        /// </summary>
+        /// <param name="enumerator"></param>
+        /// <returns>Task</returns>
         public static async Task ToTask(this IEnumerator enumerator)
         {
-            await enumerator.ToTask(CucuCoroutine.Root);
-        }
-    
-        public static async Task<T> ToTask<T>(this IEnumerator<T> enumerator)
-        {
-            return await enumerator.ToTask(CucuCoroutine.Root);
+            await enumerator.ToTask(CucuCoroutine.Instance);
         }
 
+        /// <summary>
+        /// Start enumerator<T> as coroutine and return as task<T>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerator"></param>
+        /// <returns></returns>
+        public static async Task<T> ToTask<T>(this IEnumerator<T> enumerator)
+        {
+            return await enumerator.ToTask(CucuCoroutine.Instance);
+        }
+
+        /// <summary>
+        /// Convert coroutine to task
+        /// </summary>
+        /// <param name="coroutine"></param>
+        /// <returns></returns>
         public static async Task ToTask(this Coroutine coroutine)
         {
             var taskSource = new TaskCompletionSource<object>();
@@ -54,15 +78,26 @@ namespace CucuTools.Async
 
             await taskSource.Task;
         }
-        
+
+        /// <summary>
+        /// Convert unity event to task
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="unityEvent"></param>
+        /// <returns></returns>
         public static async Task<T> ToTask<T>(this UnityEvent<T> unityEvent)
         {
-            return await new EventTask<T>().AssignTo(unityEvent).Task;
+            return await new UnityEventTask<T>(unityEvent).Task;
         }
-    
+
+        /// <summary>
+        /// Convert unity event to task
+        /// </summary>
+        /// <param name="unityEvent"></param>
+        /// <returns></returns>
         public static async Task ToTask(this UnityEvent unityEvent)
         {
-            await new EventTask().AssignTo(unityEvent).Task;
+            await new UnityEventTask(unityEvent).Task;
         }
 
         private static IEnumerator Coroutine<T>(TaskCompletionSource<T> tcs, IEnumerator enumerator)
@@ -84,51 +119,60 @@ namespace CucuTools.Async
         }
     }
 
-    public class EventTask<T>
+    /// <summary>
+    /// Task<T> which waiting UnityEvent<T>
+    /// </summary>
+    /// <typeparam name="T">Result type</typeparam>
+    public class UnityEventTask<T>
     {
-        private readonly TaskCompletionSource<T> tcs;
-        private UnityEvent<T> unityEvent;
+        public TaskCompletionSource<T> TaskCompletionSource { get; private set; }
+        public UnityEvent<T> UnityEvent { get; private set; }
+        public Task<T> Task => TaskCompletionSource.Task;
 
-        public EventTask()
+        public UnityEventTask(UnityEvent<T> unityEvent)
         {
-            tcs = new TaskCompletionSource<T>();
+            TaskCompletionSource = new TaskCompletionSource<T>();
+
+            UnityEvent = unityEvent;
+            UnityEvent.AddListener(SetResult);
         }
-        
-        public TaskCompletionSource<T> AssignTo(UnityEvent<T> unityEvent)
-        {
-            this.unityEvent = unityEvent;
-            this.unityEvent.AddListener(SetResult);
-            return tcs;
-        }
+
+        public static explicit operator Task<T>(UnityEventTask<T> et) => et.TaskCompletionSource.Task;
+        public static explicit operator TaskCompletionSource<T>(UnityEventTask<T> et) => et.TaskCompletionSource;
 
         private void SetResult(T t)
         {
-            this.unityEvent.RemoveListener(SetResult);
-            tcs.TrySetResult(t);
+            UnityEvent.RemoveListener(SetResult);
+
+            TaskCompletionSource.TrySetResult(default);
         }
     }
-    
-    public class EventTask
-    {
-        private readonly TaskCompletionSource<object> tcs;
-        private UnityEvent unityEvent;
 
-        public EventTask()
+    /// <summary>
+    /// Task which waiting UnityEvent
+    /// </summary>
+    public class UnityEventTask
+    {
+        public TaskCompletionSource<object> TaskCompletionSource { get; private set; }     
+        public UnityEvent UnityEvent { get; private set; }
+        public Task Task => TaskCompletionSource.Task;
+
+        public UnityEventTask(UnityEvent unityEvent)
         {
-            tcs = new TaskCompletionSource<object>();
+            TaskCompletionSource = new TaskCompletionSource<object>();
+
+            UnityEvent = unityEvent;
+            UnityEvent.AddListener(SetResult);
         }
-        
-        public TaskCompletionSource<object> AssignTo(UnityEvent unityEvent)
-        {
-            this.unityEvent = unityEvent;
-            this.unityEvent.AddListener(SetResult);
-            return tcs;
-        }
+
+        public static explicit operator Task(UnityEventTask et) => et.TaskCompletionSource.Task;
+        public static explicit operator TaskCompletionSource<object>(UnityEventTask et) => et.TaskCompletionSource;
 
         private void SetResult()
         {
-            this.unityEvent.RemoveListener(SetResult);
-            tcs.TrySetResult(default);
+            UnityEvent.RemoveListener(SetResult);
+
+            TaskCompletionSource.TrySetResult(default);
         }
     }
 }

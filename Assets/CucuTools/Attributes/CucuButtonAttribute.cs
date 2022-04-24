@@ -2,6 +2,9 @@ using System;
 
 namespace CucuTools.Attributes
 {
+    /// <summary>
+    /// Create for current method Button in Inspector if using inside <see cref="CucuBehaviour"/>
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class CucuButtonAttribute : Attribute
     {

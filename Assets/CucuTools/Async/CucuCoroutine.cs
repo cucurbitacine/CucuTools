@@ -1,57 +1,68 @@
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Linq;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace CucuTools.Async
 {
-    public static class CucuCoroutine
+    /// <summary>
+    /// Tool for start/stop coroutines outside MonoBehaviour
+    /// </summary>
+    public class CucuCoroutine : MonoBehaviour
     {
-        public static MonoBehaviour Root
+        /// <summary>
+        /// Static MonoBehaviour for start/stop coroutines
+        /// </summary>
+        public static MonoBehaviour Instance
         {
             get
             {
-                if (root != null) return root;
+                if (_instance != null) return _instance;
                 
-                var roots = Object.FindObjectsOfType<CucuCoroutineRoot>();
-                root = roots.FirstOrDefault();
-                for (int i = 0; i < roots.Length; i++)
+                var instances = Object.FindObjectsOfType<CucuCoroutine>();
+                _instance = instances.FirstOrDefault();
+                for (int i = 0; i < instances.Length; i++)
                 {
-                    if (roots[i] == root) continue;
-                    Destroy(roots[i]);
-                    Destroy(roots[i].gameObject);
+                    if (instances[i] == _instance) continue;
+                    Destroy(instances[i]);
+                    Destroy(instances[i].gameObject);
                 }
 
-                if (root != null)
+                if (_instance != null)
                 {
-                    DontDestroyOnLoad(root.gameObject);
-                    return root;
+                    DontDestroyOnLoad(_instance.gameObject);
+                    return _instance;
                 }
                 
-                root = new GameObject(nameof(CucuCoroutineRoot)).AddComponent<CucuCoroutineRoot>();
-                DontDestroyOnLoad(root.gameObject);
+                _instance = new GameObject(nameof(CucuCoroutine)).AddComponent<CucuCoroutine>();
+                DontDestroyOnLoad(_instance.gameObject);
                 
-                return root;
+                return _instance;
             }
         }
 
-        private static CucuCoroutineRoot root;
+        private static CucuCoroutine _instance;
+
+        #region Public API
 
         public static Coroutine Start(IEnumerator routine)
         {
-            return Root.StartCoroutine(routine);
+            return Instance.StartCoroutine(routine);
         }
 
         public static void Stop(Coroutine coroutine)
         {
-            Root.StopCoroutine(coroutine);
+            Instance.StopCoroutine(coroutine);
         }
 
         public static void StopAll()
         {
-            Root.StopAllCoroutines();
+            Instance.StopAllCoroutines();
         }
+
+        #endregion
+
+        #region Private API
 
         private static void Destroy(GameObject gameObject)
         {
@@ -69,6 +80,8 @@ namespace CucuTools.Async
         {
             gameObject.transform.SetParent(null);
             if (Application.isPlaying) Object.DontDestroyOnLoad(gameObject);
-        } 
+        }
+
+        #endregion
     }
 }
