@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,7 +17,7 @@ namespace CucuTools.Async
         /// <param name="enumerator"></param>
         /// <param name="root"></param>
         /// <returns>Task</returns>
-        public static async Task ToTask(this IEnumerator enumerator, MonoBehaviour root)
+        public static async Task AsTask(this IEnumerator enumerator, MonoBehaviour root)
         {
             var taskSource = new TaskCompletionSource<object>();
 
@@ -28,41 +27,13 @@ namespace CucuTools.Async
         }
 
         /// <summary>
-        /// Start enumerator<T> as coroutine and return as task<T>.
-        /// <paramref name="root"/> create coroutine
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerator"></param>
-        /// <param name="root"></param>
-        /// <returns>Task</returns>
-        public static async Task<T> ToTask<T>(this IEnumerator<T> enumerator, MonoBehaviour root)
-        {
-            var taskSource = new TaskCompletionSource<T>();
-
-            root.StartCoroutine(Coroutine(taskSource, enumerator));
-
-            return await taskSource.Task;
-        }
-
-        /// <summary>
         /// Start enumerator as coroutine and return as task
         /// </summary>
         /// <param name="enumerator"></param>
         /// <returns>Task</returns>
-        public static async Task ToTask(this IEnumerator enumerator)
+        public static async Task AsTask(this IEnumerator enumerator)
         {
-            await enumerator.ToTask(CucuCoroutine.Instance);
-        }
-
-        /// <summary>
-        /// Start enumerator<T> as coroutine and return as task<T>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerator"></param>
-        /// <returns></returns>
-        public static async Task<T> ToTask<T>(this IEnumerator<T> enumerator)
-        {
-            return await enumerator.ToTask(CucuCoroutine.Instance);
+            await enumerator.AsTask(CucuCoroutine.Instance);
         }
 
         /// <summary>
@@ -70,7 +41,7 @@ namespace CucuTools.Async
         /// </summary>
         /// <param name="coroutine"></param>
         /// <returns></returns>
-        public static async Task ToTask(this Coroutine coroutine)
+        public static async Task AsTask(this Coroutine coroutine)
         {
             var taskSource = new TaskCompletionSource<object>();
 
@@ -85,7 +56,7 @@ namespace CucuTools.Async
         /// <typeparam name="T"></typeparam>
         /// <param name="unityEvent"></param>
         /// <returns></returns>
-        public static async Task<T> ToTask<T>(this UnityEvent<T> unityEvent)
+        public static async Task<T> AsTask<T>(this UnityEvent<T> unityEvent)
         {
             return await new UnityEventTask<T>(unityEvent).Task;
         }
@@ -95,7 +66,7 @@ namespace CucuTools.Async
         /// </summary>
         /// <param name="unityEvent"></param>
         /// <returns></returns>
-        public static async Task ToTask(this UnityEvent unityEvent)
+        public static async Task AsTask(this UnityEvent unityEvent)
         {
             await new UnityEventTask(unityEvent).Task;
         }
@@ -104,12 +75,6 @@ namespace CucuTools.Async
         {
             while (enumerator.MoveNext()) yield return enumerator.Current;
             tcs.TrySetResult(default);
-        }
-    
-        private static IEnumerator Coroutine<T>(TaskCompletionSource<T> tcs, IEnumerator<T> enumerator)
-        {
-            while (enumerator.MoveNext()) yield return enumerator.Current;
-            tcs.TrySetResult(enumerator.Current);
         }
         
         private static IEnumerator Coroutine<T>(TaskCompletionSource<T> tcs, Coroutine coroutine)
@@ -144,7 +109,7 @@ namespace CucuTools.Async
         {
             UnityEvent.RemoveListener(SetResult);
 
-            TaskCompletionSource.TrySetResult(default);
+            TaskCompletionSource.TrySetResult(t);
         }
     }
 

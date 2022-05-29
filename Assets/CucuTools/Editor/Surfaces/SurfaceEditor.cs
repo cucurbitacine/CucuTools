@@ -598,8 +598,8 @@ namespace CucuTools.Editor.Surfaces
         {
             GUILayout.Label(BlendContent.image, GUILayout.Width(64), GUILayout.Height(64));
             
-            var value = $"{blend.Blend:F2}";
-            blend.Blend = EditorGUILayout.Slider(value, blend.Blend, 0f, 1f);
+            var value = $"{blend.LerpValue:F2}";
+            blend.LerpValue = EditorGUILayout.Slider(value, blend.LerpValue, 0f, 1f);
 
             blend.SurfaceA = (SurfaceBehaviour)EditorGUILayout.ObjectField(blend.SurfaceA, typeof(SurfaceBehaviour), true);
             blend.SurfaceB = (SurfaceBehaviour)EditorGUILayout.ObjectField(blend.SurfaceB, typeof(SurfaceBehaviour), true);

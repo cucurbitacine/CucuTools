@@ -1,5 +1,4 @@
 using System;
-using CucuTools.Blend;
 using UnityEngine;
 
 namespace CucuTools.Surfaces
@@ -8,7 +7,7 @@ namespace CucuTools.Surfaces
     /// Blend Surface
     /// </summary>
     [AddComponentMenu(Cucu.AddComponent + Cucu.SurfaceGroup + ObjectName, 1)]
-    public class BlendSurface : SurfaceBehaviour<BlendSurfaceEntity>, ICucuBlendable
+    public class BlendSurface : SurfaceBehaviour<BlendSurfaceEntity>
     {
         public const string ObjectName = "Blend Surface";
         
@@ -31,10 +30,10 @@ namespace CucuTools.Surfaces
         #region ICucuBlendable
 
         /// <inheritdoc />
-        public float Blend
+        public float LerpValue
         {
-            get => Entity.Blend;
-            set => Entity.Blend = value;
+            get => Entity.LerpValue;
+            set => Entity.LerpValue = value;
         }
 
         #endregion
@@ -74,7 +73,7 @@ namespace CucuTools.Surfaces
     }
 
     [Serializable]
-    public class BlendSurfaceEntity : SurfaceEntity, ICucuBlendable
+    public class BlendSurfaceEntity : SurfaceEntity
     {
         [Range(0f, 1f)]
         [SerializeField] private float blend;
@@ -82,7 +81,7 @@ namespace CucuTools.Surfaces
         [SerializeField] private SurfaceBehaviour surfaceB;
 
         /// <inheritdoc />
-        public float Blend
+        public float LerpValue
         {
             get => blend;
             set => blend = Mathf.Clamp01(value);
@@ -104,14 +103,14 @@ namespace CucuTools.Surfaces
         {
             if (SurfaceA == null || SurfaceB == null) return Vector3.zero;
 
-            return SurfaceBehaviour.LerpPoint(SurfaceA, SurfaceB, uv, Blend);
+            return SurfaceBehaviour.LerpPoint(SurfaceA, SurfaceB, uv, LerpValue);
         }
 
         public override Vector3 GetNormal(Vector2 uv)
         {
             if (SurfaceA == null || SurfaceB == null) return Vector3.zero;
             
-            return SurfaceBehaviour.LerpNormal(SurfaceA, SurfaceB, uv, Blend);
+            return SurfaceBehaviour.LerpNormal(SurfaceA, SurfaceB, uv, LerpValue);
         }
     }
 }
