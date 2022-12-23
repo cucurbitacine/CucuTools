@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CucuTools.Workflows;
 using UnityEngine;
 
 namespace CucuTools
@@ -39,8 +38,7 @@ namespace CucuTools
         /// </summary>
         public const string Tools = "Tools/" + CreateAsset;
         
-        public const string BlendGroup = "Blend/";
-        public const string WorkflowGroup = "Workflow/";
+        public const string StateMachineGroup = "State Machine/";
         public const string InteractableGroup = "Interactable/";
         public const string SurfaceGroup = "Surfaces/";
         public const string Serialization = "Serialization/";

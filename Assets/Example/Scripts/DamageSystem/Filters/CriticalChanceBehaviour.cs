@@ -26,10 +26,11 @@ namespace Example.Scripts.DamageSystem.Filters
         
         public DamageInfo EvaluateDamage(DamageInfo damage)
         {
-            if (!damage.isCritical && Random.value < chance)
+            if (!damage.crit.isOn && Random.value < chance)
             {
-                damage.isCritical = true;
-                damage.amount = Mathf.CeilToInt(damage.amount * crit);
+                damage.crit.isOn = true;
+                damage.crit.amount = Mathf.CeilToInt(damage.amount * (crit - 1));
+                damage.amount += damage.crit.amount;
             }
             
             return damage;
