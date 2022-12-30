@@ -6,20 +6,20 @@ namespace CucuTools.Serialization
     /// <summary>
     /// Serializable Component Entity
     /// </summary>
-    [RequireComponent(typeof(SerializableGameObject))]
     public abstract class SerializableComponent : CucuBehaviour
     {
+        private Serializator _serializator = null;
+        
         [SerializeField] private bool isEnabled = true;
-        [SerializeField] private GameObject gameObjectRef;
         [SerializeField] private Component componentRef;
-
+        
         #region Public API
 
         /// <summary>
         /// Serialization Core
         /// </summary>
-        public virtual Serializator Serializator { get; set; } = Serializator.Current;
-        
+        public virtual Serializator Serializator => _serializator ??= SerializationSettings.Instance.Serializator;
+
         /// <summary>
         /// Do Serialization or not
         /// </summary>
@@ -33,19 +33,11 @@ namespace CucuTools.Serialization
         /// Is Valid component
         /// </summary>
         public bool IsValid => ComponentRef != null;
-        
+
         /// <summary>
         /// Reference to gameObject with component
         /// </summary>
-        public GameObject GameObjectRef
-        {
-            get => gameObjectRef != null ? gameObjectRef : (gameObjectRef = gameObject);
-            set
-            {
-                gameObjectRef = value;
-                componentRef = GameObjectRef.GetComponent(ComponentType);
-            }
-        }
+        public GameObject GameObjectRef => gameObject;
 
         /// <summary>
         /// Referenc to component
@@ -101,7 +93,7 @@ namespace CucuTools.Serialization
         /// <inheritdoc />
         public sealed override void DeserializeComponent(SerializedComponent serializedComponent)
         {
-            Deserialize(serializedComponent.Bytes);
+            Deserialize(serializedComponent.bytes);
         }
 
         #endregion

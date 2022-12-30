@@ -1,83 +1,64 @@
 using System;
-using UnityEngine;
 
 namespace CucuTools.Serialization
 {
     [Serializable]
     public class SerializedScene
     {
-        public string SceneName
+        public string sceneName = string.Empty;
+        public SerializedGameObject[] gameObjects = null;
+
+        public SerializedScene()
         {
-            get => _sceneName;
-            set => _sceneName = value;
         }
-        
-        public SerializedGameObject[] GameObjects
-        {
-            get => _gameObjects;
-            set => _gameObjects = value;
-        }
-        
-        [SerializeField] private string _sceneName;
-        [SerializeField] private SerializedGameObject[] _gameObjects;
 
         public SerializedScene(string sceneName, params SerializedGameObject[] gameObjects)
         {
-            SceneName = sceneName;
-            GameObjects = gameObjects;
+            this.sceneName = sceneName;
+            this.gameObjects = gameObjects;
         }
     }
-    
+
     [Serializable]
     public class SerializedGameObject
     {
-        public Guid Guid
+        public string id = string.Empty;
+        public SerializedComponent[] components = null;
+
+        public Guid guid
         {
-            get => Guid.TryParse(_guid, out var guid) ? guid : Guid.Empty;
-            set => _guid = value.ToString();
+            get => Guid.TryParse(id, out var g) ? g : Guid.Empty;
+            set => id = value.ToString();
         }
-        
-        public SerializedComponent[] Components
+
+        public SerializedGameObject()
         {
-            get => _components;
-            set => _components = value;
         }
-        
-        [SerializeField] private string _guid;
-        [SerializeField] private SerializedComponent[] _components;
 
         public SerializedGameObject(Guid guid, params SerializedComponent[] components)
         {
-            Guid = guid;
-            Components = components;
+            this.guid = guid;
+            this.components = components;
         }
     }
-    
-    
+
+
     [Serializable]
     public class SerializedComponent
     {
-        public string TypeName 
+        public string typeName = string.Empty;
+        public byte[] bytes = null;
+
+        public SerializedComponent()
         {
-            get => _typeName;
-            set => _typeName = value;
         }
-        
-        public byte[] Bytes
-        {
-            get => _bytes;
-            set => _bytes = value;
-        }
-        
-        [SerializeField] private string _typeName;
-        [SerializeField] private byte[] _bytes;
 
         public SerializedComponent(string typeName, byte[] bytes)
         {
-            TypeName = typeName;
-            Bytes = bytes;
+            this.typeName = typeName;
+            this.bytes = bytes;
         }
-        
+
         public SerializedComponent(Type type, byte[] bytes) : this(type.FullName, bytes)
         {
         }

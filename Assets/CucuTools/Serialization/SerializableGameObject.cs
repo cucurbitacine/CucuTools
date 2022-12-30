@@ -10,8 +10,6 @@ namespace CucuTools.Serialization
     [DisallowMultipleComponent]
     public sealed class SerializableGameObject : MonoBehaviour
     {
-        [SerializeField] private GameObject gameObjectRef;
-        
         private CucuIdentity _cuid;
 
         public bool IsValid() => Cuid != null;
@@ -29,17 +27,7 @@ namespace CucuTools.Serialization
         /// <summary>
         /// Reference to GameObject
         /// </summary>
-        public GameObject GameObjectRef
-        {
-            get => gameObjectRef != null ? gameObjectRef : (gameObjectRef = gameObject);
-            set
-            {
-                gameObjectRef = value;
-                _cuid = GameObjectRef?.GetComponent<CucuIdentity>();
-
-                UpdateComponents();
-            }
-        }
+        public GameObject GameObjectRef => gameObject;
         
         /// <summary>
         /// Update List of Components
@@ -49,8 +37,6 @@ namespace CucuTools.Serialization
             SerializableComponents.Clear();
             
             SerializableComponents.AddRange(GetComponents<SerializableComponent>());
-
-            SerializableComponents.ForEach(sc => sc.GameObjectRef = GameObjectRef);
         }
         
         /// <summary>
@@ -70,7 +56,7 @@ namespace CucuTools.Serialization
         /// <param name="serializedGameObject"></param>
         public void Deserialize(SerializedGameObject serializedGameObject)
         {
-            var serializedComponents = serializedGameObject.Components.ToDictionary(c => c.TypeName, c => c);
+            var serializedComponents = serializedGameObject.components.ToDictionary(c => c.typeName, c => c);
 
             foreach (var serializableComponent in SerializableComponents)
             {

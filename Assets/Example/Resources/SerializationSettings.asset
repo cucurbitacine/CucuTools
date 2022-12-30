@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2899915b743c4877b3cc9f29fcab0e1b, type: 3}
+  m_Name: SerializationSettings
+  m_EditorClassIdentifier: 
+  serializator: {fileID: 11400000, guid: dc674ae7005b8f243933c97fb7d22289, type: 2}

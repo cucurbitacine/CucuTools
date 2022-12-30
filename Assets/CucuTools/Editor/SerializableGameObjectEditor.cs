@@ -37,15 +37,7 @@ namespace CucuTools.Editor
         private void ShowTarget(SerializableGameObject entity)
         {
             GUILayout.BeginVertical();
-            
-            GUILayout.BeginHorizontal();
-            
-            GUILayout.FlexibleSpace();
-            GUILayout.Box("Reference: ");
-            entity.GameObjectRef = (GameObject)EditorGUILayout.ObjectField(entity.GameObjectRef, typeof(GameObject), true);
-            
-            GUILayout.EndHorizontal();
-            
+
             GUILayout.BeginHorizontal();
             
             GUILayout.FlexibleSpace();
@@ -87,17 +79,17 @@ namespace CucuTools.Editor
             if (target == null) return;
             
             var cuid = CucuIdentity.GetOrAdd(target);
-            var go = new GameObject($"Serializable <{target.name}>").AddComponent<SerializableGameObject>();
-            go.GameObjectRef = target;
-
-            go.gameObject.AddComponent<SerializableTransform>().GameObjectRef = go.GameObjectRef;
-
-            if (target.GetComponent<Rigidbody>() != null)
-                go.gameObject.AddComponent<SerializableRigidbody>().GameObjectRef = go.GameObjectRef;
             
-            Undo.RegisterCreatedObjectUndo(go.gameObject, "Create " + go.name);
+            if (target.GetComponent<SerializableGameObject>() == null)
+                target.AddComponent<SerializableGameObject>();
 
-            Selection.activeObject = go;
+            if (target.GetComponent<SerializableTransform>() == null)
+                target.AddComponent<SerializableTransform>();
+
+            if (target.GetComponent<Rigidbody>() != null && target.GetComponent<SerializableRigidbody>() == null)
+                target.AddComponent<SerializableRigidbody>();
+            
+            Selection.activeObject = target;
         }
         
         [MenuItem(MenuItem, true)]
