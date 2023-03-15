@@ -1,10 +1,10 @@
 using System.Linq;
 using CucuTools.Attributes;
 using CucuTools.Scenes;
-using Newtonsoft.Json;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
-namespace CucuTools.Serialization
+namespace CucuTools.Serialization.Impl
 {
     public class SerializationSceneController : CucuBehaviour
     {

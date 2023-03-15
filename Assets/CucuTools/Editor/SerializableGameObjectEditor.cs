@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using CucuTools.Serialization;
-using CucuTools.Serialization.Impl;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CucuTools.Editor
 {
@@ -31,7 +26,7 @@ namespace CucuTools.Editor
             
             GUILayout.Space(8);
             
-            if (showedList) ShowComponents(serializable.SerializableComponents.ToArray());
+            if (showedList) ShowComponents(serializable.References.ToArray());
         }
 
         private void ShowTarget(SerializableGameObject entity)
@@ -48,7 +43,7 @@ namespace CucuTools.Editor
             GUILayout.EndVertical();
         }
         
-        private void ShowComponents(params SerializableComponent[] components)
+        private void ShowComponents(params ComponentReference[] components)
         {
             scrollView = GUILayout.BeginScrollView(scrollView);
             
@@ -58,12 +53,12 @@ namespace CucuTools.Editor
             GUILayout.EndScrollView();
         }
 
-        private void ShowComponent(SerializableComponent component)
+        private void ShowComponent(ComponentReference component)
         {
             GUILayout.BeginHorizontal();
 
             component.IsEnabled = GUILayout.Toggle(component.IsEnabled, component.ComponentType.Name);
-            EditorGUILayout.ObjectField(component.ComponentRef, component.ComponentType, true);
+            EditorGUILayout.ObjectField(component.Component, component.ComponentType, true);
 
             GUILayout.EndHorizontal();
         }
@@ -82,14 +77,14 @@ namespace CucuTools.Editor
             
             if (target.GetComponent<SerializableGameObject>() == null)
                 target.AddComponent<SerializableGameObject>();
-
+/*
             if (target.GetComponent<SerializableTransform>() == null)
                 target.AddComponent<SerializableTransform>();
 
             if (target.GetComponent<Rigidbody>() != null && target.GetComponent<SerializableRigidbody>() == null)
                 target.AddComponent<SerializableRigidbody>();
-            
-            Selection.activeObject = target;
+            */
+            Selection.activeObject = target; 
         }
         
         [MenuItem(MenuItem, true)]

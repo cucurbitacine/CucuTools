@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: SerializationSettings
   m_EditorClassIdentifier: 
   serializator: {fileID: 11400000, guid: dc674ae7005b8f243933c97fb7d22289, type: 2}
+  ComponentSerializators:
+  - {fileID: 11400000, guid: 5aeb69633a8eee84f860ce45376796a7, type: 2}
+  - {fileID: 11400000, guid: bc1da56ebd5d42445b583184ed209434, type: 2}

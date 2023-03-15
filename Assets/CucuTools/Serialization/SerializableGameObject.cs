@@ -8,35 +8,28 @@ namespace CucuTools.Serialization
     /// Serializable GameObject Entity
     /// </summary>
     [DisallowMultipleComponent]
+    [RequireComponent(typeof(CucuIdentity))]
     public sealed class SerializableGameObject : MonoBehaviour
     {
         private CucuIdentity _cuid;
+        [SerializeField] private List<ComponentReference> references = new List<ComponentReference>();
 
-        public bool IsValid() => Cuid != null;
-        
         /// <summary>
         /// Unique Identificator of GameObject
         /// </summary>
-        public CucuIdentity Cuid => _cuid != null ? _cuid : (_cuid = GameObjectRef?.GetComponent<CucuIdentity>());
+        public CucuIdentity Cuid => _cuid ??= CucuIdentity.GetOrAdd(gameObject);
 
         /// <summary>
         /// List of serializable components
         /// </summary>
-        public List<SerializableComponent> SerializableComponents { get; } = new List<SerializableComponent>();
+        public List<ComponentReference> References => references;
 
-        /// <summary>
-        /// Reference to GameObject
-        /// </summary>
-        public GameObject GameObjectRef => gameObject;
-        
         /// <summary>
         /// Update List of Components
         /// </summary>
         public void UpdateComponents()
         {
-            SerializableComponents.Clear();
-            
-            SerializableComponents.AddRange(GetComponents<SerializableComponent>());
+            SerializationSettings.Instance.UpdateReferences(gameObject, references);
         }
         
         /// <summary>
@@ -45,9 +38,17 @@ namespace CucuTools.Serialization
         /// <returns></returns>
         public SerializedGameObject Serialize()
         {
-            return new SerializedGameObject(Cuid.Guid, SerializableComponents
-                .Where(c => c.IsValid && c.IsEnabled)
-                .Select(c => c.SerializeComponent()).ToArray());
+            var list = new List<SerializedComponent>();
+
+            foreach (var reference in References)
+            {
+                if (SerializationSettings.Instance.TrySerializeComponent(reference, out var serializedComponent))
+                {
+                    list.Add(serializedComponent);
+                }
+            }
+
+            return new SerializedGameObject(Cuid.Guid, list.ToArray());
         }
 
         /// <summary>
@@ -58,13 +59,13 @@ namespace CucuTools.Serialization
         {
             var serializedComponents = serializedGameObject.components.ToDictionary(c => c.typeName, c => c);
 
-            foreach (var serializableComponent in SerializableComponents)
+            foreach (var reference in References)
             {
-                if (!serializableComponent.IsEnabled) continue;
+                if (!reference.IsEnabled) continue;
                 
-                if (serializedComponents.TryGetValue(serializableComponent.ComponentType.FullName, out var serializedComponent))
+                if (serializedComponents.TryGetValue(reference.ComponentType.FullName, out var serializedComponent))
                 {
-                    serializableComponent.DeserializeComponent(serializedComponent);
+                    SerializationSettings.Instance.TryDeserialize(serializedComponent, reference);
                 }
             }
         }
