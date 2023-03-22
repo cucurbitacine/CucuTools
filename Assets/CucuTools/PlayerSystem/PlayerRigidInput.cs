@@ -2,15 +2,15 @@
 
 namespace CucuTools.PlayerSystem
 {
-    public class PlayerInput : MonoBehaviour
+    public class PlayerRigidInput : PlayerInput<PlayerRigidController>
     {
+        [Space]
         public bool isEnabled = true;
-        
+
         [Space]
+        public float runSpeedMax = 4f;
+        public float sneakSpeedMax = 0.5f;
         public Vector2 sensitivity = Vector2.one * 4;
-        
-        [Space]
-        public PlayerRigidController player;
         
         [Space]
         public Vector3 move = Vector3.zero;
@@ -18,6 +18,7 @@ namespace CucuTools.PlayerSystem
         public Vector2 angles = Vector2.zero;
 
         public bool run = false;
+        public bool sneak = false;
         public bool jump = false;
         
         public bool dragging = false;
@@ -34,6 +35,7 @@ namespace CucuTools.PlayerSystem
             mouseScrollDelta = Input.mouseScrollDelta;
 
             run = Input.GetKey(KeyCode.LeftShift);
+            sneak = Input.GetKey(KeyCode.LeftControl);
             jump = Input.GetKeyDown(KeyCode.Space);
 
             dragging =  Input.GetAxisRaw("Fire2") > 0f;
@@ -41,26 +43,24 @@ namespace CucuTools.PlayerSystem
 
         private void UpdatePlayer()
         {
+            player.settings.speed = player.settings.speedMax;
+
             if (run)
             {
-                player.RunLocal(move);
+                player.settings.speed = runSpeedMax;
             }
-            else
+            else if (sneak)
             {
-                player.WalkLocal(move);
+                player.settings.speed = sneakSpeedMax;
             }
+
+            player.MoveLocal(move);
 
             angles = Vector2.Scale(view, sensitivity);
             
             player.Rotate(angles);
         
             if (jump) player.Jump();
-        }
-
-        private void Awake()
-        {
-            if (player == null) player = GetComponentInParent<PlayerRigidController>();
-            
         }
 
         private void Update()

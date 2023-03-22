@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CucuTools.PlayerSystem
 {
-    public class PlayerRigidController : MonoBehaviour
+    public class PlayerRigidController : PlayerController
     {
         #region SerializeField
 
@@ -40,7 +40,6 @@ namespace CucuTools.PlayerSystem
         private Rigidbody _rigid = null;
         private CapsuleCollider _capsule = null;
         
-        
         [Header("Dev")]
         public bool useMoveRotation = false;
         public bool updateAngularVelocity = true;
@@ -69,19 +68,10 @@ namespace CucuTools.PlayerSystem
 
         #region Public API
 
-        public void Walk(Vector3 direction)
+        public void Move(Vector3 direction)
         {
             moveDirection = direction.normalized;
 
-            info.isRunning = false;
-            info.isMoving = moveDirection != Vector3.zero;
-        }
-        
-        public void Run(Vector3 direction)
-        {
-            moveDirection = direction.normalized;
-
-            info.isRunning = true;
             info.isMoving = moveDirection != Vector3.zero;
         }
 
@@ -117,19 +107,14 @@ namespace CucuTools.PlayerSystem
 
         public void Stop()
         {
-            Walk(Vector3.zero);
+            Move(Vector3.zero);
         }
         
-        public void WalkLocal(Vector3 localDirection)
+        public void MoveLocal(Vector3 localDirection)
         {
-            Walk(body.transform.TransformDirection(localDirection));
+            Move(body.transform.TransformDirection(localDirection));
         }
-        
-        public void RunLocal(Vector3 localDirection)
-        {
-            Run(body.transform.TransformDirection(localDirection));
-        }
-        
+
         #endregion
 
         #region Private API
@@ -192,10 +177,6 @@ namespace CucuTools.PlayerSystem
         
         private void UpdateBody()
         {
-            rigid.mass = settings.mass;
-            
-            capsule.height = settings.height;
-            capsule.radius = settings.radius;
             capsule.center = Vector3.up * (capsule.height * 0.5f);
         }
 
@@ -204,17 +185,16 @@ namespace CucuTools.PlayerSystem
             if (ground.isGround)
             {
                 // calculate move direction relative of ground
-                var moveDir = settings.canWalk ? moveDirection : Vector3.zero;
+                var moveDir = settings.canMove ? moveDirection : Vector3.zero;
                 moveDir = Vector3.ProjectOnPlane(moveDir, ground.hit.normal).normalized;
                 
                 // calculate velocity movement
-                var speedMax = settings.canRun && info.isRunning ? settings.runSpeedMax : settings.walkSpeedMax;
-                var velocityMove = moveDir * speedMax;
+                var velocityMove = moveDir *  settings.speed;
 
                 if (!ground.wasGround)
                 {
                     // if just have grounded - add velocity in air  
-                    velocityMove = Vector3.ClampMagnitude(velocityMove + _velocityAir, settings.walkSpeedMax);
+                    velocityMove = Vector3.ClampMagnitude(velocityMove + _velocityAir, settings.speedMax);
                 }
                 
                 // apply damping. or not
@@ -323,11 +303,10 @@ namespace CucuTools.PlayerSystem
             else
             {
                 // calculate direction movement
-                var moveDir = settings.canWalk ? moveDirection : Vector3.zero;
+                var moveDir = settings.canMove ? moveDirection : Vector3.zero;
 
                 // calculate air velocity 
-                var speedMax = settings.canRun && info.isRunning ? settings.runSpeedMax : settings.walkSpeedMax;
-                var velocityAir = moveDir * speedMax;
+                var velocityAir = moveDir * settings.speed;
                 
                 // apply damping. or not
                 if (settings.useWalkDamping)

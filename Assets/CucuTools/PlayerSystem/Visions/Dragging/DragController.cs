@@ -47,7 +47,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         public PhysicMaterial dragPhysicMaterial = null;
         
         [Header("References")] 
-        public PlayerInput input = null;
+        public PlayerRigidInput input = null;
         public TouchController touch = null;
 
         private Coroutine _dragging = null;
