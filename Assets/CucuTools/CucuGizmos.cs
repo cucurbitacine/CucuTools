@@ -45,7 +45,7 @@ namespace CucuTools
             DrawLinesLooped(corners.ToArray());
         }
         
-        public static void DrawWiredCube(Vector3 origin, Vector3 size, Quaternion? rotation = null)
+        public static void DrawWireCube(Vector3 origin, Vector3 size, Quaternion? rotation = null)
         {
             if (rotation == null) rotation = Quaternion.identity;
 

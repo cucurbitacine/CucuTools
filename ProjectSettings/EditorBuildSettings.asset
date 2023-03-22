@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Example/Scenes/ShowRooms.unity
+    path: Assets/Examples/Playground/Scenes/ShowRooms.unity
     guid: 51fb2d3254f97a340a5f20eda0d69bc0
   m_configObjects: {}
