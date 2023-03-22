@@ -5,6 +5,8 @@ namespace CucuTools.Serialization
 {
     public abstract class ComponentSerializator : ScriptableObject
     {
+        public const string Serializators = "Component Serializators/";
+        
         public abstract Type ComponentType { get; } 
         public abstract bool TryGetComponent(GameObject gameObject, out Component component);
         public abstract bool TrySerialize(Component component, out SerializedComponent serializedComponent);

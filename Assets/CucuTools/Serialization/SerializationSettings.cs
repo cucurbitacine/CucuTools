@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CucuTools.Serialization
 {
-    [CreateAssetMenu(menuName = "Create SerializationSettings", fileName = "SerializationSettings", order = 0)]
+    [CreateAssetMenu(menuName = Cucu.AddComponent + Cucu.SerializationGroup + ObjectName, fileName = ObjectName, order = 0)]
     public class SerializationSettings : ScriptableObject
     {
         public const string ObjectName = nameof(SerializationSettings);
@@ -49,7 +49,7 @@ namespace CucuTools.Serialization
             foreach (var ser in ComponentSerializators)
             {
                 if (references.Any(r => r.ComponentType == ser.ComponentType)) continue;
-                
+
                 if (ser.TryGetComponent(gameObject, out var component))
                 {
                     var reference = new ComponentReference(component);

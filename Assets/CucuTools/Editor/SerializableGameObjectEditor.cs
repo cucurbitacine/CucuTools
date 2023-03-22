@@ -1,6 +1,8 @@
 using CucuTools.Serialization;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace CucuTools.Editor
 {
@@ -48,22 +50,31 @@ namespace CucuTools.Editor
             scrollView = GUILayout.BeginScrollView(scrollView);
             
             foreach (var component in components)
-                ShowComponent(component);
+            {
+                ShowReference(component);
+            }
 
             GUILayout.EndScrollView();
         }
 
-        private void ShowComponent(ComponentReference component)
+        private void ShowReference(ComponentReference reference)
         {
             GUILayout.BeginHorizontal();
 
-            component.IsEnabled = GUILayout.Toggle(component.IsEnabled, component.ComponentType.Name);
-            EditorGUILayout.ObjectField(component.Component, component.ComponentType, true);
+            var wasEnabled = reference.IsEnabled;
+            reference.IsEnabled = GUILayout.Toggle(reference.IsEnabled, reference.ComponentType.Name);
+            EditorGUILayout.ObjectField(reference.Component, reference.ComponentType, true);
 
+            if (wasEnabled != reference.IsEnabled)
+            {
+                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                serializedObject.ApplyModifiedProperties();
+            }
+            
             GUILayout.EndHorizontal();
         }
 
-        public const string MenuItem = Cucu.GameObject + Cucu.Serialization + Serialize; 
+        public const string MenuItem = Cucu.GameObject + Cucu.SerializationGroup + Serialize; 
         public const string Serialize = "Serialize GameObject"; 
         
         [MenuItem(MenuItem, false, 10)]

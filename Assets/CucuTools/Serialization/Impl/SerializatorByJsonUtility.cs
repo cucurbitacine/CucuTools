@@ -6,9 +6,11 @@ namespace CucuTools.Serialization.Impl
     /// <summary>
     /// Serialization: Object -> Json (by JsonUtility) -> byte[] (by Encoding)
     /// </summary>
-    [CreateAssetMenu(menuName = "Create SerializatorByJsonUtility", fileName = "SerializatorByJsonUtility", order = 0)]
+    [CreateAssetMenu(menuName = Cucu.AddComponent + Cucu.SerializationGroup + Serializators + ObjectName, fileName = ObjectName, order = 0)]
     public class SerializatorByJsonUtility : Serializator
     {
+        public const string ObjectName = nameof(SerializatorByJsonUtility);
+        
         public Encoding Encoding { get; set; } = Encoding.UTF8; 
         
         public override byte[] Serialize<T>(T t)

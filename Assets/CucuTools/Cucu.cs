@@ -39,9 +39,8 @@ namespace CucuTools
         public const string Tools = "Tools/" + CreateAsset;
         
         public const string StateMachineGroup = "State Machine/";
-        public const string InteractableGroup = "Interactable/";
         public const string SurfaceGroup = "Surfaces/";
-        public const string Serialization = "Serialization/";
+        public const string SerializationGroup = "Serialization/";
 
         #region Math
 

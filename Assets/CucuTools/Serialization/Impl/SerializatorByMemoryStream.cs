@@ -4,9 +4,11 @@ using UnityEngine;
 
 namespace CucuTools.Serialization.Impl
 {
-    [CreateAssetMenu(menuName = "Create SerializatorByMemoryStream", fileName = "SerializatorByMemoryStream", order = 0)]
+    [CreateAssetMenu(menuName = Cucu.AddComponent + Cucu.SerializationGroup + Serializators + ObjectName, fileName = ObjectName, order = 0)]
     public class SerializatorByMemoryStream : Serializator
     {
+        public const string ObjectName = nameof(SerializatorByMemoryStream);
+        
         public override byte[] Serialize<T>(T t)
         {
             using (MemoryStream ms = new MemoryStream())

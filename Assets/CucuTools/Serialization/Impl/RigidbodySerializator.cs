@@ -3,9 +3,11 @@ using UnityEngine;
 
 namespace CucuTools.Serialization.Impl
 {
-    [CreateAssetMenu(menuName = "Create RigidbodySerializator", fileName = "RigidbodySerializator", order = 0)]
+    [CreateAssetMenu(menuName = Cucu.AddComponent + Cucu.SerializationGroup + Serializators + ObjectName, fileName = ObjectName, order = 0)]
     public class RigidbodySerializator : ComponentSerializator<Rigidbody, RigidbodySerializator.RigidbodyData>
     {
+        public const string ObjectName = nameof(RigidbodySerializator);
+        
         [Serializable]
         public class RigidbodyData
         {

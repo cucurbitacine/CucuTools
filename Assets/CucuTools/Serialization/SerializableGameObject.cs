@@ -9,7 +9,7 @@ namespace CucuTools.Serialization
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CucuIdentity))]
-    public sealed class SerializableGameObject : MonoBehaviour
+    public sealed class SerializableGameObject : CucuBehaviour
     {
         private CucuIdentity _cuid;
         [SerializeField] private List<ComponentReference> references = new List<ComponentReference>();
