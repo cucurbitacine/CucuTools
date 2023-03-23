@@ -1,40 +1,40 @@
+using System;
 using System.Collections.Generic;
 using CucuTools.Attributes;
 using CucuTools.Injects;
 
 namespace CucuTools.Scenes
 {
-    public class SceneLoader : CucuBehaviour
+    [Serializable]
+    public class SceneLoader
     {
         [CucuScene]
-        public string sceneName;
+        public string sceneName = string.Empty;
         
         private readonly List<CucuArg> _args = new List<CucuArg>();
         
-        public void AddArgs(params CucuArg[] args)
-        {
-            if (args == null) return;
-            foreach (var arg in args)
-                _args.Add(arg);    
-        }
-
         public void AddArg(CucuArg arg)
         {
-            AddArgs(arg);
+            _args.Add(arg);  
         }
         
-        public void RemoveArgs(params CucuArg[] args)
-        {
-            if (args == null) return;
-            foreach (var arg in args)
-                _args.Remove(arg);   
-        }
-
         public void RemoveArg(CucuArg arg)
         {
-            RemoveArgs(arg);
+            _args.Remove(arg); 
         }
         
+        public void AddArgs(params CucuArg[] args)
+        {
+            foreach (var arg in args)
+                AddArg(arg);
+        }
+
+        public void RemoveArgs(params CucuArg[] args)
+        {
+            foreach (var arg in args)
+                RemoveArg(arg);   
+        }
+
         public void ClearArgs()
         {
             _args.Clear();

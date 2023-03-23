@@ -40,7 +40,7 @@ namespace CucuTools.Surfaces
 
         protected override void SurfaceDrawGizmos()
         {
-            CucuGizmos.color = Color.white;
+            Gizmos.color = Color.white;
             CucuGizmos.DrawLines(GetPoint(0, 0), GetPoint(0, 1), GetPoint(1, 1), GetPoint(1, 0), GetPoint(0, 0));
         }
         

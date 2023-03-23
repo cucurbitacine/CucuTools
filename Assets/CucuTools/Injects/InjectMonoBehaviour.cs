@@ -26,10 +26,13 @@ namespace CucuTools.Injects
             }
         }
         
+        protected abstract void BeforeInject();
         protected abstract void OnAwake();
         
-        protected virtual void Awake()
+        private void Awake()
         {
+            BeforeInject();
+            
             Inject();
             
             OnAwake();

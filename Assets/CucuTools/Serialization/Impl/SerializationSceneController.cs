@@ -1,7 +1,6 @@
 using System.Linq;
 using CucuTools.Attributes;
 using CucuTools.Scenes;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace CucuTools.Serialization.Impl
@@ -21,7 +20,7 @@ namespace CucuTools.Serialization.Impl
 
             serializedScene = new SerializedScene(CucuSceneManager.GetActiveScene().name, gameObjects);
             
-            jsonScene = JsonConvert.SerializeObject(serializedScene);
+            jsonScene = JsonUtility.ToJson(serializedScene);
             PlayerPrefs.SetString(playerPrefsKey, jsonScene);
         }
 
@@ -31,7 +30,7 @@ namespace CucuTools.Serialization.Impl
             if (PlayerPrefs.HasKey(playerPrefsKey))
             {
                 jsonScene = PlayerPrefs.GetString(playerPrefsKey);
-                serializedScene = JsonConvert.DeserializeObject<SerializedScene>(jsonScene);
+                serializedScene = JsonUtility.FromJson<SerializedScene>(jsonScene);
 
                 var gameObjects = FindObjectsOfType<SerializableGameObject>();
                 foreach (var sgo in serializedScene.gameObjects)

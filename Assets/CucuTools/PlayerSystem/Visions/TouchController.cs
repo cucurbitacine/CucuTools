@@ -69,7 +69,7 @@ namespace CucuTools.PlayerSystem.Visions
             if (touchSomething)
             {
                 var bounds = current.hit.collider.bounds;
-                CucuGizmos.color = Color.yellow;
+                Gizmos.color = Color.yellow;
                 CucuGizmos.DrawWireCube(bounds.center, bounds.size);
             }
             else
@@ -79,7 +79,7 @@ namespace CucuTools.PlayerSystem.Visions
                     if (vision.seeSomething)
                     {
                         var bounds = vision.current.collider.bounds;
-                        CucuGizmos.color = Color.red;
+                        Gizmos.color = Color.red;
                         CucuGizmos.DrawWireCube(bounds.center, bounds.size);
                     }
                 }

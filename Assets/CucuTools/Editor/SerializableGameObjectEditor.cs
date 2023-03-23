@@ -84,7 +84,7 @@ namespace CucuTools.Editor
 
             if (target == null) return;
             
-            var cuid = CucuIdentity.GetOrAdd(target);
+            var cuid = CucuID.GetOrAdd(target);
             
             if (target.GetComponent<SerializableGameObject>() == null)
                 target.AddComponent<SerializableGameObject>();

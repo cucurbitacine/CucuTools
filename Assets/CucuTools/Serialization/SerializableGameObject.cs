@@ -8,16 +8,16 @@ namespace CucuTools.Serialization
     /// Serializable GameObject Entity
     /// </summary>
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(CucuIdentity))]
+    [RequireComponent(typeof(CucuID))]
     public sealed class SerializableGameObject : CucuBehaviour
     {
-        private CucuIdentity _cuid;
+        private CucuID _cuid;
         [SerializeField] private List<ComponentReference> references = new List<ComponentReference>();
 
         /// <summary>
         /// Unique Identificator of GameObject
         /// </summary>
-        public CucuIdentity Cuid => _cuid ??= CucuIdentity.GetOrAdd(gameObject);
+        public CucuID Cuid => _cuid ??= CucuID.GetOrAdd(gameObject);
 
         /// <summary>
         /// List of serializable components

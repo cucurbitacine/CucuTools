@@ -265,8 +265,8 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
                         rotation = Quaternion.Lerp(rotation, current.rotation, dragSmooth);
                     }
 
-                    SyncRigid.SyncPosition(current.rigid, position, speed);
-                    SyncRigid.SyncRotation(current.rigid, rotation, speed);
+                    Cucu.SyncPosition(current.rigid, position, speed);
+                    Cucu.SyncRotation(current.rigid, rotation, speed);
                     
                     if (fastDrag)
                     {
@@ -322,7 +322,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
             if (isDragging)
             {
                 var bounds = Cucu.GetBounds(current.rigid.gameObject);
-                CucuGizmos.color = Color.green;
+                Gizmos.color = Color.green;
                 CucuGizmos.DrawWireCube(bounds.center, bounds.size);
                 
                 Gizmos.color = Color.magenta;

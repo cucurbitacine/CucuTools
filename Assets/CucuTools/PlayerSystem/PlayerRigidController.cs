@@ -7,11 +7,6 @@ namespace CucuTools.PlayerSystem
     {
         #region SerializeField
 
-        public bool isEnabled = false;
-        
-        [Space]
-        public bool enableOnStart = true;
-
         [Space]
         public PlayerInfo info = new PlayerInfo();
         public PlayerSettings settings = new PlayerSettings();
@@ -436,33 +431,25 @@ namespace CucuTools.PlayerSystem
             _bodyRotation = _initRotation;
         }
 
-        private void Start()
-        {
-            if (enableOnStart) isEnabled = true;
-        }
-
         private void LateUpdate()
         {
-            if (isEnabled)
-            {
-                // because wasGrounded and isGrounded update in FixedUpdate. but use it in Update
-                FixGround();
+            // because wasGrounded and isGrounded update in FixedUpdate. but use it in Update
+            FixGround();
                 
-                UpdateBody();
+            UpdateBody();
 
-                UpdateMove(Time.deltaTime);
-                UpdateFall(Time.deltaTime);
-                UpdatePlatform(Time.deltaTime);
-                UpdateAir(Time.deltaTime);
-                UpdateView(Time.deltaTime);
+            UpdateMove(Time.deltaTime);
+            UpdateFall(Time.deltaTime);
+            UpdatePlatform(Time.deltaTime);
+            UpdateAir(Time.deltaTime);
+            UpdateView(Time.deltaTime);
 
-                UpdateRigidbody(Time.deltaTime);
-            }
+            UpdateRigidbody(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            if (isEnabled) UpdateGround(Time.fixedDeltaTime);
+            UpdateGround(Time.fixedDeltaTime);
         }
 
         private void OnValidate()
