@@ -265,6 +265,12 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
                         rotation = Quaternion.Lerp(rotation, current.rotation, dragSmooth);
                     }
 
+                    if (input.player.ground.isPlatform)
+                    {
+                        var platformStep = input.player.ground.hit.rigidbody.velocity * Time.fixedDeltaTime;
+                        position += platformStep;
+                    }
+
                     Cucu.SyncPosition(current.rigid, position, speed);
                     Cucu.SyncRotation(current.rigid, rotation, speed);
                     

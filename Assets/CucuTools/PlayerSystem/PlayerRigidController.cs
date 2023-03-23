@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CucuTools.PlayerSystem
 {
@@ -74,14 +73,17 @@ namespace CucuTools.PlayerSystem
         {
             _viewInput = viewInput;
         }
-        
+
         public void LookIn(Vector3 direction)
         {
             if (direction.sqrMagnitude == 0) return;
 
-            throw new NotImplementedException();
+            var angX = Vector3.SignedAngle(body.forward, Vector3.ProjectOnPlane(direction, Vector3.up), Vector3.up);
+            var angY = Vector3.SignedAngle(eyes.forward, Quaternion.Euler(0, -angX, 0) * direction, eyes.right);
+
+            rigid.MoveRotation(Quaternion.Euler(0, angX, 0) * rigid.rotation);
             
-            // Rotate(???);
+            _viewAngle.y += angY;
         }
 
         public void LookAt(Vector3 point)
@@ -429,8 +431,10 @@ namespace CucuTools.PlayerSystem
         {
             _initRotation = rigid.rotation;
             _bodyRotation = _initRotation;
-        }
 
+            _viewAngle.y = eyes.localRotation.eulerAngles.x;
+        }
+        
         private void LateUpdate()
         {
             // because wasGrounded and isGrounded update in FixedUpdate. but use it in Update
