@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace CucuTools.Async
 {
@@ -19,7 +18,7 @@ namespace CucuTools.Async
             {
                 if (_instance != null) return _instance;
                 
-                var instances = Object.FindObjectsOfType<CucuCoroutine>();
+                var instances = FindObjectsOfType<CucuCoroutine>();
                 _instance = instances.FirstOrDefault();
                 for (int i = 0; i < instances.Length; i++)
                 {
@@ -67,13 +66,13 @@ namespace CucuTools.Async
         private static void Destroy(GameObject gameObject)
         {
             if (Application.isPlaying) Object.Destroy(gameObject);
-            else Object.DestroyImmediate(gameObject);
+            else DestroyImmediate(gameObject);
         }
         
         private static void Destroy<T>(T component) where T : Component
         {
             if (Application.isPlaying) Object.Destroy(component);
-            else Object.DestroyImmediate(component);
+            else DestroyImmediate(component);
         }
         
         private static void DontDestroyOnLoad(GameObject gameObject)

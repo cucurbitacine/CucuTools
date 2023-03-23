@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace CucuTools
+namespace CucuTools.Others
 {
     public class CucuFly : CucuBehaviour
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace CucuTools.Editor.Attributes
 {
-    [CustomPropertyDrawer(typeof(CucuSceneAttribute))]
+    [CustomPropertyDrawer(typeof(SceneAttribute))]
     public class CucuSceneDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

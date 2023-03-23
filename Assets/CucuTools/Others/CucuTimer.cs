@@ -1,4 +1,5 @@
-﻿using CucuTools.Attributes;
+﻿using System.Collections;
+using CucuTools.Attributes;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,48 +7,44 @@ namespace CucuTools.Others
 {
     public class CucuTimer : CucuBehaviour
     {
-        [Space]
-        public bool isRunning = false;
-        [Space]
-        [Min(0f)]
-        public float time = 0f;
-        [Min(0f)]
-        public float duration = 1f;
+        [Space] public bool isRunning = false;
+        [Space] [Min(0f)] public float time = 0f;
+        [Min(0f)] public float duration = 1f;
 
-        [Space]
-        public UnityEvent onDone = new UnityEvent();
-        
-        [CucuButton("Start", group:"Timer")]
+        [Space] public UnityEvent onDone = new UnityEvent();
+
+        private Coroutine _ticking = null;
+
+        [CucuButton("Start", group: "Timer")]
         public void StartTimer()
         {
             time = 0f;
             isRunning = true;
+
+            if (_ticking != null) StopCoroutine(_ticking);
+            _ticking = StartCoroutine(_Ticking());
         }
-        
-        [CucuButton("Stop", group:"Timer")]
+
+        [CucuButton("Stop", group: "Timer")]
         public void StopTimer()
         {
+            if (_ticking != null) StopCoroutine(_ticking);
+
             isRunning = false;
             time = 0f;
         }
 
-        private void UpdateTimer(float deltaTime)
+        private IEnumerator _Ticking()
         {
-            if (time >= duration)
+            while (time < duration)
             {
-                StopTimer();
-                    
-                onDone.Invoke();
+                time += Time.deltaTime;
+                yield return null;
             }
-            else
-            {
-                time += deltaTime;
-            }
-        }
-        
-        private void Update()
-        {
-            if (isRunning) UpdateTimer(Time.deltaTime);
+
+            StopTimer();
+            
+            onDone.Invoke();
         }
     }
 }

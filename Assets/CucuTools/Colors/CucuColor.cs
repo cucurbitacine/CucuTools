@@ -14,18 +14,31 @@ namespace CucuTools.Colors
         public static readonly Color Color01 = new Color(0.00f, 0.70f, 0.70f);
         public static readonly Color Color11 = new Color(1.00f, 0.90f, 0.15f);
         public static readonly Color Color10 = new Color(0.95f, 0.35f, 0.25f);
-        
-        public static Color Empty => (empty ?? (empty = Alpha(Color.black, 0f))).Value;
-        private static Color? empty;
 
-        public static Color Scale(Color color, float scale)
+        public static Color Hue(Color color, float hue)
         {
-            return new Color(color.r * scale, color.g * scale, color.b * scale, color.a);
+            Color.RGBToHSV(color, out var h, out var s, out var v);
+            
+            return Color.HSVToRGB(Mathf.Repeat(hue, 1f), s, v);
+        }
+        
+        public static Color Saturation(Color color, float saturation)
+        {
+            Color.RGBToHSV(color, out var h, out var s, out var v);
+            
+            return Color.HSVToRGB(h, Mathf.Clamp01(saturation), v);
         }
 
+        public static Color Value(Color color, float value)
+        {
+            Color.RGBToHSV(color, out var h, out var s, out var v);
+            
+            return Color.HSVToRGB(h, s, Mathf.Clamp01(value));
+        }
+        
         public static Color Alpha(Color color, float alpha)
         {
-            return new Color(color.r, color.g, color.b, alpha);
+            return new Color(color.r, color.g, color.b, Mathf.Clamp01(alpha));
         }
 
         public static string Color2Hex(Color color)
@@ -33,7 +46,7 @@ namespace CucuTools.Colors
             var result = "";
             for (var i = 0; i < 4; i++)
             {
-                var val = (int) Mathf.Clamp(color[i] * 255, 0, 255);
+                var val = (int)Mathf.Clamp(color[i] * 255, 0, 255);
                 var hex = val.ToString("X");
                 if (hex.Length < 2) hex = "0" + hex;
                 result += hex;
@@ -44,7 +57,7 @@ namespace CucuTools.Colors
 
         public static bool TryGetColorFromHex(string hex, out Color color)
         {
-            color = Scale(Color.black, 0f);
+            color = Color.black;
 
             if (string.IsNullOrWhiteSpace(hex) || (hex.Length != 6 && hex.Length != 8))
             {
@@ -76,8 +89,7 @@ namespace CucuTools.Colors
 
         public static Color Hex2Color(string hex)
         {
-            TryGetColorFromHex(hex, out var color);
-            return color;
+            return TryGetColorFromHex(hex, out var color) ? color : Color.black;
         }
 
         #region Lerp & Blend
@@ -101,10 +113,10 @@ namespace CucuTools.Colors
         /// <param name="value">Blend value</param>
         /// <param name="colors">Colors</param>
         /// <returns>Color</returns>
-        public static Color Blend(float value, params Color[] colors)
+        public static Color Lerp(float value, params Color[] colors)
         {
-            if (colors == null || colors.Length == 0) return Alpha(Color.black, 0f);
-            if (colors.Length == 1) return colors.First();
+            if (colors.Length == 0) return Alpha(Color.black, 0f);
+            if (colors.Length == 1) return colors[0];
 
             value = Mathf.Clamp01(value);
 
@@ -114,10 +126,12 @@ namespace CucuTools.Colors
             {
                 var t = dt * i;
                 if (t <= value && value <= t + dt)
+                {
                     return colors[i].LerpTo(colors[i + 1], Mathf.Clamp01((value - t) / dt));
+                }
             }
 
-            return colors.Last();
+            return colors[colors.Length - 1];
         }
 
         #endregion
@@ -129,7 +143,7 @@ namespace CucuTools.Colors
             if (colors.Length > 8)
             {
                 var linSpace = Cucu.LinSpace(8);
-                colors = linSpace.Select(t => CucuColor.Blend(t, colors)).ToArray();
+                colors = linSpace.Select(t => Lerp(t, colors)).ToArray();
             }
 
             var times = Cucu.LinSpace(colors.Length);
@@ -152,21 +166,20 @@ namespace CucuTools.Colors
         /// <summary>
         /// Map of palettes
         /// </summary>
-        public static Dictionary<CucuColorMap, Gradient> GradientSample => grdSmpl ?? (grdSmpl =
+        public static readonly Dictionary<CucuColorMap, Gradient> GradientSample =
             new Dictionary<CucuColorMap, Gradient>
             {
-                {CucuColorMap.Rainbow, Rainbow},
-                {CucuColorMap.Jet, Jet},
-                {CucuColorMap.Hot, Hot},
-                {CucuColorMap.BlackToWhite, BlackToWhite},
-                {CucuColorMap.WhiteToBlack, WhiteToBlack}
-            });
-        private static Dictionary<CucuColorMap, Gradient> grdSmpl;
+                { CucuColorMap.Rainbow, Rainbow },
+                { CucuColorMap.Jet, Jet },
+                { CucuColorMap.Hot, Hot },
+                { CucuColorMap.BlackToWhite, BlackToWhite },
+                { CucuColorMap.WhiteToBlack, WhiteToBlack }
+            };
 
         /// <summary>
         /// Rainbow palette
         /// </summary>
-        public static Gradient Rainbow => CucuColor.Colors2Gradient(
+        public static Gradient Rainbow => Colors2Gradient(
             Color.red,
             Color.red.LerpTo(Color.yellow),
             Color.yellow,
@@ -196,21 +209,23 @@ namespace CucuTools.Colors
         /// <summary>
         /// Hot palette
         /// </summary>
-        public static Gradient Hot => CucuColor.Colors2Gradient(Color.black, Color.red, Color.yellow, Color.white);
+        public static Gradient Hot => Colors2Gradient(Color.black, Color.red, Color.yellow, Color.white);
 
         /// <summary>
         /// Black to white palette
         /// </summary>
-        public static Gradient BlackToWhite => CucuColor.Colors2Gradient(Color.black, Color.white);
+        public static Gradient BlackToWhite => Colors2Gradient(Color.black, Color.white);
 
 
         /// <summary>
         /// White to black palette
         /// </summary>
-        public static Gradient WhiteToBlack => CucuColor.Colors2Gradient(Color.white, Color.black);
+        public static Gradient WhiteToBlack => Colors2Gradient(Color.white, Color.black);
 
         #endregion
-        
+
+        #region UV
+
         public static Color ColorUV(Vector2 uv, Color color00, Color color10, Color color11, Color color01)
         {
             return Color.Lerp(
@@ -225,161 +240,7 @@ namespace CucuTools.Colors
         {
             return ColorUV(uv, Color00, Color10, Color11, Color01);
         }
-    }
 
-    /// <summary>
-    /// Color extentions
-    /// </summary>
-    public static class CucuColorExtentions
-    {
-        /// <summary>
-        /// Get string color like FFFFFF
-        /// Like 
-        /// </summary>
-        /// <param name="color"></param>
-        /// <returns>Hex string</returns>
-        public static string ToHex(this Color color)
-        {
-            return CucuColor.Color2Hex(color);
-        }
-
-        /// <summary>
-        /// Get color from hex string
-        /// </summary>
-        /// <param name="hex">String hex color</param>
-        /// <returns>Color</returns>
-        public static Color ToColor(this string hex)
-        {
-            return CucuColor.Hex2Color(hex);
-        }
-
-        /// <summary>
-        /// Lerp color to <param name="target"></param>
-        /// </summary>
-        /// <param name="color">Origin</param>
-        /// <param name="target">Target</param>
-        /// <param name="t">Lerp value</param>
-        /// <returns>Color</returns>
-        public static Color LerpTo(this Color color, Color target, float t = 0.5f)
-        {
-            return CucuColor.Lerp(color, target, t);
-        }
-
-        /// <summary>
-        /// Lerping color in queue colors
-        /// </summary>
-        /// <param name="value">Lerp value</param>
-        /// <param name="colors">Colors</param>
-        /// <returns>Color</returns>
-        public static Color BlendColor(this float value, params Color[] colors)
-        {
-            return CucuColor.Blend(value, colors);
-        }
-
-        /// <summary>
-        /// Blending color in queue colors
-        /// </summary>
-        /// <param name="colors">Colors</param>
-        /// <param name="value">Blend value</param>
-        /// <returns>Color</returns>
-        public static Color BlendColor(this IEnumerable<Color> colors, float value)
-        {
-            return value.BlendColor(colors.ToArray());
-        }
-
-        /// <summary>
-        /// Set color alpha
-        /// </summary>
-        /// <param name="color">Color</param>
-        /// <param name="value">Alpha</param>
-        /// <returns>Color</returns>
-        public static Color AlphaTo(this Color color, float value)
-        {
-            return CucuColor.Alpha(color, value);
-        }
-
-        /// <summary>
-        /// Set color intensity
-        /// </summary>
-        /// <param name="color">Color</param>
-        /// <param name="value">Intensity</param>
-        /// <returns>Color</returns>
-        public static Color ScaleTo(this Color color, float value)
-        {
-            return CucuColor.Scale(color, value);
-        }
-
-        /// <summary>
-        /// Convert vector3 to color
-        /// </summary>
-        /// <param name="vector3">Vector3</param>
-        /// <param name="alpha">Alpha value</param>
-        /// <returns>Color</returns>
-        public static Color ToColor(this Vector3 vector3, float alpha = 1f)
-        {
-            return new Color(vector3.x, vector3.y, vector3.z, alpha);
-        }
-
-        /// <summary>
-        /// Convert vector4 to color
-        /// </summary>
-        /// <param name="vector4">Vector4</param>
-        /// <returns>Color</returns>
-        public static Color ToColor(this Vector4 vector4)
-        {
-            return new Color(vector4.x, vector4.y, vector4.z, vector4.w);
-        }
-
-        /// <summary>
-        /// Convert color to vectro3
-        /// </summary>
-        /// <param name="color">Color</param>
-        /// <returns>Vector3</returns>
-        public static Vector3 ToVector3(this Color color)
-        {
-            return new Vector3(color.r, color.g, color.b);
-        }
-
-        /// <summary>
-        /// Convert color to vectro4
-        /// </summary>
-        /// <param name="color">Color</param>
-        /// <returns>Vector4</returns>
-        public static Vector4 ToVector4(this Color color)
-        {
-            return new Vector4(color.r, color.g, color.b, color.a);
-        }
-
-        public static Gradient ToGradient(this IEnumerable<Color> colors)
-        {
-            return CucuColor.Colors2Gradient(colors.ToArray());
-        }
-
-        public static Color[] ToColors(this Gradient gradient)
-        {
-            return CucuColor.Gradient2Colors(gradient);
-        }
-        
-        public static Color ColorUV(this Vector2 uv, Color color00, Color color10, Color color11, Color color01)
-        {
-            return CucuColor.ColorUV(uv, color00, color10, color11, color01);
-        }
-
-        public static Color ColorUV(this Vector2 uv)
-        {
-            return ColorUV(uv, CucuColor.Color00, CucuColor.Color10, CucuColor.Color11, CucuColor.Color01);
-        }
-    }
-
-    /// <summary>
-    /// Color map list
-    /// </summary>
-    public enum CucuColorMap
-    {
-        Rainbow,
-        Jet,
-        Hot,
-        BlackToWhite,
-        WhiteToBlack
+        #endregion
     }
 }

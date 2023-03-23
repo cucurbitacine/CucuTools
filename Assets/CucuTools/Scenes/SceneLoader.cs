@@ -1,83 +1,62 @@
 using System;
 using System.Collections.Generic;
 using CucuTools.Attributes;
-using CucuTools.Injects;
+using UnityEngine.SceneManagement;
 
 namespace CucuTools.Scenes
 {
     [Serializable]
-    public class SceneLoader
+    public class SceneLoader 
     {
-        [CucuScene]
+        [Scene]
         public string sceneName = string.Empty;
-        
-        private readonly List<CucuArg> _args = new List<CucuArg>();
-        
-        public void AddArg(CucuArg arg)
-        {
-            _args.Add(arg);  
-        }
-        
-        public void RemoveArg(CucuArg arg)
-        {
-            _args.Remove(arg); 
-        }
-        
-        public void AddArgs(params CucuArg[] args)
-        {
-            foreach (var arg in args)
-                AddArg(arg);
-        }
 
-        public void RemoveArgs(params CucuArg[] args)
-        {
-            foreach (var arg in args)
-                RemoveArg(arg);   
-        }
+        public readonly List<CucuArg> args = new List<CucuArg>();
 
-        public void ClearArgs()
-        {
-            _args.Clear();
-        }
-        
         public void LoadSingleScene()
         {
-            LoadSingleScene(_args.ToArray());
-        }
-        
-        public void LoadAdditiveScene()
-        {
-            LoadAdditiveScene(_args.ToArray());
-        }
-        
-        public void LoadSingleSceneAsync()
-        {
-            LoadSingleSceneAsync(_args.ToArray());
-        }
-        
-        public void LoadAdditiveSceneAsync()
-        {
-            LoadAdditiveSceneAsync(_args.ToArray());
-        }
-        
-        public void LoadSingleScene(CucuArg[] args)
-        {
-            CucuSceneManager.LoadSingleScene(sceneName, args);
+            CucuSceneManager.LoadSingleScene(sceneName, args.ToArray());
         }
 
-        public void LoadAdditiveScene(CucuArg[] args)
+        public void LoadAdditiveScene()
         {
-            CucuSceneManager.LoadAdditiveScene(sceneName, args);
+            CucuSceneManager.LoadAdditiveScene(sceneName, args.ToArray());
         }
-        
-        public void LoadSingleSceneAsync(CucuArg[] args)
+
+        public void LoadSingleSceneAsync()
         {
-            CucuSceneManager.LoadSingleSceneAsync(sceneName, args);
+            CucuSceneManager.LoadSingleSceneAsync(sceneName, args.ToArray());
         }
-        
-        public void LoadAdditiveSceneAsync(CucuArg[] args)
+
+        public void LoadAdditiveSceneAsync()
         {
-            CucuSceneManager.LoadAdditiveSceneAsync(sceneName, args);
+            CucuSceneManager.LoadAdditiveSceneAsync(sceneName, args.ToArray());
+        }
+
+        public void LoadScene(LoadSceneMode mode)
+        {
+            switch (mode)
+            {
+                case LoadSceneMode.Single:
+                    LoadSingleScene();
+                    break;
+                case LoadSceneMode.Additive:
+                    LoadAdditiveScene();
+                    break;
+            }
+        }
+
+        public void LoadSceneAsync(LoadSceneMode mode)
+        {
+            switch (mode)
+            {
+                case LoadSceneMode.Single:
+                    LoadSingleSceneAsync();
+                    break;
+                case LoadSceneMode.Additive:
+                    LoadAdditiveSceneAsync();
+                    break;
+            }
         }
     }
 }

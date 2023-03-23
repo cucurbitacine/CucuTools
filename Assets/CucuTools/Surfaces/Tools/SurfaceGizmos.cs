@@ -125,7 +125,7 @@ namespace CucuTools.Surfaces.Tools
 
                 Gizmos.color = GetUVColor(uv);
                 Gizmos.DrawLine(point, point + normal * NormalHeight);
-                Gizmos.color = Gizmos.color.AlphaTo(0.2f);
+                Gizmos.color = Gizmos.color.SetAlpha(0.2f);
                 Gizmos.DrawSphere(point, NormalHeight / 10);
             }
 

@@ -1,5 +1,5 @@
 using System;
-using CucuTools.Injects;
+using System.Collections.Generic;
 using CucuTools.Scenes;
 using UnityEngine;
 
@@ -10,12 +10,16 @@ namespace Examples.MainMenu
     {
         public SceneReference[] scenes;
 
-        private ExampleSettings GetSettings()
+        private List<CucuArg> GetArgs()
         {
-            return new ExampleSettings()
+            var exampleArg = new ExampleArgs()
             {
                 // fill
             };
+            
+            var args = new List<CucuArg>();
+            args.Add(exampleArg);
+            return args;
         }
 
         private void OnGUI()
@@ -34,19 +38,19 @@ namespace Examples.MainMenu
 
                 if (GUILayout.Button(scene.displayName))
                 {
-                    var settings = GetSettings();
+                    var args = GetArgs().ToArray();
 
-                    scene.loader.RemoveArg(settings);
-                    scene.loader.AddArg(settings);
+                    scene.loader.args.Clear();
+                    scene.loader.args.AddRange(args);
 
-                    scene.loader.LoadSingleSceneAsync();
+                    scene.loader.LoadSingleScene();
                 }
             }
         }
     }
 
     [Serializable]
-    public class ExampleSettings : CucuArg
+    public class ExampleArgs : CucuArg
     {
         // setup
     }

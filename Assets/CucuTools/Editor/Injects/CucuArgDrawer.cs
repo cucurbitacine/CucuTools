@@ -1,10 +1,10 @@
-using CucuTools.Injects;
+using CucuTools.Attributes;
 using UnityEditor;
 using UnityEngine;
 
 namespace CucuTools.Editor.Injects
 {
-    [CustomPropertyDrawer(typeof(CucuArgAttribute))]
+    [CustomPropertyDrawer(typeof(InjectArgAttribute))]
     public class CucuArgDrawer : PropertyDrawer
     {
         private const float scale = 0.1f;
