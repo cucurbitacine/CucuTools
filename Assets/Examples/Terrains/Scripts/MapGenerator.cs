@@ -1,3 +1,4 @@
+using System;
 using CucuTools;
 using CucuTools.Attributes;
 using UnityEngine;
@@ -54,6 +55,51 @@ namespace Examples.Terrains.Scripts
 
             
             if (AutoBuild) Build();
+        }
+
+        private void OnGUI()
+        {
+            GUILayout.Space(512);
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Frequency");
+            Seed.frequency = GUILayout.HorizontalSlider(Seed.frequency, 0, 2, GUILayout.Width(128));
+            if (Seed.frequency != Map.Seed.frequency)
+            {
+                Map.Seed = Seed;
+                Build();
+            }
+            GUILayout.EndHorizontal();
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Amplitude");
+            Seed.amplitude = GUILayout.HorizontalSlider(Seed.amplitude, 0, 2, GUILayout.Width(128));
+            if (Seed.amplitude != Map.Seed.amplitude)
+            {
+                Map.Seed = Seed;
+                Build();
+            }
+            GUILayout.EndHorizontal();
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Lacunarity");
+            Seed.lacunarity = GUILayout.HorizontalSlider(Seed.lacunarity, 0, 3, GUILayout.Width(128));
+            if (Seed.lacunarity != Map.Seed.lacunarity)
+            {
+                Map.Seed = Seed;
+                Build();
+            }
+            GUILayout.EndHorizontal();
+            
+            GUILayout.BeginHorizontal();
+            GUILayout.Box("Persistance");
+            Seed.persistance = GUILayout.HorizontalSlider(Seed.persistance, 0, 1, GUILayout.Width(128));
+            if (Seed.persistance != Map.Seed.persistance)
+            {
+                Map.Seed = Seed;
+                Build();
+            }
+            GUILayout.EndHorizontal();
         }
     }
 }

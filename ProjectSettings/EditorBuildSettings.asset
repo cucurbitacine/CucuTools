@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Examples/Playground/Scenes/Playground Scene.unity
     guid: 9a212750d56b0c24480f470fc60fdaaf
+  - enabled: 1
+    path: Assets/Examples/Clothes/Scenes/Clothes Scene.unity
+    guid: afeae72eed748c64c9efad908d4efcb6
+  - enabled: 1
+    path: Assets/Examples/Terrains/Scenes/Terrain Scene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Examples/IK/Scenes/IK Scene.unity
+    guid: bd112948895c1544aa4baf07c8a83bc2
   m_configObjects: {}
