@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using CucuTools.Colors;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -83,7 +82,7 @@ namespace CucuTools.Surfaces.Deformers
             var f_u = c_u + forward;
             var b_u = c_u - forward;
             
-            var t = Cucu.LinSpace(32);
+            var t = CucuMath.LinSpace(32);
 
             var leftLine = t.Select(v =>
             {

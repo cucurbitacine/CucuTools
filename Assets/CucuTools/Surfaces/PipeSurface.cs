@@ -49,7 +49,7 @@ namespace CucuTools.Surfaces
             if (RadiusBottom != 0f) CucuGizmos.DrawCircle(position, Entity.Direction, RadiusBottom);
             if (RadiusTop != 0f) CucuGizmos.DrawCircle(position + Entity.Direction * Height, Entity.Direction, RadiusTop);
 
-            var t = Cucu.LinSpace(0f, 0.75f, 4);
+            var t = CucuMath.LinSpace(0f, 0.75f, 4);
             for (int i = 0; i < t.Length; i++)
             {
                 Gizmos.DrawLine(GetPoint(t[i], 0), GetPoint(t[i], 1));

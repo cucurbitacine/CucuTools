@@ -19,7 +19,7 @@ namespace Examples.IK.Scripts.Impl
 
             var dir = Direction.normalized;
 
-            var t = Cucu.LinSpace(0, Length, PointCount);
+            var t = CucuMath.LinSpace(0, Length, PointCount);
             
             for (var i = 0; i < t.Length; i++)
             {

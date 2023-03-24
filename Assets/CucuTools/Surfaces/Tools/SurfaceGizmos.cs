@@ -1,5 +1,4 @@
 using System;
-using CucuTools.Colors;
 using UnityEngine;
 
 namespace CucuTools.Surfaces.Tools
@@ -35,7 +34,7 @@ namespace CucuTools.Surfaces.Tools
             get
             {
                 if (gridU != null && gridU.Length == SizeU) return gridU;
-                gridU = Cucu.LinSpace(SizeU);
+                gridU = CucuMath.LinSpace(SizeU);
                 return gridU;
             }
         }
@@ -45,7 +44,7 @@ namespace CucuTools.Surfaces.Tools
             get
             {
                 if (gridV != null && gridV.Length == SizeV) return gridV;
-                gridV = Cucu.LinSpace(SizeV);
+                gridV = CucuMath.LinSpace(SizeV);
                 return gridV;
             }
         }

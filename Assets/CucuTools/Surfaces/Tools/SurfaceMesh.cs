@@ -71,8 +71,8 @@ namespace CucuTools.Surfaces.Tools
             
             if (setting.SizeU <= 1 || setting.SizeV <= 1) return false; 
             
-            var u = Cucu.LinSpace(setting.SizeU);
-            var v = Cucu.LinSpace(setting.SizeV);
+            var u = CucuMath.LinSpace(setting.SizeU);
+            var v = CucuMath.LinSpace(setting.SizeV);
 
             mesh.name = $"{(surface.GetType().Name)}_mesh";
             mesh.vertices = FillVertices(surface, u, v, setting.TwoSide);
@@ -97,8 +97,8 @@ namespace CucuTools.Surfaces.Tools
             
             if (setting.SizeU <= 1 || setting.SizeV <= 1) return false; 
             
-            var u = Cucu.LinSpace(setting.SizeU);
-            var v = Cucu.LinSpace(setting.SizeV);
+            var u = CucuMath.LinSpace(setting.SizeU);
+            var v = CucuMath.LinSpace(setting.SizeV);
 
             mesh.name = $"{(surface.GetType().Name)}_mesh";
             mesh.vertices = FillVertices(surface, u, v, setting.TwoSide);

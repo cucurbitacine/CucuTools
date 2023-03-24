@@ -120,7 +120,7 @@ namespace CucuTools
         
         public static void DrawCircle(Vector3 center, Vector3 normal, float radius = 1f, int resolution = 32)
         {
-            var t = Cucu.LinSpace(resolution);
+            var t = CucuMath.LinSpace(resolution);
 
             var rot = Quaternion.FromToRotation(Vector3.up, normal);
 
