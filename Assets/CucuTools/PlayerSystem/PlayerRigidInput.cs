@@ -8,8 +8,6 @@ namespace CucuTools.PlayerSystem
         public bool isEnabled = true;
 
         [Space]
-        public float runSpeedMax = 4f;
-        public float sneakSpeedMax = 0.5f;
         public Vector2 sensitivity = Vector2.one * 4;
         
         [Space]
@@ -43,17 +41,6 @@ namespace CucuTools.PlayerSystem
 
         private void UpdatePlayer()
         {
-            player.settings.speed = player.settings.speedMax;
-
-            if (run)
-            {
-                player.settings.speed = runSpeedMax;
-            }
-            else if (sneak)
-            {
-                player.settings.speed = sneakSpeedMax;
-            }
-
             player.MoveLocal(move);
 
             angles = Vector2.Scale(view, sensitivity);

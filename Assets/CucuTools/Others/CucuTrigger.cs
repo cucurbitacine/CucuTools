@@ -6,6 +6,8 @@ namespace CucuTools.Others
 {
     public class CucuTrigger : MonoBehaviour
     {
+        public bool isEnabled = true;
+        public bool invokeOnce = false;
         public TriggerMode mode = TriggerMode.Enter;
         public LayerMask layerMask = 1;
         
@@ -14,16 +16,39 @@ namespace CucuTools.Others
         public List<Collider> whiteList = new List<Collider>();
 
         [SerializeField] private bool debugLog = true;
+
+        public void SetEnable(bool value)
+        {
+            isEnabled = value;
+        }
+        
+        public void SwitchEnable()
+        {
+            SetEnable(!isEnabled);
+        }
+
+        public void Enable()
+        {
+            SetEnable(true);
+        }
+        
+        public void Disable()
+        {
+            SetEnable(false);
+        }
         
         private void Invoke(Collider other)
         {
             if (debugLog) Debug.Log($"[{name}] On Trigger {mode} with [{other.name}]");
             
             onChanged.Invoke(other);
+
+            if (invokeOnce) Disable();
         }
 
         private void OnTrigger(TriggerMode triggerMode, Collider other)
         {
+            if (!isEnabled) return;
             if (mode != triggerMode) return;
 
             if (whiteList.Count > 0)

@@ -30,26 +30,33 @@ namespace Examples.Clothes.Scripts
         public bool fixRight = false;
         
         [Space]
-        [Range(0f, 1f)] public float fading = 0.01f;
+        [Range(0f, 1f)]
+        public float fading = 0.01f;
 
         [Space]
         public bool useKinematic = true;
-        [Range(0f, 1f)] [SerializeField] private float weightKinematic = 0.05f;
+        [Range(0f, 1f)]
+        public float weightKinematic = 0.05f;
 
         [Space]
         public bool useGravity = true;
-        [Range(0f, 1f)] [SerializeField] private float weightGravity = 1f;
+        [Range(0f, 1f)]
+        public float weightGravity = 1f;
 
         [Space]
         public bool useWind = true;
-        [Range(0f, 1f)] [SerializeField] private float weightWind = 1f;
-        [Range(0f , 1f)] public float smoothWind = 0.5f;
+        [Range(0f, 1f)]
+        public float weightWind = 1f;
+        [Range(0f, 1f)]
+        public float smoothWind = 0.5f;
         public WindZone windZone;
 
         [Space]
         public bool usePenetration = true;
-        [Range(0f, 1f)] [SerializeField] private float weightPenetration = 1f;
-        [Range(0.001f, 0.1f)] public float radiusPenetration = 0.01f;
+        [Range(0f, 1f)]
+        public float weightPenetration = 1f;
+        [Range(0.001f, 0.1f)]
+        public float radiusPenetration = 0.01f;
 
         [Header("Surface")]
         public bool useCrossing = true;
@@ -57,30 +64,7 @@ namespace Examples.Clothes.Scripts
 
         [Header("Gizmos")]
         public bool drawGizmos = true;
-
-        public float WeightKinematic
-        {
-            get => weightKinematic;
-            set => weightKinematic = Mathf.Clamp01(value);
-        }
-
-        public float WeightGravity
-        {
-            get => weightGravity;
-            set => weightGravity = Mathf.Clamp01(value);
-        }
-
-        public float WeightWind
-        {
-            get => weightWind;
-            set => weightWind = Mathf.Clamp01(value);
-        }
-
-        public float WeightPenetration
-        {
-            get => weightPenetration;
-            set => weightPenetration = Mathf.Clamp01(value);
-        }
+        
         
         private int GetPointIndex(int i, int j)
         {
@@ -340,7 +324,7 @@ namespace Examples.Clothes.Scripts
                     if (usePenetration)
                     {
                         /*
-                        * Compute penetretion
+                        * Compute penetration
                         */
                                     
                         _penetrationCollider.transform.position = transform.TransformPoint(point.position);

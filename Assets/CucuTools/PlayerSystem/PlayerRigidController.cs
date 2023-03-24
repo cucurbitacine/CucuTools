@@ -386,7 +386,7 @@ namespace CucuTools.PlayerSystem
                 _bodyRotation = Quaternion.Lerp(rigid.rotation, _bodyRotation, settings.dampView * deltaTime);
             }
 
-            if (overrideAngularVelocity)
+            if (overrideAngularVelocity && !ground.isPlatform)
             {
                 var frameRotation = Quaternion.Inverse(rigid.rotation) * _bodyRotation;
                 frameRotation.ToAngleAxis(out var angle, out var axis);
