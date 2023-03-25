@@ -2,22 +2,38 @@
 
 namespace CucuTools.DamageSystem
 {
-    /// <summary>
-    /// Behaviour which will be generating damage
-    /// </summary>
-    public abstract class DamageSource : DamageEffector
+    public abstract class DamageSource : MonoBehaviour
     {
-        [SerializeField] private bool isEnabled = true;
+        [Space] public bool isEnabled = true;
 
-        /// <summary>
-        /// Will be able to generating damage or not (it is assumed)
-        /// </summary>
-        public bool IsEnabled
+        [Space] public DamageManager manager = null;
+
+        public abstract Damage CreateDamage();
+
+        public DamageInfo GenerateDamage(DamageReceiver receiver)
         {
-            get => isEnabled;
-            set => isEnabled = value;
+            var info = new DamageInfo(CreateDamage(), this, receiver);
+
+            HandleDamage(info);
+
+            if (manager != null)
+            {
+                manager.HandleDamageAsSource(info);
+            }
+
+            return info;
         }
 
-        public abstract DamageInfo GenerateDamage();
+        public virtual void Damage(DamageReceiver receiver)
+        {
+            if (receiver.isEnabled)
+            {
+                receiver.ReceiveDamage(GenerateDamage(receiver));
+            }
+        }
+
+        protected virtual void HandleDamage(DamageInfo info)
+        {
+        }
     }
 }

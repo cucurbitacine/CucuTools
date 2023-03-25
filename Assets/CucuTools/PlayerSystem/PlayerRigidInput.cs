@@ -19,6 +19,7 @@ namespace CucuTools.PlayerSystem
         public bool sneak = false;
         public bool jump = false;
         
+        public bool shoot = false;
         public bool dragging = false;
         
         public Vector2 mouseScrollDelta = Vector2.zero;
@@ -36,6 +37,7 @@ namespace CucuTools.PlayerSystem
             sneak = Input.GetKey(KeyCode.LeftControl);
             jump = Input.GetKeyDown(KeyCode.Space);
 
+            shoot = Input.GetKeyDown(KeyCode.Mouse0);
             dragging =  Input.GetAxisRaw("Fire2") > 0f;
         }
 

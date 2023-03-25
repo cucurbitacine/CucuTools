@@ -3,35 +3,31 @@ using UnityEngine.Events;
 
 namespace CucuTools.DamageSystem
 {
-    /// <summary>
-    /// Behaviour which will be receiving damage
-    /// </summary>
-    [DisallowMultipleComponent]
-    public class DamageReceiver : DamageEffector
+    public class DamageReceiver : MonoBehaviour
     {
-        [SerializeField] private bool isEnabled = true;
         [Space]
-        [SerializeField] private UnityEvent<DamageEvent> _onDamageReceived = null;
+        public bool isEnabled = true;
 
-        /// <summary>
-        /// Will be receiving damage or not
-        /// </summary>
-        public bool IsEnabled
+        [Space]
+        public UnityEvent<DamageInfo> onDamageReceived = new UnityEvent<DamageInfo>();
+
+        [Space]
+        public DamageManager manager = null;
+
+        public void ReceiveDamage(DamageInfo info)
         {
-            get => isEnabled;
-            set => isEnabled = value;
-        }
-
-        public UnityEvent<DamageEvent> OnDamageReceived => _onDamageReceived != null
-            ? _onDamageReceived
-            : (_onDamageReceived = new UnityEvent<DamageEvent>());
-
-        public void ReceiveDamage(DamageEvent e)
-        {
-            if (IsEnabled && e.receiver == this)
+            HandleDamage(info);
+            
+            if (manager != null)
             {
-                OnDamageReceived.Invoke(e);
+                manager.HandleDamageAsReceiver(info);
             }
+            
+            onDamageReceived.Invoke(info);
+        }
+        
+        protected virtual void HandleDamage(DamageInfo info)
+        {
         }
     }
 }
