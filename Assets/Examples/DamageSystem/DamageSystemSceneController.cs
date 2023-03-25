@@ -120,6 +120,8 @@ namespace Examples.DamageSystem
 
         private void OnGUI()
         {
+            GUILayout.Space(128);
+            
             foreach (var msg in _messages)
             {
                 GUILayout.Box(msg.msg);

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Examples/IK/Scenes/IK Scene.unity
     guid: bd112948895c1544aa4baf07c8a83bc2
+  - enabled: 1
+    path: Assets/Examples/DamageSystem/DamageSystem Scene.unity
+    guid: 7c166c724c67c01459a4aa1632ac947e
   m_configObjects: {}
