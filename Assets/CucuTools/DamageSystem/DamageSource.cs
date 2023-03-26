@@ -4,10 +4,10 @@ namespace CucuTools.DamageSystem
 {
     public abstract class DamageSource : MonoBehaviour
     {
-        [Space] public bool isEnabled = true;
+        [Space] public bool mute = false;
 
-        [Space] public DamageManager manager = null;
-
+        public DamageManager manager = null;
+        
         public abstract Damage CreateDamage();
 
         public DamageInfo GenerateDamage(DamageReceiver receiver)
@@ -24,12 +24,11 @@ namespace CucuTools.DamageSystem
             return info;
         }
 
-        public virtual void Damage(DamageReceiver receiver)
+        public virtual void SendDamage(DamageReceiver receiver)
         {
-            if (receiver.isEnabled)
-            {
-                receiver.ReceiveDamage(GenerateDamage(receiver));
-            }
+            if (mute) return;
+            
+            receiver.ReceiveDamage(GenerateDamage(receiver));
         }
 
         protected virtual void HandleDamage(DamageInfo info)

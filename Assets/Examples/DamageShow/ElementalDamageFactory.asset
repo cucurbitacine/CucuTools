@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88796fd22e3b42ff8d1233a2cd2cff6d, type: 3}
-  m_Name: DamageSystem
+  m_Script: {fileID: 11500000, guid: 1ee8f7fbbc1d4315ab5989b933751f55, type: 3}
+  m_Name: ElementalDamageFactory
   m_EditorClassIdentifier: 
-  displayName: 'Damage System '
-  description: 
-  loader:
-    sceneName: DamageSystem Scene
+  template:
+    damageAmount: 1
+    criticalRate: 0.2
+    criticalDamage: 1

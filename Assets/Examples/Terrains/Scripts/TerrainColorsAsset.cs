@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Examples.Terrains.Scripts
 {
-    [CreateAssetMenu(menuName = "CucuTools/Terrain/" + nameof(TerrainColorsAsset), fileName = nameof(TerrainColorsAsset))]
+    [CreateAssetMenu(menuName = "Examples/Terrain/" + nameof(TerrainColorsAsset), fileName = nameof(TerrainColorsAsset), order = 0)]
     public class TerrainColorsAsset : ScriptableObject
     {
         public ColorPalette Palette;

@@ -1,5 +1,5 @@
 {
-    "name": "Examples.DamageSystem",
+    "name": "DamageShow",
     "rootNamespace": "",
     "references": [
         "GUID:cf6f0c5f6da603842a808a278924a433",

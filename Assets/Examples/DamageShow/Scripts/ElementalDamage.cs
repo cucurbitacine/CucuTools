@@ -1,6 +1,6 @@
 ﻿using CucuTools.DamageSystem;
 
-namespace Examples.DamageSystem
+namespace Examples.DamageShow.Scripts
 {
     public class ElementalDamage : Damage
     {

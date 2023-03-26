@@ -44,14 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872d92a50ef42b640878bd3580c0ea78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frequency: 120
+  damp: 8
   fps: 0
   smoothFPS: 0
   averageFPS: 0
   fpsHistoryLength: 60
-  group: 0
-  min: 0
-  max: 200
-  damp: 2
-  colorFPS: {r: 1, g: 0.5, b: 0.5, a: 1}
-  colorSmoothFPS: {r: 1, g: 1, b: 0.5, a: 1}
-  colorAverageFPS: {r: 0.5, g: 1, b: 0.5, a: 1}
+  fpsGroup: 0
+  monoHeapSize: 0
+  totalMemory: 0
+  heapMemoryGroup: 1
+  totalReserved: 0
+  unusedReserved: 0
+  totalAllocated: 0
+  reservedMemoryGroup: 2
+  _maxHeap: 0

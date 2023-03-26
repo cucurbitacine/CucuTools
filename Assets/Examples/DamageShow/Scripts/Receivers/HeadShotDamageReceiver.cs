@@ -1,6 +1,6 @@
 ﻿using CucuTools.DamageSystem;
 
-namespace Examples.DamageSystem
+namespace Examples.DamageShow.Scripts.Receivers
 {
     public class HeadShotDamageReceiver : DamageReceiver
     {

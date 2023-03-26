@@ -1,19 +1,13 @@
 ﻿using CucuTools.DamageSystem;
 using UnityEngine;
 
-namespace Examples.DamageSystem
+namespace Examples.DamageShow.Scripts.Sources
 {
-    public class ElementalGun : DamageSource
+    [CreateAssetMenu(menuName = "Examples/Damage/" + nameof(ElementalDamageFactory), fileName = nameof(ElementalDamageFactory), order = 0)]
+    public class ElementalDamageFactory : DamageFactory
     {
-        [Space]
-        public int damageAmount = 1;
+        [Space] public DamageTemplate template = new DamageTemplate();
         
-        [Space]
-        [Range(0, 100)]
-        public int criticalRate = 20;
-        [Min(0)]
-        public int criticalDamage = 100;
-
         public override Damage CreateDamage()
         {
             Damage dmg;
@@ -27,15 +21,9 @@ namespace Examples.DamageSystem
                 case 4: dmg = new LightningDamage(); break;
                 default: dmg = new Damage(); break;
             }
-            
-            dmg.amount = damageAmount;
-            
-            dmg.critical = Random.Range(0, 99) < criticalRate;
-            if (dmg.critical)
-            {
-                dmg.amount += (int)(dmg.amount * (criticalDamage / 100f));
-            }
-            
+
+            template.Apply(dmg);
+
             return dmg;
         }
     }

@@ -6,16 +6,17 @@ namespace CucuTools.DamageSystem
     public class DamageReceiver : MonoBehaviour
     {
         [Space]
-        public bool isEnabled = true;
+        public bool mute = false;
 
+        public DamageManager manager = null;
+        
         [Space]
         public UnityEvent<DamageInfo> onDamageReceived = new UnityEvent<DamageInfo>();
 
-        [Space]
-        public DamageManager manager = null;
-
         public void ReceiveDamage(DamageInfo info)
         {
+            if (mute) return;
+            
             HandleDamage(info);
             
             if (manager != null)

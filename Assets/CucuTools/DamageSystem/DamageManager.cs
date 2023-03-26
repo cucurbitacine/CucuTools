@@ -48,4 +48,22 @@ namespace CucuTools.DamageSystem
             }
         }
     }
+    
+    /*
+     * *** SEQUENCE OF METHODS CALLS ***
+     * 
+     * DamageSource: void SendDamage(DamageReceiver receiver)
+     *    DamageSource: DamageInfo GenerateDamage(DamageReceiver receiver)
+     *       DamageSource : Damage CreateDamage()
+     *       DamageSource : void HandleDamage(DamageInfo info)
+     *       DamageManager: void HandleDamageAsSource(DamageInfo info)
+     *
+     *    DamageReceiver: void ReceiveDamage(DamageInfo info)
+     *       DamageReceiver: void HandleDamage(DamageInfo info)
+     *       DamageManager : void HandleDamageAsReceiver(DamageInfo info)
+     *       DamageReceiver: onDamageReceived.Invoke(info)
+     *
+     * DamageManager: void ReceiveDamage(DamageInfo info)
+     * DamageManager: void HandleDamageAsReceiver(DamageInfo info)
+     */
 }

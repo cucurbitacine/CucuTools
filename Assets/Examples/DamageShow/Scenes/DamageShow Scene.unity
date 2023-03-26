@@ -234,11 +234,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &25564634
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,20 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 9160474}
@@ -423,6 +410,9 @@ MonoBehaviour:
   - {fileID: 1623504836}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &50658431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,6 +476,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 50658431}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &50658433
 Transform:
   m_ObjectHideFlags: 0
@@ -501,7 +495,7 @@ Transform:
   - {fileID: 1339386113}
   - {fileID: 282101118}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &64411754
 GameObject:
@@ -646,11 +640,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &69609060
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -830,20 +824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 1492480109}
@@ -852,6 +833,9 @@ MonoBehaviour:
   - {fileID: 1463670926}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &135502758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,6 +899,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 135502758}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &135502760
 Transform:
   m_ObjectHideFlags: 0
@@ -930,7 +918,7 @@ Transform:
   - {fileID: 301723229}
   - {fileID: 527283093}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &141577387
 GameObject:
@@ -1430,11 +1418,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &282101117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,11 +1491,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &292143904
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1620,11 +1608,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &301723226
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1852,11 +1840,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &356488870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1986,11 +1974,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &376199671
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2134,20 +2122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 1033943029}
@@ -2156,6 +2131,9 @@ MonoBehaviour:
   - {fileID: 1388662324}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &396083451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2219,6 +2197,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 396083451}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &396083453
 Transform:
   m_ObjectHideFlags: 0
@@ -2234,7 +2216,7 @@ Transform:
   - {fileID: 1893886005}
   - {fileID: 895199748}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &410848592
 GameObject:
@@ -2444,11 +2426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &469181442
 GameObject:
   m_ObjectHideFlags: 0
@@ -2459,6 +2441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 469181443}
   - component: {fileID: 469181446}
+  - component: {fileID: 469181447}
   m_Layer: 0
   m_Name: Scene Controller
   m_TagString: Untagged
@@ -2477,8 +2460,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1460643163}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2494,14 +2476,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e5d8a69b0a5c414688f3674cab13bc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 648860617}
+  gun: {fileID: 648860617}
   input: {fileID: 1536721065}
-  shootLayers:
-    serializedVersion: 2
-    m_Bits: 4
+  logger: {fileID: 469181447}
+--- !u!114 &469181447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469181442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d067021eddba44b1a7b87aa3270047a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   messageLife: 5
-  delay: 0.1
-  projectile: {fileID: 1460643164}
 --- !u!1 &471148361
 GameObject:
   m_ObjectHideFlags: 0
@@ -2710,11 +2700,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &507365696
 GameObject:
   m_ObjectHideFlags: 0
@@ -2958,11 +2948,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &648860616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2974,7 +2964,7 @@ GameObject:
   - component: {fileID: 648860618}
   - component: {fileID: 648860617}
   m_Layer: 0
-  m_Name: Elemental Gun
+  m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2992,11 +2982,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cb01bd96574ab4872566fda04a570d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
   manager: {fileID: 0}
-  damageAmount: 2
-  criticalRate: 20
-  criticalDamage: 100
+  factory: {fileID: 11400000, guid: 8a0bfa242a49388459f0a57237f23aab, type: 2}
+  level: 1
+  shootLayers:
+    serializedVersion: 2
+    m_Bits: 4
+  projectileLife: 0.1
+  projectile: {fileID: 1460643164}
 --- !u!4 &648860618
 Transform:
   m_ObjectHideFlags: 0
@@ -3011,6 +3005,7 @@ Transform:
   m_Children:
   - {fileID: 195865467}
   - {fileID: 729759747}
+  - {fileID: 1460643163}
   m_Father: {fileID: 2136024070}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3561,20 +3556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 309831390}
@@ -3583,6 +3565,9 @@ MonoBehaviour:
   - {fileID: 1549012316}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &716935362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3646,6 +3631,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 716935362}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &716935364
 Transform:
   m_ObjectHideFlags: 0
@@ -3661,7 +3650,7 @@ Transform:
   - {fileID: 1965426613}
   - {fileID: 88186310}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &729759746
 GameObject:
@@ -3855,7 +3844,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &761747674
 GameObject:
@@ -3967,11 +3956,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &780013076
 GameObject:
   m_ObjectHideFlags: 0
@@ -4082,11 +4071,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &782649208
 GameObject:
   m_ObjectHideFlags: 0
@@ -4295,11 +4284,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &813959664
 GameObject:
   m_ObjectHideFlags: 0
@@ -4410,11 +4399,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &827584733
 GameObject:
   m_ObjectHideFlags: 0
@@ -4774,11 +4763,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &928316925
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4953,7 +4942,7 @@ RectTransform:
   m_Children:
   - {fileID: 1967931781}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5159,7 +5148,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1015809142
 GameObject:
@@ -5272,11 +5261,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1016289007
 GameObject:
   m_ObjectHideFlags: 0
@@ -5309,11 +5298,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &1016289009
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5502,11 +5491,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1028389550
 GameObject:
   m_ObjectHideFlags: 0
@@ -5715,11 +5704,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1034271554
 GameObject:
   m_ObjectHideFlags: 0
@@ -5950,6 +5939,63 @@ Transform:
   m_Father: {fileID: 1487660444}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1120588642
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1337687515100347537, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_Name
+      value: Debug FPS
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1337687515100347539, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
 --- !u!1 &1141681158
 GameObject:
   m_ObjectHideFlags: 0
@@ -5979,7 +6025,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1169431247
 GameObject:
@@ -6288,7 +6334,7 @@ Transform:
   m_Children:
   - {fileID: 2136024070}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1202397709
 MonoBehaviour:
@@ -6664,20 +6710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 463971900}
@@ -6686,6 +6719,9 @@ MonoBehaviour:
   - {fileID: 1016289008}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1331494354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6749,6 +6785,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1331494354}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &1331494356
 Transform:
   m_ObjectHideFlags: 0
@@ -6764,7 +6804,7 @@ Transform:
   - {fileID: 292143907}
   - {fileID: 2022367248}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1339386108
 GameObject:
@@ -6798,11 +6838,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &1339386110
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7012,11 +7052,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &1381276085
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7129,11 +7169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &1388662325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7241,7 +7281,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1405118985
 GameObject:
@@ -7461,13 +7501,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1460643162}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 469181443}
-  m_RootOrder: 0
+  m_Father: {fileID: 648860618}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &1460643164
 LineRenderer:
@@ -7598,11 +7638,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &1463670927
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7791,11 +7831,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1487660438
 GameObject:
   m_ObjectHideFlags: 0
@@ -7861,20 +7901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 1015809147}
@@ -7883,6 +7910,9 @@ MonoBehaviour:
   - {fileID: 376199670}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1487660442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7946,6 +7976,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1487660442}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &1487660444
 Transform:
   m_ObjectHideFlags: 0
@@ -7961,7 +7995,7 @@ Transform:
   - {fileID: 1381276088}
   - {fileID: 1103033546}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1492480104
 GameObject:
@@ -8074,11 +8108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1496145721
 GameObject:
   m_ObjectHideFlags: 0
@@ -8288,11 +8322,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1536721064
 GameObject:
   m_ObjectHideFlags: 0
@@ -8347,7 +8381,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1549012315
 GameObject:
@@ -8381,11 +8415,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &1549012317
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8493,7 +8527,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1608506393
 GameObject:
@@ -8596,20 +8630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 1621324702}
@@ -8618,6 +8639,9 @@ MonoBehaviour:
   - {fileID: 69609059}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1615863840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8681,6 +8705,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1615863840}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &1615863842
 Transform:
   m_ObjectHideFlags: 0
@@ -8696,7 +8724,7 @@ Transform:
   - {fileID: 2108584102}
   - {fileID: 1608506394}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1621324697
 GameObject:
@@ -8809,11 +8837,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1623504835
 GameObject:
   m_ObjectHideFlags: 0
@@ -8846,11 +8874,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &1623504837
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9264,11 +9292,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1680373742
 GameObject:
   m_ObjectHideFlags: 0
@@ -9298,7 +9326,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1722040181
 GameObject:
@@ -9410,11 +9438,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &1724805960
 GameObject:
   m_ObjectHideFlags: 0
@@ -9447,11 +9475,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!65 &1724805962
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9559,7 +9587,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1751854492
 GameObject:
@@ -9626,20 +9654,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 498154211}
@@ -9648,6 +9663,9 @@ MonoBehaviour:
   - {fileID: 1724805961}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1751854496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9711,6 +9729,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1751854496}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 4
 --- !u!4 &1751854498
 Transform:
   m_ObjectHideFlags: 0
@@ -9726,7 +9748,7 @@ Transform:
   - {fileID: 928316928}
   - {fileID: 974201707}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1810323638
 GameObject:
@@ -9954,11 +9976,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &1893886002
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10168,11 +10190,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &1965426610
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10669,11 +10691,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!1 &2108584097
 GameObject:
   m_ObjectHideFlags: 0
@@ -10706,11 +10728,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isEnabled: 1
+  mute: 0
+  manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
-  manager: {fileID: 0}
 --- !u!135 &2108584099
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10827,7 +10849,7 @@ Transform:
   - {fileID: 1501988098}
   - {fileID: 306186512}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &2125724901
 MonoBehaviour:
@@ -10843,20 +10865,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 469181446}
-        m_TargetAssemblyTypeName: Examples.DamageSystem.DamageSystemSceneController,
-          Examples.DamageSystem
-        m_MethodName: LogDamage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   sources: []
   receivers:
   - {fileID: 788133767}
@@ -10865,6 +10874,9 @@ MonoBehaviour:
   - {fileID: 780013081}
   health: 0
   healthTotal: 16
+  onDied:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &2125724902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10958,6 +10970,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2125724904}
   target: {fileID: 1202397707}
+  zombie: {fileID: 0}
+  wasHit: 0
+  freezeDurationAfterHit: 0.2
+  damp: 8
 --- !u!1 &2136024069
 GameObject:
   m_ObjectHideFlags: 0

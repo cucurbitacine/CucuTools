@@ -105,6 +105,7 @@ namespace CucuTools.PlayerSystem
         public void Stop()
         {
             Move(Vector3.zero);
+            Rotate(Vector2.zero);
         }
         
         public void MoveLocal(Vector3 localDirection)

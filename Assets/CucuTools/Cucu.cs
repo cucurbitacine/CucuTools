@@ -16,6 +16,7 @@ namespace CucuTools
         public const string StateMachineGroup = "State Machine/";
         public const string SurfaceGroup = "Surfaces/";
         public const string SerializationGroup = "Serialization/";
+        public const string DamageGroup = "Damage System/";
 
         #region Physics
 
