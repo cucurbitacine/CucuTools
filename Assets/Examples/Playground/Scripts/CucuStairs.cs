@@ -6,7 +6,7 @@ namespace CucuTools.Builders
 {
     public class CucuStairs : CucuBehaviour
     {
-        [CucuReadOnly]
+        [ReadOnly]
         [SerializeField] private Vector2 stepSize;
         
         [Header("Settings")]
@@ -40,7 +40,7 @@ namespace CucuTools.Builders
         public float StepDepth => Depth / StepsCount;
         public float StepHeight => Height / StepsCount;
 
-        [CucuButton()]
+        [Button()]
         [ContextMenu(nameof(Build))]
         public void Build()
         {

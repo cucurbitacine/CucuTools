@@ -18,7 +18,7 @@ namespace Examples.Playground.Scripts
         public float fovDamp = 4;
         public Camera playerCamera;
         
-        public PlayerRigidController player => input.player;
+        public PlayerRigidController player => input.playerCurrent;
 
         private float _fieldOfView;
         
@@ -40,7 +40,7 @@ namespace Examples.Playground.Scripts
                 player.settings.speed = sneakSpeedMax;
             }
 
-            var fov = input.run && input.player.info.isMoving ? runFieldOfView : _fieldOfView;
+            var fov = input.run && input.playerCurrent.info.isMoving ? runFieldOfView : _fieldOfView;
             
             fov = input.sneak ? _fieldOfView - (runFieldOfView - _fieldOfView) : fov;
             

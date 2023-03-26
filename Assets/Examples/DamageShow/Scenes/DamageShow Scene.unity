@@ -425,12 +425,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 50658431}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -848,12 +848,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -868,7 +868,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -897,7 +897,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 135502758}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -2146,12 +2146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -2166,7 +2166,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -2195,7 +2195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 396083451}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -2986,6 +2986,7 @@ MonoBehaviour:
   manager: {fileID: 0}
   factory: {fileID: 11400000, guid: 8a0bfa242a49388459f0a57237f23aab, type: 2}
   level: 1
+  sleepAfterShoot: 0.25
   shootLayers:
     serializedVersion: 2
     m_Bits: 4
@@ -3580,12 +3581,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -3600,7 +3601,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -3629,7 +3630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 716935362}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -6283,12 +6284,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 4
     speedModificator: 1
@@ -6303,7 +6304,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -6734,12 +6735,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -6754,7 +6755,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -6783,7 +6784,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1331494354}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -7925,12 +7926,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -7945,7 +7946,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -7974,7 +7975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1487660442}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -8356,7 +8357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029aacfa3ca24fcab09be6bb84a7ff62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1202397707}
+  playerCurrent: {fileID: 1202397707}
   isEnabled: 1
   sensitivity: {x: 4, y: 4}
   move: {x: 0, y: 0, z: 0}
@@ -8368,6 +8369,7 @@ MonoBehaviour:
   shoot: 0
   dragging: 0
   mouseScrollDelta: {x: 0, y: 0}
+  drag: {fileID: 0}
 --- !u!4 &1536721066
 Transform:
   m_ObjectHideFlags: 0
@@ -8654,12 +8656,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -8674,7 +8676,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -8703,7 +8705,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1615863840}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -9678,12 +9680,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -9698,7 +9700,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -9727,7 +9729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1751854496}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0
@@ -10919,12 +10921,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 1
     speedModificator: 1
@@ -10939,7 +10941,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -10968,7 +10970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff19144a45c34750a45447a91da5f01e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2125724904}
+  playerCurrent: {fileID: 0}
   target: {fileID: 1202397707}
   zombie: {fileID: 0}
   wasHit: 0

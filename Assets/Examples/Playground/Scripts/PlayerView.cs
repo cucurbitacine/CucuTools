@@ -13,7 +13,7 @@ namespace Examples.Playground.Scripts
         {
             if (target != null) point = target.position;
 
-            player.LookAt(point);
+            playerCurrent.LookAt(point);
         }
     }
 }

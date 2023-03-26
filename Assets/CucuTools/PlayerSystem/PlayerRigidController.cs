@@ -7,9 +7,9 @@ namespace CucuTools.PlayerSystem
         #region SerializeField
 
         [Space]
-        public PlayerInfo info = new PlayerInfo();
-        public PlayerSettings settings = new PlayerSettings();
-        public GroundSettings ground = new GroundSettings();
+        [SerializeField] private PlayerInfo _info = new PlayerInfo();
+        [SerializeField] private PlayerSettings _settings = new PlayerSettings();
+        [SerializeField] private GroundSettings _ground = new GroundSettings();
 
         [Space]
         public Transform _eyes = null;
@@ -18,6 +18,7 @@ namespace CucuTools.PlayerSystem
 
         #region Private Fields
 
+        private Vector3 _moveDirection = Vector3.zero;
         private Vector3 _velocityMove = Vector3.zero;
         private Vector3 _velocityJump = Vector3.zero;
         private Vector3 _velocityFall = Vector3.zero;
@@ -43,38 +44,28 @@ namespace CucuTools.PlayerSystem
         
         #endregion
 
-        #region Public Properties
+        #region PlayerController
 
-        public Rigidbody rigid => GetOrAddRigidbody();
-        public CapsuleCollider capsule => GetOrAddCapsule();
+        public override PlayerInfo info => _info;
+        public override PlayerSettings settings => _settings;
+        public override GroundSettings ground => _ground;
+        public override Transform eyes => _eyes != null ? _eyes : (_eyes = rigid.transform);
+        public override Rigidbody rigid => GetOrAddRigidbody();
+        public override CapsuleCollider capsule => GetOrAddCapsule();
 
-        public Transform eyes => _eyes != null ? _eyes : (_eyes = rigid.transform);
-        public Transform body => rigid.transform;
-        
-        public Vector3 position => body.position;
-        public Quaternion rotation => body.rotation;
-        public Vector3 up => Vector3.up;
-        public Vector3 velocity => _velocityMove + _velocityJump + _velocityFall + _velocityAir + _velocityPlatform;
-        
-        public Vector3 moveDirection { get; private set; }
-        
-        #endregion
-
-        #region Public API
-
-        public void Move(Vector3 direction)
+        public override void Move(Vector3 direction)
         {
-            moveDirection = direction.normalized;
+            _moveDirection = direction.normalized;
 
-            info.isMoving = moveDirection != Vector3.zero;
+            info.isMoving = _moveDirection != Vector3.zero;
         }
 
-        public void Rotate(Vector2 viewInput)
+        public override void Rotate(Vector2 viewInput)
         {
             _viewInput = viewInput;
         }
 
-        public void LookIn(Vector3 direction)
+        public override void LookIn(Vector3 direction)
         {
             if (direction.sqrMagnitude == 0) return;
 
@@ -86,33 +77,46 @@ namespace CucuTools.PlayerSystem
             _viewAngle.y += angY;
         }
 
-        public void LookAt(Vector3 point)
+        public override void LookAt(Vector3 point)
         {
             LookIn(point - eyes.position);
         }
         
-        public void Jump()
+        public override void Jump()
         {
             if (settings.canJump && _ableJump)
             {
-                _velocityJump = up * Mathf.Sqrt(2 * settings.jumpHeight * settings.gravity.magnitude);;
+                _velocityJump = Vector3.up * Mathf.Sqrt(2 * settings.jumpHeight * settings.gravity.magnitude);;
                 
                 _ableJump = false;
                 info.isJumping = true;
             }
         }
 
-        public void Stop()
+        public override void Stop()
         {
             Move(Vector3.zero);
             Rotate(Vector2.zero);
         }
         
-        public void MoveLocal(Vector3 localDirection)
+        public override void MoveLocal(Vector3 localDirection)
         {
             Move(body.transform.TransformDirection(localDirection));
         }
+        
+        #endregion
+        
+        #region Public Properties
+        
+        public Transform body => rigid.transform;
+        
+        public Vector3 position => body.position;
+        public Quaternion rotation => body.rotation;
 
+        public Vector3 velocity => _velocityMove + _velocityJump + _velocityFall + _velocityAir + _velocityPlatform + velocityExternal;
+
+        public Vector3 velocityExternal { get; set; }
+        
         #endregion
 
         #region Private API
@@ -183,7 +187,7 @@ namespace CucuTools.PlayerSystem
             if (ground.isGround)
             {
                 // calculate move direction relative of ground
-                var moveDir = settings.canMove ? moveDirection : Vector3.zero;
+                var moveDir = settings.canMove ? _moveDirection : Vector3.zero;
                 moveDir = Vector3.ProjectOnPlane(moveDir, ground.hit.normal).normalized;
                 
                 // calculate velocity movement
@@ -275,8 +279,8 @@ namespace CucuTools.PlayerSystem
                 {
                     var offset = 0.01f;
                     var radius = capsule.radius;
-                    var origin = position + up * (capsule.height - radius - offset);
-                    var direction = up;
+                    var origin = position + Vector3.up * (capsule.height - radius - offset);
+                    var direction = Vector3.up;
                     var distance = 2 * offset;
 
                     if (Physics.SphereCast(origin, radius, direction, out var hit, distance, ground.layerGround))
@@ -301,7 +305,7 @@ namespace CucuTools.PlayerSystem
             else
             {
                 // calculate direction movement
-                var moveDir = settings.canMove ? moveDirection : Vector3.zero;
+                var moveDir = settings.canMove ? _moveDirection : Vector3.zero;
 
                 // calculate air velocity 
                 var velocityAir = moveDir * settings.speed;
@@ -354,7 +358,7 @@ namespace CucuTools.PlayerSystem
             // if ground is platform - add platform's angular velocity
             if (ground.isPlatform)
             {
-                var angVelPlatform = Vector3.Project(ground.hit.rigidbody.angularVelocity, up);
+                var angVelPlatform = Vector3.Project(ground.hit.rigidbody.angularVelocity, Vector3.up);
 
                 angVel += angVelPlatform;
             }
@@ -376,7 +380,7 @@ namespace CucuTools.PlayerSystem
         {
             if (ground.isPlatform)
             {
-                var angVelPlatform = Vector3.Project(ground.hit.rigidbody.angularVelocity, up);
+                var angVelPlatform = Vector3.Project(ground.hit.rigidbody.angularVelocity, Vector3.up);
                 _initRotation = Quaternion.AngleAxis(Mathf.Rad2Deg * angVelPlatform.y * deltaTime, Vector3.up) * _initRotation;
             }
 
@@ -405,7 +409,7 @@ namespace CucuTools.PlayerSystem
             if (useMoveRotation) rigid.MoveRotation(_bodyRotation);
             
             // dont touch. it is working. really. it is saving from sharp and small losing of ground
-            rigid.useGravity = ground.isGround && moveDirection != Vector3.zero;
+            rigid.useGravity = ground.isGround && _moveDirection != Vector3.zero;
         }
         
         private void UpdateGround(float deltaTime)
@@ -414,7 +418,7 @@ namespace CucuTools.PlayerSystem
             ground.radiusCheck = capsule.radius;
             
             // update ground info
-            ground.UpdateGround(position, up);
+            ground.UpdateGround(position, Vector3.up);
         }
 
         #endregion
@@ -464,7 +468,7 @@ namespace CucuTools.PlayerSystem
 
         private void OnDrawGizmos()
         {
-            var ray = ground.GetRaySphereCast(position, up);
+            var ray = ground.GetRaySphereCast(position, Vector3.up);
             var radius = ground.GetRadiusSphereCast();
             var distance = ground.GetDistanceSphereCast();
             

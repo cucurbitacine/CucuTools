@@ -9,7 +9,8 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
     {
         [Space]
         public bool isOn = true;
-
+        public bool inputDragging = false;
+        
         [Space]
         public bool isDragging = false;
         public DraggableBase current = null;
@@ -47,7 +48,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         public PhysicMaterial dragPhysicMaterial = null;
         
         [Header("References")] 
-        public PlayerRigidInput input = null;
+        public PlayerInput input = null;
         public TouchController touch = null;
 
         private Coroutine _dragging = null;
@@ -215,11 +216,11 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
             var t = Mathf.Max(0, mass) / maxMass;
             return powerPerMass.Evaluate(t);
         }
-
+        
         private void UpdateInput(out bool startDragging, out bool stopDragging)
         {
             _wasDragging = _nowDragging;
-            _nowDragging = input.dragging;
+            _nowDragging = inputDragging;
 
             startDragging = !_wasDragging && _nowDragging;
             stopDragging = _wasDragging && !_nowDragging;

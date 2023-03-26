@@ -9200,6 +9200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOn: 1
+  inputDragging: 0
   isDragging: 0
   current: {fileID: 0}
   fastDrag: 0
@@ -19585,12 +19586,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 2
     speedModificator: 1
@@ -19605,7 +19606,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -24495,12 +24496,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info:
+  _info:
     isMoving: 0
     isJumping: 0
     isFalling: 0
     isGrounded: 0
-  settings:
+  _settings:
     canMove: 1
     speedMax: 2
     speedModificator: 1
@@ -24515,7 +24516,7 @@ MonoBehaviour:
     jumpHeight: 1
     jumpDelay: 0.2
     gravity: {x: 0, y: -9.81, z: 0}
-  ground:
+  _ground:
     isGround: 0
     isPlatform: 0
     wasGround: 0
@@ -27082,7 +27083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029aacfa3ca24fcab09be6bb84a7ff62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1602473314}
+  playerCurrent: {fileID: 1602473314}
   isEnabled: 1
   sensitivity: {x: 4, y: 4}
   move: {x: 0, y: 0, z: 0}
@@ -27091,8 +27092,10 @@ MonoBehaviour:
   run: 0
   sneak: 0
   jump: 0
+  shoot: 0
   dragging: 0
   mouseScrollDelta: {x: 0, y: 0}
+  drag: {fileID: 640915595}
 --- !u!4 &1738233875
 Transform:
   m_ObjectHideFlags: 0
@@ -32393,7 +32396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c97bf3fa5eb48949184a71f4a4a7f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1256147362}
+  playerCurrent: {fileID: 0}
   point: {x: 0, y: 0, z: 0}
   target: {fileID: 1924478059}
 --- !u!4 &2082129300

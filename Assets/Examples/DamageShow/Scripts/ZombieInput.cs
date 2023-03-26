@@ -30,19 +30,19 @@ namespace Examples.DamageShow.Scripts
             {
                 if (wasHit)
                 {
-                    player.Stop();
+                    playerCurrent.Stop();
                     yield return new WaitForSeconds(freezeDurationAfterHit);
                     wasHit = false;
                 }
 
-                var move = target.position - player.position;
+                var move = target.position - playerCurrent.position;
                 var look = target.eyes.position;
 
                 _lastMove = Vector3.Lerp(_lastMove, move, Time.deltaTime * damp);
                 _lastLook = Vector3.Lerp(_lastLook, look, Time.deltaTime * damp);
                 
-                player.Move(_lastMove);
-                player.LookAt(_lastLook);
+                playerCurrent.Move(_lastMove);
+                playerCurrent.LookAt(_lastLook);
 
                 yield return null;
             }
@@ -50,6 +50,7 @@ namespace Examples.DamageShow.Scripts
 
         private void Awake()
         {
+            if (playerCurrent == null) playerCurrent = GetComponent<PlayerRigidController>();
             if (zombie == null) zombie = GetComponent<ZombieDamageManager>();
         }
 

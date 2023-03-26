@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using CucuTools.PlayerSystem;
+using CucuTools.PlayerSystem.Visions.Dragging;
+using UnityEngine;
 
-namespace CucuTools.PlayerSystem
+namespace Examples
 {
     public class PlayerRigidInput : PlayerInput<PlayerRigidController>
     {
@@ -24,6 +26,8 @@ namespace CucuTools.PlayerSystem
         
         public Vector2 mouseScrollDelta = Vector2.zero;
         
+        public DragController drag = null;
+        
         private void UpdateInput()
         {
             move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
@@ -38,18 +42,20 @@ namespace CucuTools.PlayerSystem
             jump = Input.GetKeyDown(KeyCode.Space);
 
             shoot = Input.GetKeyDown(KeyCode.Mouse0);
-            dragging =  Input.GetAxisRaw("Fire2") > 0f;
+            dragging = Input.GetKey(KeyCode.Mouse2);
         }
 
         private void UpdatePlayer()
         {
-            player.MoveLocal(move);
+            playerCurrent.MoveLocal(move);
 
             angles = Vector2.Scale(view, sensitivity);
             
-            player.Rotate(angles);
+            playerCurrent.Rotate(angles);
         
-            if (jump) player.Jump();
+            if (jump) playerCurrent.Jump();
+
+            if (drag) drag.inputDragging = dragging;
         }
 
         private void Update()
@@ -58,7 +64,7 @@ namespace CucuTools.PlayerSystem
             {
                 UpdateInput();
 
-                if (player != null) UpdatePlayer();
+                if (playerCurrent != null) UpdatePlayer();
             }
 
             if (Input.GetKeyDown(KeyCode.P)) isEnabled = !isEnabled;

@@ -15,9 +15,9 @@ namespace CucuTools.StateMachines
         public bool updateOnStart = true;
         
         [Header("Condition")]
-        [CucuReadOnly]
+        [ReadOnly]
         [SerializeField] private string key;
-        [CucuReadOnly]
+        [ReadOnly]
         [SerializeField] private bool value;
         
         [Space]
@@ -31,19 +31,19 @@ namespace CucuTools.StateMachines
             condition.Value = newValue;
         }
         
-        [CucuButton("True", group:"Condition")]
+        [Button("True", group:"Condition")]
         public void True()
         {
             SetValue(true);
         }
         
-        [CucuButton("False", group:"Condition")]
+        [Button("False", group:"Condition")]
         public void False()
         {
             SetValue(false);
         }
 
-        [CucuButton("Toggle", group:"Condition")]
+        [Button("Toggle", group:"Condition")]
         public void Toggle()
         {
             SetValue(!Value);

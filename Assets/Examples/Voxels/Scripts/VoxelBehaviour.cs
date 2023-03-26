@@ -8,7 +8,7 @@ namespace Examples.Voxels.Scripts
 {
     public class VoxelBehaviour : CucuBehaviour
     {
-        [CucuLayer] public int LayerVoxel = 0;
+        [LayerMask] public int LayerVoxel = 0;
 
         [Space] public CucuCluster Cluster;
 
@@ -16,7 +16,7 @@ namespace Examples.Voxels.Scripts
 
         [Header("Editor")] public bool drawGizmos = false;
         
-        [CucuButton()]
+        [Button()]
         public void Clear()
         {
             if (gameObject.TryGetComponent<MeshFilter>(out var meshFilter))
@@ -31,7 +31,7 @@ namespace Examples.Voxels.Scripts
             }
         }
 
-        [CucuButton()]
+        [Button()]
         public void Build()
         {
             Cluster.Position = transform.position;

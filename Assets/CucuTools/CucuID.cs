@@ -9,7 +9,7 @@ namespace CucuTools
     {
         public static implicit operator Guid(CucuID cuid) => cuid.Guid;
         
-        [CucuReadOnly]
+        [ReadOnly]
         [SerializeField] private string _guid = string.Empty;
 
         public Guid Guid

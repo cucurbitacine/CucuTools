@@ -11,7 +11,7 @@ namespace Examples.IK.Scripts
     {
         #region SerializeField
         
-        [CucuReadOnly]
+        [ReadOnly]
         [SerializeField] private bool solved = false;
         
         [Space]

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using CucuTools.DamageSystem;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace Examples.DamageShow.Scripts.Sources
         public int level = 1;
 
         [Space]
+        public float sleepAfterShoot = 1f;
         public LayerMask shootLayers = 1;
         
         [Space]
@@ -18,10 +20,16 @@ namespace Examples.DamageShow.Scripts.Sources
         public LineRenderer projectile;
 
         private Coroutine _projectileLiving = null;
+
+        private bool _sleepGun = false;
         
         public void Shoot(Ray ray)
         {
             if (mute) return;
+
+            if (_sleepGun) return;
+
+            _sleepGun = true;
             
             if (Physics.Raycast(ray, out var hit, 100f, shootLayers))
             {
@@ -68,6 +76,25 @@ namespace Examples.DamageShow.Scripts.Sources
             yield return new WaitForSeconds(projectileLife);
 
             projectile.enabled = false;
+        }
+
+        private IEnumerator _SleepHandle()
+        {
+            while (true)
+            {
+                if (_sleepGun)
+                {
+                    yield return new WaitForSeconds(sleepAfterShoot);
+                    _sleepGun = false;
+                }
+
+                yield return null;
+            }
+        }
+
+        private void Start()
+        {
+            StartCoroutine(_SleepHandle());
         }
     }
 }

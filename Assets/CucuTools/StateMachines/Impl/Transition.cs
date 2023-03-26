@@ -182,7 +182,7 @@ namespace CucuTools.StateMachines.Impl
 
         #endregion
         
-        [CucuButton("Update Name", group: "Transition")]
+        [Button("Update Name", group: "Transition")]
         private void UpdateTransitionName()
         {
 #if UNITY_EDITOR

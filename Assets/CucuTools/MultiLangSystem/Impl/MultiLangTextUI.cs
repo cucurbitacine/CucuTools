@@ -12,10 +12,10 @@ namespace CucuTools.MultiLangSystem.Impl
 
         #region SerializeField
 
-        [CucuReadOnly]
+        [ReadOnly]
         [SerializeField] private string textDisplay;
         
-        [CucuReadOnly]
+        [ReadOnly]
         [SerializeField] private bool isValid;
         [SerializeField] private ContentSource<string> contentSource;
 

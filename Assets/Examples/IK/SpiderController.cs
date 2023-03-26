@@ -29,7 +29,7 @@ namespace Examples.IK
         [Range(0f, 180f)]
         public float angleMax = 15f;
 
-        [CucuButton()]
+        [Button()]
         private void BuildLegs()
         {
             for (var i = 0; i < Legs.Length; i++)
