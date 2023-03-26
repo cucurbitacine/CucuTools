@@ -10,6 +10,9 @@ namespace Examples
         public bool isEnabled = true;
 
         [Space]
+        public DragController drag = null;
+        
+        [Space]
         public Vector2 sensitivity = Vector2.one * 4;
         
         [Space]
@@ -25,9 +28,7 @@ namespace Examples
         public bool dragging = false;
         
         public Vector2 mouseScrollDelta = Vector2.zero;
-        
-        public DragController drag = null;
-        
+
         private void UpdateInput()
         {
             move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
@@ -42,7 +43,7 @@ namespace Examples
             jump = Input.GetKeyDown(KeyCode.Space);
 
             shoot = Input.GetKeyDown(KeyCode.Mouse0);
-            dragging = Input.GetKey(KeyCode.Mouse2);
+            dragging = Input.GetKey(KeyCode.Mouse1);
         }
 
         private void UpdatePlayer()

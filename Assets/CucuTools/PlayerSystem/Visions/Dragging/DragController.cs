@@ -48,7 +48,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         public PhysicMaterial dragPhysicMaterial = null;
         
         [Header("References")] 
-        public PlayerInput input = null;
+        public PlayerController player = null;
         public TouchController touch = null;
 
         private Coroutine _dragging = null;
@@ -159,7 +159,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
             {
                 for (var i = 0; i < cld.Length; i++)
                 {
-                    Physics.IgnoreCollision(input.player.capsule, cld[i], ignore);
+                    Physics.IgnoreCollision(player.capsule, cld[i], ignore);
                 } 
             }
         }
@@ -266,9 +266,9 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
                         rotation = Quaternion.Lerp(rotation, current.rotation, dragSmooth);
                     }
 
-                    if (input.player.ground.isPlatform)
+                    if (player.ground.isPlatform)
                     {
-                        var platformStep = input.player.ground.hit.rigidbody.velocity * Time.fixedDeltaTime;
+                        var platformStep = player.ground.hit.rigidbody.velocity * Time.fixedDeltaTime;
                         position += platformStep;
                     }
 

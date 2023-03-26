@@ -11,23 +11,23 @@ namespace CucuTools.DamageSystem
         public DamageManager manager = null;
         
         [Space]
-        public UnityEvent<DamageInfo> onDamageReceived = new UnityEvent<DamageInfo>();
+        public UnityEvent<DamageEvent> onDamageReceived = new UnityEvent<DamageEvent>();
 
-        public void ReceiveDamage(DamageInfo info)
+        public void ReceiveDamage(DamageEvent e)
         {
             if (mute) return;
             
-            HandleDamage(info);
+            HandleDamage(e);
             
             if (manager != null)
             {
-                manager.HandleDamageAsReceiver(info);
+                manager.HandleDamageAsReceiver(e);
             }
             
-            onDamageReceived.Invoke(info);
+            onDamageReceived.Invoke(e);
         }
         
-        protected virtual void HandleDamage(DamageInfo info)
+        protected virtual void HandleDamage(DamageEvent e)
         {
         }
     }

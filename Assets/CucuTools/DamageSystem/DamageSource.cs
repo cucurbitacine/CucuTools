@@ -10,18 +10,18 @@ namespace CucuTools.DamageSystem
         
         public abstract Damage CreateDamage();
 
-        public DamageInfo GenerateDamage(DamageReceiver receiver)
+        public DamageEvent GenerateDamage(DamageReceiver receiver)
         {
-            var info = new DamageInfo(CreateDamage(), this, receiver);
+            var e = new DamageEvent(CreateDamage(), this, receiver);
 
-            HandleDamage(info);
+            HandleDamage(e);
 
             if (manager != null)
             {
-                manager.HandleDamageAsSource(info);
+                manager.HandleDamageAsSource(e);
             }
 
-            return info;
+            return e;
         }
 
         public virtual void SendDamage(DamageReceiver receiver)
@@ -31,7 +31,7 @@ namespace CucuTools.DamageSystem
             receiver.ReceiveDamage(GenerateDamage(receiver));
         }
 
-        protected virtual void HandleDamage(DamageInfo info)
+        protected virtual void HandleDamage(DamageEvent e)
         {
         }
     }

@@ -7,22 +7,22 @@ namespace CucuTools.DamageSystem
     public class DamageManager : MonoBehaviour
     {
         [Space]
-        public UnityEvent<DamageInfo> onDamageReceived = new UnityEvent<DamageInfo>();
+        public UnityEvent<DamageEvent> onDamageReceived = new UnityEvent<DamageEvent>();
         
         [Space]
         public List<DamageSource> sources = new List<DamageSource>(); 
         public List<DamageReceiver> receivers = new List<DamageReceiver>(); 
 
-        public void ReceiveDamage(DamageInfo info)
+        public void ReceiveDamage(DamageEvent e)
         {
-            onDamageReceived.Invoke(info);
+            onDamageReceived.Invoke(e);
         }
         
-        public virtual void HandleDamageAsSource(DamageInfo info)
+        public virtual void HandleDamageAsSource(DamageEvent e)
         {
         }
         
-        public virtual void HandleDamageAsReceiver(DamageInfo info)
+        public virtual void HandleDamageAsReceiver(DamageEvent e)
         {
         }
         
@@ -53,17 +53,17 @@ namespace CucuTools.DamageSystem
      * *** SEQUENCE OF METHODS CALLS ***
      * 
      * DamageSource: void SendDamage(DamageReceiver receiver)
-     *    DamageSource: DamageInfo GenerateDamage(DamageReceiver receiver)
+     *    DamageSource: DamageEvent GenerateDamage(DamageReceiver receiver)
      *       DamageSource : Damage CreateDamage()
-     *       DamageSource : void HandleDamage(DamageInfo info)
-     *       DamageManager: void HandleDamageAsSource(DamageInfo info)
+     *       DamageSource : void HandleDamage(DamageEvent e)
+     *       DamageManager: void HandleDamageAsSource(DamageEvent e)
      *
-     *    DamageReceiver: void ReceiveDamage(DamageInfo info)
-     *       DamageReceiver: void HandleDamage(DamageInfo info)
-     *       DamageManager : void HandleDamageAsReceiver(DamageInfo info)
+     *    DamageReceiver: void ReceiveDamage(DamageEvent e)
+     *       DamageReceiver: void HandleDamage(DamageEvent e)
+     *       DamageManager : void HandleDamageAsReceiver(DamageEvent e)
      *       DamageReceiver: onDamageReceived.Invoke(info)
      *
-     * DamageManager: void ReceiveDamage(DamageInfo info)
-     * DamageManager: void HandleDamageAsReceiver(DamageInfo info)
+     * DamageManager: void ReceiveDamage(DamageEvent e)
+     * DamageManager: onDamageReceived.Invoke(e)
      */
 }

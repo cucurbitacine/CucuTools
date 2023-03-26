@@ -4,9 +4,9 @@ namespace Examples.DamageShow.Scripts.Receivers
 {
     public class HeadShotDamageReceiver : DamageReceiver
     {
-        protected override void HandleDamage(DamageInfo info)
+        protected override void HandleDamage(DamageEvent e)
         {
-            info.damage.amount *= 2;
+            e.damage.amount *= 2;
         }
     }
 }

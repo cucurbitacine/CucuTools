@@ -3614,7 +3614,7 @@ MonoBehaviour:
     inTouch: 0
   last:
     inTouch: 0
-  maxDistance: 3
+  maxDistance: 2
   onTouchChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -19605,7 +19605,7 @@ MonoBehaviour:
     canJump: 1
     jumpHeight: 1
     jumpDelay: 0.2
-    gravity: {x: 0, y: -9.81, z: 0}
+    gravityForce: -9.81
   _ground:
     isGround: 0
     isPlatform: 0
@@ -24515,7 +24515,7 @@ MonoBehaviour:
     canJump: 1
     jumpHeight: 1
     jumpDelay: 0.2
-    gravity: {x: 0, y: -9.81, z: 0}
+    gravityForce: -9.81
   _ground:
     isGround: 0
     isPlatform: 0

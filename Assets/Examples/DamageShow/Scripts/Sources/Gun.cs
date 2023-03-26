@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using CucuTools.DamageSystem;
 using UnityEngine;
 
@@ -52,9 +51,9 @@ namespace Examples.DamageShow.Scripts.Sources
             }
         }
         
-        protected override void HandleDamage(DamageInfo info)
+        protected override void HandleDamage(DamageEvent e)
         {
-            info.damage.amount += (level - 1);
+            e.damage.amount += (level - 1);
         }
         
         private void Projectile(Vector3 start, Vector3 end)

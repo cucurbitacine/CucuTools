@@ -18,7 +18,7 @@ namespace Examples.DamageShow.Scripts
             _messages.Add(new MsgLife() { msg = msg, life = 0f });
         }
         
-        public void LogDamage(DamageInfo info)
+        public void LogDamage(DamageEvent info)
         {
             var receiverName = info.receiver.manager != null ? $"{info.receiver.manager.name} to " : "";
             receiverName = $"{receiverName}{info.receiver.name}";

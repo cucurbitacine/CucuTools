@@ -11,15 +11,15 @@ namespace Examples.DamageShow.Scripts
 
         [Space] public UnityEvent<ZombieDamageManager> onDied = new UnityEvent<ZombieDamageManager>();
 
-        public override void HandleDamageAsReceiver(DamageInfo info)
+        public override void HandleDamageAsReceiver(DamageEvent e)
         {
-            if (info.damage is FireDamage fire)
+            if (e.damage is FireDamage fire)
             {
                 fire.amount *= 2;
             }
         }
 
-        private void HandleHealth(DamageInfo info)
+        private void HandleHealth(DamageEvent info)
         {
             health -= info.damage.amount;
 

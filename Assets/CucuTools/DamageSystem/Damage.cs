@@ -11,7 +11,7 @@ namespace CucuTools.DamageSystem
         public bool critical;
     }
 
-    public class DamageInfo
+    public class DamageEvent
     {
         public readonly Damage damage = null;
         public readonly DamageSource source = null;
@@ -20,7 +20,7 @@ namespace CucuTools.DamageSystem
         public Vector3 point = Vector3.zero;
         public Vector3 normal = Vector3.zero;
         
-        public DamageInfo(Damage dmg, DamageSource src, DamageReceiver rcv)
+        public DamageEvent(Damage dmg, DamageSource src, DamageReceiver rcv)
         {
             damage = dmg;
             source = src;

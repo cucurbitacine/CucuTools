@@ -14,7 +14,7 @@ namespace Examples.DamageShow.Scripts
         public bool wasHit;
         public float freezeDurationAfterHit = 0.2f;
         
-        private void ReceiveDamage(DamageInfo info)
+        private void ReceiveDamage(DamageEvent info)
         {
             wasHit = true;
         }

@@ -5,9 +5,9 @@ namespace Examples.DamageShow.Scripts.Receivers
 {
     public class ArmShotDamageReceiver : DamageReceiver
     {
-        protected override void HandleDamage(DamageInfo info)
+        protected override void HandleDamage(DamageEvent e)
         {
-            info.damage.amount = Mathf.FloorToInt(info.damage.amount * 0.5f);
+            e.damage.amount = Mathf.FloorToInt(e.damage.amount * 0.5f);
         }
     }
 }
