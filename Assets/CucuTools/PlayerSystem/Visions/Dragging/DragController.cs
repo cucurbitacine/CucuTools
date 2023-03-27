@@ -48,7 +48,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         public PhysicMaterial dragPhysicMaterial = null;
         
         [Header("References")] 
-        public PlayerController player = null;
+        public PlayerInput input = null;
         public TouchController touch = null;
 
         private Coroutine _dragging = null;
@@ -64,6 +64,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         private readonly Dictionary<Rigidbody, DraggableBase> _draggableCache = new Dictionary<Rigidbody, DraggableBase>();
         private readonly Dictionary<DraggableBase, Collider[]> _colliderCache = new Dictionary<DraggableBase, Collider[]>();
         private readonly Dictionary<Collider, PhysicMaterial> _physicMaterialCache = new Dictionary<Collider, PhysicMaterial>();
+        private readonly Collider[] _playerColliders = new Collider[32];
         
         public Transform eyes => touch != null ? touch.vision.eyes : transform;
         
@@ -152,14 +153,19 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
             
             return cld.Length > 0;
         }
-        
+
         private void PlayerIgnoreCollision(DraggableBase draggable, bool ignore)
         {
             if (TryGetColliders(draggable, out var cld))
             {
                 for (var i = 0; i < cld.Length; i++)
                 {
-                    Physics.IgnoreCollision(player.capsule, cld[i], ignore);
+                    var count = input.player.GetCollidersNonAlloc(_playerColliders);
+
+                    for (var j = 0; j < count; j++)
+                    {
+                        Physics.IgnoreCollision(_playerColliders[j], cld[i], ignore);
+                    }
                 } 
             }
         }
@@ -266,9 +272,9 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
                         rotation = Quaternion.Lerp(rotation, current.rotation, dragSmooth);
                     }
 
-                    if (player.ground.isPlatform)
+                    if (input.player.ground.onPlatform)
                     {
-                        var platformStep = player.ground.hit.rigidbody.velocity * Time.fixedDeltaTime;
+                        var platformStep = input.player.ground.hit.rigidbody.velocity * Time.fixedDeltaTime;
                         position += platformStep;
                     }
 

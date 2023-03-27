@@ -9,26 +9,32 @@ namespace CucuTools.PlayerSystem
         [Space]
         [SerializeField] private PlayerInfo _info = new PlayerInfo();
         [SerializeField] private PlayerSettings _settings = new PlayerSettings();
-        [SerializeField] private GroundSettings _ground = new GroundSettings();
-
+        [Space]
+        [SerializeField] private GroundController _ground = null;
+        
+        [Space]
+        [Min(0f)]
+        public float gravityForce = Physics.gravity.y;
+        public float gravityScale = 1f;
+        private Vector3 velocityExternal = Vector3.zero; // todo air problem
         [Space]
         public Transform _eyes = null;
 
         #endregion
 
         #region Private Fields
-
-        private Vector3 _moveDirection = Vector3.zero;
+        
+        private Vector2 _moveInput = Vector2.zero;
+        private Vector2 _viewInput = Vector2.zero;
+        private Vector2 _viewAngle = Vector2.zero;
+        
         private Vector3 _velocityMove = Vector3.zero;
         private Vector3 _velocityJump = Vector3.zero;
         private Vector3 _velocityFall = Vector3.zero;
         private Vector3 _velocityAir = Vector3.zero;
         private Vector3 _velocityPlatform = Vector3.zero;
         private Vector3 _angularVelocity = Vector3.zero;
-        
-        private Vector2 _viewAngle = Vector2.zero;
-        private Vector2 _viewInput = Vector2.zero;
-        
+
         private float _timerAbleToJump = 0f;
         private bool _ableJump = true;
 
@@ -48,28 +54,38 @@ namespace CucuTools.PlayerSystem
 
         public override PlayerInfo info => _info;
         public override PlayerSettings settings => _settings;
-        public override GroundSettings ground => _ground;
+        public override GroundController ground => _ground;
         public override Transform eyes => _eyes != null ? _eyes : (_eyes = rigid.transform);
-        public override Rigidbody rigid => GetOrAddRigidbody();
-        public override CapsuleCollider capsule => GetOrAddCapsule();
 
-        public override void Move(Vector3 direction)
+        public override void Move(Vector2 moveInput)
         {
-            _moveDirection = direction.normalized;
+            _moveInput = moveInput.normalized;
 
-            info.isMoving = _moveDirection != Vector3.zero;
+            info.isMoving = _moveInput != Vector2.zero;
         }
 
-        public override void Rotate(Vector2 viewInput)
+        public override void View(Vector2 viewInput)
         {
             _viewInput = viewInput;
+            
+            info.isViewing = _viewInput != Vector2.zero;
+        }
+
+        public override void MoveIn(Vector3 direction)
+        {
+            Move(direction.ToLocalDirection(rigid.transform).OnlyXZ());
+        }
+
+        public override void MoveAt(Vector3 point)
+        {
+            MoveIn(point - position);
         }
 
         public override void LookIn(Vector3 direction)
         {
             if (direction.sqrMagnitude == 0) return;
 
-            var angX = Vector3.SignedAngle(body.forward, Vector3.ProjectOnPlane(direction, Vector3.up), Vector3.up);
+            var angX = Vector3.SignedAngle(rigid.transform.forward, Vector3.ProjectOnPlane(direction, Vector3.up), Vector3.up);
             var angY = Vector3.SignedAngle(eyes.forward, Quaternion.Euler(0, -angX, 0) * direction, eyes.right);
 
             rigid.MoveRotation(Quaternion.Euler(0, angX, 0) * rigid.rotation);
@@ -86,7 +102,7 @@ namespace CucuTools.PlayerSystem
         {
             if (settings.canJump && _ableJump)
             {
-                _velocityJump = Vector3.up * Mathf.Sqrt(2 * settings.jumpHeight * settings.gravity.magnitude);;
+                _velocityJump = Vector3.up * Mathf.Sqrt(2 * settings.jumpHeight * gravity.magnitude);;
                 
                 _ableJump = false;
                 info.isJumping = true;
@@ -96,27 +112,25 @@ namespace CucuTools.PlayerSystem
         public override void Stop()
         {
             Move(Vector3.zero);
-            Rotate(Vector2.zero);
+            View(Vector2.zero);
         }
-        
-        public override void MoveLocal(Vector3 localDirection)
+
+        public override int GetCollidersNonAlloc(Collider[] colliders)
         {
-            Move(body.transform.TransformDirection(localDirection));
+            colliders[0] = capsule;
+            return 1;
         }
-        
+
         #endregion
         
         #region Public Properties
         
-        public Transform body => rigid.transform;
+        public Rigidbody rigid => GetOrAddRigidbody();
+        public CapsuleCollider capsule => GetOrAddCapsule();
         
-        public Vector3 position => body.position;
-        public Quaternion rotation => body.rotation;
-
         public Vector3 velocity => _velocityMove + _velocityJump + _velocityFall + _velocityAir + _velocityPlatform + velocityExternal;
+        public Vector3 gravity => Vector3.up * gravityForce * gravityScale;
 
-        public Vector3 velocityExternal { get; set; }
-        
         #endregion
 
         #region Private API
@@ -148,52 +162,31 @@ namespace CucuTools.PlayerSystem
             rigid.maxAngularVelocity = float.MaxValue;
         }
 
-        private void FixGround()
-        {
-            if (ground.wasGround && !ground.isGround) // left ground
-            {
-                if (info.isGrounded)
-                {
-                    info.isGrounded = false;
-                }
-                else
-                {
-                    ground.wasGround = false;
-                }
-            }
-
-            if (!ground.wasGround && ground.isGround) // found ground
-            {
-                if (info.isGrounded)
-                {
-                    ground.wasGround = true;
-                }
-                else
-                {
-                    info.isGrounded = true;
-                }
-            }
-
-            if (!ground.isGround) ground.isPlatform = false;
-        }
-        
         private void UpdateBody()
         {
             capsule.center = Vector3.up * (capsule.height * 0.5f);
+            
+            ground.positionCheck = position;
+            ground.radiusCheck = capsule.radius * Mathf.Max(capsule.transform.lossyScale.x, capsule.transform.lossyScale.z);
         }
 
+        private Vector3 GetMoveDirection()
+        {
+            return _moveInput.ToXZ().ToWorldDirection(rigid.transform).normalized;
+        }
+        
         private void UpdateMove(float deltaTime)
         {
-            if (ground.isGround)
+            if (ground.onGround)
             {
                 // calculate move direction relative of ground
-                var moveDir = settings.canMove ? _moveDirection : Vector3.zero;
+                var moveDir = settings.canMove ? GetMoveDirection() : Vector3.zero;
                 moveDir = Vector3.ProjectOnPlane(moveDir, ground.hit.normal).normalized;
                 
                 // calculate velocity movement
                 var velocityMove = moveDir *  settings.speed;
 
-                if (!ground.wasGround)
+                if (!ground.wasOnGround)
                 {
                     // if just have grounded - add velocity in air  
                     velocityMove = Vector3.ClampMagnitude(velocityMove + _velocityAir, settings.speedMax);
@@ -219,7 +212,7 @@ namespace CucuTools.PlayerSystem
         {
             _velocityPlatform = Vector3.zero;
             
-            if (ground.isPlatform)
+            if (ground.onPlatform)
             {
                 // calculate velocity platform relative of player's position  
                 _velocityPlatform = ground.hit.rigidbody.GetPointVelocity(position);
@@ -228,9 +221,9 @@ namespace CucuTools.PlayerSystem
 
         private void UpdateFall(float deltaTime)
         {
-            if (ground.isGround)
+            if (ground.onGround)
             {
-                if (!ground.wasGround)
+                if (!ground.wasOnGround)
                 {
                     info.isFalling = false;
                     
@@ -253,7 +246,7 @@ namespace CucuTools.PlayerSystem
                     info.isFalling = !info.isJumping;
                 }
                 
-                if (ground.wasGround)
+                if (ground.wasOnGround)
                 {
                     // just have left ground, it is time to start timer when still able jump 
                     _timerAbleToJump = 0f;
@@ -272,7 +265,7 @@ namespace CucuTools.PlayerSystem
                 }
                 
                 // woow! watch out! it is graavity!
-                _velocityFall += settings.gravity * deltaTime;
+                _velocityFall += gravity * deltaTime;
                 
                 // check head hit with objects when are moving up (f*ck gravity) 
                 if ((_velocityJump + _velocityFall).y > 0) 
@@ -298,14 +291,14 @@ namespace CucuTools.PlayerSystem
 
         private void UpdateAir(float deltaTime)
         {
-            if (ground.isGround)
+            if (ground.onGround)
             {
                 _velocityAir = Vector3.zero;
             }
             else
             {
                 // calculate direction movement
-                var moveDir = settings.canMove ? _moveDirection : Vector3.zero;
+                var moveDir = settings.canMove ? GetMoveDirection() : Vector3.zero;
 
                 // calculate air velocity 
                 var velocityAir = moveDir * settings.speed;
@@ -356,7 +349,7 @@ namespace CucuTools.PlayerSystem
             var angVel = Vector3.up * (Mathf.Deg2Rad * (settings.canView ? _viewInput.x : 0)) / deltaTime;
             
             // if ground is platform - add platform's angular velocity
-            if (ground.isPlatform)
+            if (ground.onPlatform)
             {
                 var angVelPlatform = Vector3.Project(ground.hit.rigidbody.angularVelocity, Vector3.up);
 
@@ -378,7 +371,7 @@ namespace CucuTools.PlayerSystem
 
         private void DevMoveRotation(float deltaTime)
         {
-            if (ground.isPlatform)
+            if (ground.onPlatform)
             {
                 var angVelPlatform = Vector3.Project(ground.hit.rigidbody.angularVelocity, Vector3.up);
                 _initRotation = Quaternion.AngleAxis(Mathf.Rad2Deg * angVelPlatform.y * deltaTime, Vector3.up) * _initRotation;
@@ -391,7 +384,7 @@ namespace CucuTools.PlayerSystem
                 _bodyRotation = Quaternion.Lerp(rigid.rotation, _bodyRotation, settings.dampView * deltaTime);
             }
 
-            if (overrideAngularVelocity && !ground.isPlatform)
+            if (overrideAngularVelocity && !ground.onPlatform)
             {
                 var frameRotation = Quaternion.Inverse(rigid.rotation) * _bodyRotation;
                 frameRotation.ToAngleAxis(out var angle, out var axis);
@@ -409,17 +402,9 @@ namespace CucuTools.PlayerSystem
             if (useMoveRotation) rigid.MoveRotation(_bodyRotation);
             
             // dont touch. it is working. really. it is saving from sharp and small losing of ground
-            rigid.useGravity = ground.isGround && _moveDirection != Vector3.zero;
+            rigid.useGravity = ground.onGround && _moveInput != Vector2.zero;
         }
         
-        private void UpdateGround(float deltaTime)
-        {
-            // apply radius of player
-            ground.radiusCheck = capsule.radius;
-            
-            // update ground info
-            ground.UpdateGround(position, Vector3.up);
-        }
 
         #endregion
 
@@ -442,9 +427,6 @@ namespace CucuTools.PlayerSystem
         
         private void LateUpdate()
         {
-            // because wasGrounded and isGrounded update in FixedUpdate. but use it in Update
-            FixGround();
-                
             UpdateBody();
 
             UpdateMove(Time.deltaTime);
@@ -456,47 +438,9 @@ namespace CucuTools.PlayerSystem
             UpdateRigidbody(Time.deltaTime);
         }
 
-        private void FixedUpdate()
-        {
-            UpdateGround(Time.fixedDeltaTime);
-        }
-
         private void OnValidate()
         {
             UpdateBody();
-        }
-
-        private void OnDrawGizmos()
-        {
-            var ray = ground.GetRaySphereCast(position, Vector3.up);
-            var radius = ground.GetRadiusSphereCast();
-            var distance = ground.GetDistanceSphereCast();
-            
-            var wasHit = Physics.SphereCast(ray, radius, out var hit, distance, ground.layerGround);
-            
-            var color = Color.white;
-            color.a = 0.3f;
-            Gizmos.color = color;
-            Gizmos.DrawWireSphere(ray.origin, radius);
-            
-            if (wasHit)
-            {
-                color = Color.yellow;
-                color.a = 0.2f;
-                Gizmos.color = color;
-                Gizmos.DrawWireSphere(ray.origin + ray.direction * distance, radius);
-
-                color = Color.green;
-                Gizmos.color = color;
-                Gizmos.DrawWireSphere(hit.point + hit.normal * radius, radius);
-                Gizmos.DrawLine(hit.point, hit.point + hit.normal * radius);
-            }
-            else
-            {
-                color = Color.red;
-                Gizmos.color = color;
-                Gizmos.DrawWireSphere(ray.origin + ray.direction * distance, radius);
-            }
         }
 
         #endregion

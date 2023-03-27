@@ -35,24 +35,20 @@ namespace CucuTools.PlayerSystem
         [Tooltip(@"It is time when able jump after lost ground.")]
         [Min(0f)]
         public float jumpDelay = 0.2f;
-        [Min(0f)]
-        public float gravityForce = Physics.gravity.y;
-        
+
         public float speed
         {
             get => speedMax * speedModificator;
             set => speedModificator = value / speedMax;
         }
-        
-        public Vector3 gravity => Vector3.up * gravityForce;
     }
 
     [Serializable]
     public class PlayerInfo
     {
         public bool isMoving = false;
+        public bool isViewing = false;
         public bool isJumping = false;
         public bool isFalling = false;
-        public bool isGrounded = false;
     }
 }
