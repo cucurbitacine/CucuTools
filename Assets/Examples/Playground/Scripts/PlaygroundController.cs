@@ -16,7 +16,7 @@ namespace Examples.Playground.Scripts
         public UnityEvent onPlayerSpawned = new UnityEvent();
 
         [Space]
-        public PlayerRigidController player = null;
+        public PlayerController player = null;
         public Transform startSpawnPoint = null;
 
         public void StartGame()

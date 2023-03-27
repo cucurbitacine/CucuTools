@@ -4,11 +4,12 @@ using UnityEngine;
 
 namespace Examples
 {
-    public class PlayerRigidInput : PlayerInput<PlayerRigidController>
+    public class PlayerRigidInput : PlayerInput
     {
         [Space]
         public bool isEnabled = true;
-
+        [SerializeField] private PlayerController _player = null;
+        
         [Space]
         public DragController drag = null;
         
@@ -16,7 +17,7 @@ namespace Examples
         public Vector2 sensitivity = Vector2.one * 4;
         
         [Space]
-        public Vector3 move = Vector3.zero;
+        public Vector2 move = Vector2.zero;
         public Vector2 view = Vector2.zero;
         public Vector2 angles = Vector2.zero;
 
@@ -29,9 +30,11 @@ namespace Examples
         
         public Vector2 mouseScrollDelta = Vector2.zero;
 
+        public override PlayerController player => _player;
+        
         private void UpdateInput()
         {
-            move = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             move = Vector3.ClampMagnitude(move, 1);
 
             view = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
@@ -48,13 +51,13 @@ namespace Examples
 
         private void UpdatePlayer()
         {
-            playerCurrent.MoveLocal(move);
+            player.Move(move);
 
             angles = Vector2.Scale(view, sensitivity);
             
-            playerCurrent.Rotate(angles);
+            player.View(angles);
         
-            if (jump) playerCurrent.Jump();
+            if (jump) player.Jump();
 
             if (drag) drag.inputDragging = dragging;
         }
@@ -65,7 +68,7 @@ namespace Examples
             {
                 UpdateInput();
 
-                if (playerCurrent != null) UpdatePlayer();
+                if (player != null) UpdatePlayer();
             }
 
             if (Input.GetKeyDown(KeyCode.P)) isEnabled = !isEnabled;
