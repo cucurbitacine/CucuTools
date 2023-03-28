@@ -9,7 +9,7 @@ namespace Examples.Playground.Scripts
         public float runSpeedMax = 4f;
         [Min(0f)]
         public float sneakSpeedMax = 0.5f;
-        public PlayerRigidInput input;
+        public PlayerInput input;
         
         [Space]
         [Min(0f)]
@@ -17,7 +17,7 @@ namespace Examples.Playground.Scripts
         public float fovDamp = 4;
         public Camera playerCamera;
         
-        public PlayerController player => input.player;
+        public PersonController Person => input.Person;
 
         private float _fieldOfView;
         
@@ -28,18 +28,18 @@ namespace Examples.Playground.Scripts
 
         private void Update()
         {
-            player.settings.speed = player.settings.speedMax;
+            Person.settings.moveSpeed = Person.settings.moveSpeedMax;
 
             if (input.run)
             {
-                player.settings.speed = runSpeedMax;
+                Person.settings.moveSpeed = runSpeedMax;
             }
             else if (input.sneak)
             {
-                player.settings.speed = sneakSpeedMax;
+                Person.settings.moveSpeed = sneakSpeedMax;
             }
 
-            var fov = input.run && input.player.info.isMoving ? runFieldOfView : _fieldOfView;
+            var fov = input.run && input.Person.info.moving ? runFieldOfView : _fieldOfView;
             
             fov = input.sneak ? _fieldOfView - (runFieldOfView - _fieldOfView) : fov;
             

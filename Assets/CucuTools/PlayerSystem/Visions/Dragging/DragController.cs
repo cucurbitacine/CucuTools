@@ -48,7 +48,6 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         public PhysicMaterial dragPhysicMaterial = null;
         
         [Header("References")] 
-        public PlayerInput input = null;
         public TouchController touch = null;
 
         private Coroutine _dragging = null;
@@ -154,22 +153,6 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
             return cld.Length > 0;
         }
 
-        private void PlayerIgnoreCollision(DraggableBase draggable, bool ignore)
-        {
-            if (TryGetColliders(draggable, out var cld))
-            {
-                for (var i = 0; i < cld.Length; i++)
-                {
-                    var count = input.player.GetCollidersNonAlloc(_playerColliders);
-
-                    for (var j = 0; j < count; j++)
-                    {
-                        Physics.IgnoreCollision(_playerColliders[j], cld[i], ignore);
-                    }
-                } 
-            }
-        }
-
         private PhysicMaterial GetOrAddPhysicMaterial(Collider cld)
         {
             if (!_physicMaterialCache.TryGetValue(cld, out var pm))
@@ -197,15 +180,11 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
 
         private void ApplyDragPhysics(DraggableBase draggable)
         {
-            PlayerIgnoreCollision(draggable, true);
-
             ChangeDragMaterial(draggable, true);
         }
         
         private void ResetDragPhysics(DraggableBase draggable)
         {
-            PlayerIgnoreCollision(draggable, false);
-            
             ChangeDragMaterial(draggable, false);
 
             var velocity = Vector3.ClampMagnitude(current.rigid.velocity, draggingSpeedMax);
@@ -272,12 +251,6 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
                         rotation = Quaternion.Lerp(rotation, current.rotation, dragSmooth);
                     }
 
-                    if (input.player.ground.onPlatform)
-                    {
-                        var platformStep = input.player.ground.hit.rigidbody.velocity * Time.fixedDeltaTime;
-                        position += platformStep;
-                    }
-
                     Cucu.SyncPosition(current.rigid, position, speed);
                     Cucu.SyncRotation(current.rigid, rotation, speed);
                     
@@ -330,8 +303,6 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawWireSphere(handPosition, 0.1f);
-            
             if (isDragging)
             {
                 var bounds = Cucu.GetBounds(current.rigid.gameObject);

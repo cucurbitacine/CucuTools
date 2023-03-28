@@ -8,16 +8,17 @@ namespace CucuTools.PlayerSystem.Tools
         public Vector3 localDirection = Vector3.forward;
         public float speed = 1f;
         public bool inverse = false;
+
+        [Space]
+        public Rigidbody rigid = null;
         
-        public Rigidbody rigid => _rigid ??= GetComponent<Rigidbody>();
-        public Vector3 direction =>
-            rigid.transform.TransformDirection(localDirection.normalized).normalized * (inverse ? -1 : 1);
+        public Vector3 direction => rigid.transform.TransformDirection(localDirection.normalized).normalized * (inverse ? -1 : 1);
         public Vector3 velocity => direction.normalized * speed;
 
-        private Rigidbody _rigid = null;
-        
         private void Awake()
         {
+            if (rigid == null) rigid = GetComponent<Rigidbody>();
+            
             rigid.useGravity = false;
             rigid.isKinematic = true;
             rigid.interpolation = RigidbodyInterpolation.None;
@@ -32,10 +33,18 @@ namespace CucuTools.PlayerSystem.Tools
             rigid.MovePosition(rigid.position + move);
         }
 
+        private void OnValidate()
+        {
+            if (rigid == null) rigid = GetComponent<Rigidbody>();
+        }
+
         private void OnDrawGizmos()
         {
-            Gizmos.DrawLine(transform.position, transform.position + transform.up);
-            Gizmos.DrawLine(transform.position + transform.up, transform.position + transform.up + velocity.normalized);
+            if (rigid != null)
+            {
+                Gizmos.DrawLine(transform.position, transform.position + transform.up);
+                Gizmos.DrawLine(transform.position + transform.up, transform.position + transform.up + velocity.normalized);
+            }
         }
     }
 }

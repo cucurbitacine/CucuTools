@@ -7,17 +7,17 @@ using UnityEngine.AI;
 
 namespace Examples.DamageShow.Scripts
 {
-    public class ZombieAI : PlayerInput
+    public class ZombieAI : PersonInput
     {
         public float damp = 8f;
         public bool wasHit;
         public float freezeDurationAfterHit = 0.2f;
         
         [Space]
-        public PlayerController target;
+        public PersonController target;
         public ZombieDamageManager zombie;
         
-        private PlayerController _player;
+        private PersonController _person;
         
         private Vector3 _lastMove;
         private Vector3 _lastLook;
@@ -27,7 +27,7 @@ namespace Examples.DamageShow.Scripts
 
         private Vector3 _lastValidPosition = Vector3.zero;
 
-        public override PlayerController player => _player;
+        public override PersonController Person => _person;
         
         private void ReceiveDamage(DamageEvent info)
         {
@@ -42,12 +42,12 @@ namespace Examples.DamageShow.Scripts
             {
                 if (wasHit)
                 {
-                    player.Stop();
+                    Person.Stop();
                     yield return new WaitForSeconds(freezeDurationAfterHit);
                     wasHit = false;
                 }
 
-                var havePath = NavMesh.CalculatePath(player.position, target.position, NavMesh.AllAreas, _path);
+                var havePath = NavMesh.CalculatePath(Person.position, target.position, NavMesh.AllAreas, _path);
 
                 if (havePath)
                 {
@@ -55,22 +55,22 @@ namespace Examples.DamageShow.Scripts
                 }
                 else
                 {
-                    havePath = NavMesh.CalculatePath(player.position, _lastValidPosition, NavMesh.AllAreas, _path);
+                    havePath = NavMesh.CalculatePath(Person.position, _lastValidPosition, NavMesh.AllAreas, _path);
                 }
                 
                 if (havePath)
                 {
-                    var move = _path.corners[1] - player.position;
+                    var move = _path.corners[1] - Person.position;
 
                     _lastMove = move;
                     _lastLook = Vector3.Lerp(_lastLook, _lastMove, Time.deltaTime * damp);
                     
-                    player.MoveIn(_lastMove);
-                    player.LookIn(Vector3.ProjectOnPlane(_lastLook, Vector3.up).normalized);
+                    Person.MoveInDirection(_lastMove);
+                    Person.LookInDirection(Vector3.ProjectOnPlane(_lastLook, Vector3.up).normalized);
                 }
                 else
                 {
-                    player.Stop();
+                    Person.Stop();
                 }
 
                 yield return null;
@@ -79,7 +79,7 @@ namespace Examples.DamageShow.Scripts
 
         private void Awake()
         {
-            if (_player == null) _player = GetComponent<PlayerController>();
+            if (_person == null) _person = GetComponent<PersonController>();
             if (zombie == null) zombie = GetComponent<ZombieDamageManager>();
         }
 

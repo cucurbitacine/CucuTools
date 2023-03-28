@@ -12,7 +12,7 @@ namespace Examples.Playground
         
         [Space]
         public Camera mainCamera;
-        public PlayerInput input;
+        public PersonInput input;
 
         private Camera GetCamera()
         {
@@ -26,8 +26,8 @@ namespace Examples.Playground
         {
             if (input == null) return;
 
-            mainCamera.transform.rotation = input.player.eyes.rotation;
-            mainCamera.transform.position = input.player.eyes.position + localOffset.ToWorldDirection(input.player.eyes);
+            mainCamera.transform.rotation = input.Person.eyes.rotation;
+            mainCamera.transform.position = input.Person.eyes.position + localOffset.ToWorldDirection(input.Person.eyes);
         }
 
         [Button("Follow")]

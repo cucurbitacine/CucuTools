@@ -9,13 +9,14 @@ namespace CucuTools.PlayerSystem
         public RaycastHit hit = default;
         
         [Space]
-        public bool onGround = false;
-        public bool onPlatform = false;
+        public bool grounded = false;
+        public bool platform = false;
         [HideInInspector]
-        public bool wasOnGround = false;
+        public bool wasGrounded = false;
 
         [Space]
-        public Vector3 positionCheck = Vector3.zero;
+        public Vector3 pointCheck = Vector3.zero;
+        public Vector3 normalCheck = Vector3.up;
         
         [Space]
         public UnityEvent<bool> onGroundChanged = new UnityEvent<bool>();
@@ -27,15 +28,15 @@ namespace CucuTools.PlayerSystem
         [Range(0f, 90f)]
         public float maxAngleSlope = 60f;
 
-        private bool _sphereCast = false;
-        
         private readonly Dictionary<Rigidbody, GroundPlatform> _platformCache = new Dictionary<Rigidbody, GroundPlatform>();
 
         private bool IsPlatform(Rigidbody rigid)
         {
+            if (rigid == null) return false;
+            
             if (rigid.isKinematic) return true;
 
-            if (TryGetGroundPlatform(rigid, out var platform)) return true;
+            if (TryGetGroundPlatform(rigid, out var groundPlatform)) return true;
 
             return false;
         }
@@ -65,79 +66,44 @@ namespace CucuTools.PlayerSystem
         {
             return 2 * distanceCheck;
         }
-        
-        private void FixGround()
-        {
-            if (wasOnGround && !_sphereCast) // left ground
-            {
-                if (onGround)
-                {
-                    onGround = false;
-                }
-                else
-                {
-                    wasOnGround = false;
-                }
-            }
 
-            if (!wasOnGround && _sphereCast) // found ground
-            {
-                if (onGround)
-                {
-                    wasOnGround = true;
-                }
-                else
-                {
-                    onGround = true;
-                }
-            }
-
-            if (!onGround) onPlatform = false;
-        }
-        
-        public void UpdateGround(Vector3 point, Vector3 up)
+        public void UpdateGround(Vector3 point, Vector3 normal)
         {
-            var ray = GetRaySphereCast(point, up);
+            var ray = GetRaySphereCast(point, normal);
             var radius = GetRadiusSphereCast();
             var distance = GetDistanceSphereCast();
             
             // save previous value ground
-            wasOnGround = _sphereCast;
+            wasGrounded = grounded;
 
             // check ground
-            _sphereCast = Physics.SphereCast(ray, radius, out hit, distance, layerGround);
+            grounded = Physics.SphereCast(ray, radius, out hit, distance, layerGround);
 
-            if (_sphereCast)
+            if (grounded)
             {
                 // check angle slope. it's looks like easy
-                var angleSlope = Vector3.Angle(up, hit.normal);
-                _sphereCast = angleSlope < maxAngleSlope;
+                var angleSlope = Vector3.Angle(normal, hit.normal);
+                grounded = angleSlope < maxAngleSlope;
             }
 
-            if (_sphereCast != wasOnGround) onGroundChanged.Invoke(_sphereCast);
+            if (grounded != wasGrounded) onGroundChanged.Invoke(grounded);
 
-            onPlatform = false;
+            platform = false;
 
-            if (_sphereCast && hit.rigidbody != null)
+            if (grounded && hit.rigidbody != null)
             {
-                onPlatform = IsPlatform(hit.rigidbody);
+                platform = IsPlatform(hit.rigidbody);
             }
         }
         
-        private void LateUpdate()
+        private void Update()
         {
-            // because wasGrounded and isGrounded update in FixedUpdate. but use it in Update
-            FixGround();
-        }
-
-        private void FixedUpdate()
-        {
-            UpdateGround(positionCheck, Vector3.up);
+            UpdateGround(pointCheck, normalCheck);
         }
         
         private void OnDrawGizmos()
         {
-            var ray = GetRaySphereCast(positionCheck, Vector3.up);
+            var ray = GetRaySphereCast(pointCheck, Vector3.up);
             var radius = GetRadiusSphereCast();
             var distance = GetDistanceSphereCast();
             

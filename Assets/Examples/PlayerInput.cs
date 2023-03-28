@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace Examples
 {
-    public class PlayerRigidInput : PlayerInput
+    public class PlayerInput : PersonInput
     {
         [Space]
         public bool isEnabled = true;
-        [SerializeField] private PlayerController _player = null;
+        [SerializeField] private PersonController person = null;
         
         [Space]
         public DragController drag = null;
@@ -30,7 +30,7 @@ namespace Examples
         
         public Vector2 mouseScrollDelta = Vector2.zero;
 
-        public override PlayerController player => _player;
+        public override PersonController Person => person;
         
         private void UpdateInput()
         {
@@ -51,13 +51,13 @@ namespace Examples
 
         private void UpdatePlayer()
         {
-            player.Move(move);
+            Person.Move(move);
 
             angles = Vector2.Scale(view, sensitivity);
             
-            player.View(angles);
+            Person.Rotate(angles);
         
-            if (jump) player.Jump();
+            if (jump) Person.Jump();
 
             if (drag) drag.inputDragging = dragging;
         }
@@ -68,7 +68,7 @@ namespace Examples
             {
                 UpdateInput();
 
-                if (player != null) UpdatePlayer();
+                if (Person != null) UpdatePlayer();
             }
 
             if (Input.GetKeyDown(KeyCode.P)) isEnabled = !isEnabled;

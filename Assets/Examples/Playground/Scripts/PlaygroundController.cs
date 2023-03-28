@@ -16,7 +16,7 @@ namespace Examples.Playground.Scripts
         public UnityEvent onPlayerSpawned = new UnityEvent();
 
         [Space]
-        public PlayerController player = null;
+        public PersonController person = null;
         public Transform startSpawnPoint = null;
 
         public void StartGame()
@@ -35,8 +35,8 @@ namespace Examples.Playground.Scripts
 
         public void SpawnPlayer(Transform spawnPoint)
         {
-            player.transform.position = spawnPoint.position;
-            player.LookIn(spawnPoint.rotation * Vector3.forward);
+            person.transform.position = spawnPoint.position;
+            person.LookInDirection(spawnPoint.rotation * Vector3.forward);
             
             onPlayerSpawned.Invoke();
         }

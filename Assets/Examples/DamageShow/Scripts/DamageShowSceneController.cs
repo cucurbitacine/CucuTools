@@ -7,7 +7,7 @@ namespace Examples.DamageShow.Scripts
     public class DamageShowSceneController : MonoBehaviour
     {
         public Gun gun;
-        public PlayerRigidInput input;
+        public PlayerInput input;
         public DamageMessageGUI logger;
         
         private void Start()
@@ -26,7 +26,7 @@ namespace Examples.DamageShow.Scripts
         {
             if (input.shoot)
             {
-                gun.Shoot(new Ray(input.player.eyes.position, input.player.eyes.forward));
+                gun.Shoot(new Ray(input.Person.eyes.position, input.Person.eyes.forward));
             }
         }
     }
