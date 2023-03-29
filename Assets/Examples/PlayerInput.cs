@@ -72,11 +72,16 @@ namespace Examples
             }
 
             if (Input.GetKeyDown(KeyCode.P)) isEnabled = !isEnabled;
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Cursor.visible = false;
+            }
         }
         
         private void OnEnable()
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
         }
         
