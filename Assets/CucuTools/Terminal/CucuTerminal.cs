@@ -10,7 +10,7 @@ using UnityEngine.UI;
 namespace CucuTools.Terminal
 {
     [DisallowMultipleComponent]
-    public sealed class CucuTerminal : CucuBehaviour
+    public sealed class CucuTerminal : TerminalCommandRegistrator
     {
         private static CucuTerminal _singleton = null;
 
@@ -28,7 +28,8 @@ namespace CucuTools.Terminal
         public KeyCode callTerminal = KeyCode.BackQuote;
         
         [Space]
-        public bool showOnStart = true;
+        public bool showOnEnable = false;
+        public bool debugLog = false;
         
         [Range(1, 1024)]
         public int logCountMax = 128;
@@ -38,11 +39,17 @@ namespace CucuTools.Terminal
 
         [Space]
         public TMP_InputField inputField = null;
+        public TextMeshProUGUI commandsGUI = null;
         
         [Space]
         public Button submitButton = null;
         public Button clearButton = null;
         public Button closeButton = null;
+
+        [Space]
+        public GameObject console = null;
+        [Space]
+        public GameObject commands = null;
         
         [Space]
         public Transform content = null;
@@ -51,6 +58,7 @@ namespace CucuTools.Terminal
         public LogMessageView logMessageViewPrefab = null;
 
         private int _selectedCommand = 0; 
+        private string _lastInput = string.Empty;
         
         private readonly Queue<LogMessage> _logQueue = new Queue<LogMessage>();
         private readonly List<LogMessageView> _logHistory = new List<LogMessageView>();
@@ -74,10 +82,10 @@ namespace CucuTools.Terminal
             
             if (text.StartsWith(CommandPrefix))
             {
-                ExecuteAsCommand(text.TrimStart(CommandPrefix));
+                ExecuteAsCommand(text);
             }
         }
-
+        
         public void ClearHistory()
         {
             for (var i = 0; i < _logHistory.Count; i++)
@@ -103,16 +111,23 @@ namespace CucuTools.Terminal
             inputField.text = string.Empty;
             inputField.DeactivateInputField();
         }
+
+        public string[] GetPossibleCommands(string text)
+        {
+            GetCommandAndArgs(text, out var commandName, out _);
+            
+            return _commands.Keys.Where(k => k.StartsWith(commandName)).ToArray();
+        }
         
         public bool RegisterCommand(TerminalCommand command)
         {
             if (_commands.TryAdd(command.name, command))
             {
-                Debug.Log($"Command \"/{command.name}\" successfully Registered");
+                if (debugLog) Debug.Log($"Command \"/{command.name}\" successfully Registered");
                 return true;
             }
             
-            Debug.LogError($"Register command \"/{command.name}\" failed");
+            if (debugLog) Debug.LogError($"Register command \"/{command.name}\" failed");
             return false;
         }
         
@@ -120,11 +135,11 @@ namespace CucuTools.Terminal
         {
             if (_commands.Remove(commandName))
             {
-                Debug.Log($"Command \"/{commandName}\" successfully Unregistered");
+                if (debugLog) Debug.Log($"Command \"/{commandName}\" successfully Unregistered");
                 return true;
             }
             
-            Debug.LogError($"Unregister command \"/{commandName}\" failed");
+            if (debugLog) Debug.LogError($"Unregister command \"/{commandName}\" failed");
             return false;
         }
         
@@ -172,6 +187,8 @@ namespace CucuTools.Terminal
 
         private void GetCommandAndArgs(string text, out string commandName, out string[] commandArgs)
         {
+            text = text.TrimStart(CommandPrefix);
+            
             commandName = string.Empty;
             
             var parts = text.Split(CommandSeparator, StringSplitOptions.RemoveEmptyEntries);
@@ -233,11 +250,11 @@ namespace CucuTools.Terminal
             {
                 if (string.IsNullOrWhiteSpace(cmdName))
                 {
-                    Debug.LogError($"Empty command");
+                    if (debugLog) Debug.LogError($"Empty command");
                 }
                 else
                 {
-                    Debug.LogError($"Command \"{cmdName}\" was not found");
+                    if (debugLog) Debug.LogError($"Command \"{cmdName}\" was not found");
                 }
             }
         }
@@ -245,6 +262,8 @@ namespace CucuTools.Terminal
         private void SelectPreviousCommand()
         {
             if (_commandHistory.Count == 0) return;
+
+            if (_selectedCommand == _commandHistory.Count) _lastInput = inputField.text;
             
             _selectedCommand--;
 
@@ -252,7 +271,7 @@ namespace CucuTools.Terminal
                         
             if (0 <= _selectedCommand && _selectedCommand < _commandHistory.Count)
             {
-                inputField.text = $"{CommandPrefix}{_commandHistory[_selectedCommand]}";
+                inputField.text = _commandHistory[_selectedCommand];
 
                 inputField.caretPosition = inputField.text.Length;
             }
@@ -266,13 +285,36 @@ namespace CucuTools.Terminal
 
             if (0 <= _selectedCommand && _selectedCommand < _commandHistory.Count)
             {
-                inputField.text = $"{CommandPrefix}{_commandHistory[_selectedCommand]}";
+                inputField.text = _commandHistory[_selectedCommand];
                 inputField.caretPosition = inputField.text.Length;
             }
             else
             {
-                inputField.text = string.Empty;
+                if (_selectedCommand == _commandHistory.Count) inputField.text = _lastInput;
             }
+        }
+
+        private void ShowPossibleCommands(string text)
+        {
+            var possibleCommands = GetPossibleCommands(text);
+
+            if (0 < possibleCommands.Length)
+            {
+                commandsGUI.text = string.Join("\n", possibleCommands.Select(c => $"/{c}"));
+                
+                console.SetActive(false);
+                commands.SetActive(true);
+            }
+            else
+            {
+                commandsGUI.text = string.Empty;
+            }
+        }
+
+        private void HidePossibleCommands()
+        {
+            console.SetActive(true);
+            commands.SetActive(false);
         }
         
         private void UpdateInputField()
@@ -287,6 +329,32 @@ namespace CucuTools.Terminal
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 SelectNextCommand();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                var cmds = GetPossibleCommands(inputField.text.TrimStart(CommandPrefix));
+                if (cmds.Length == 1)
+                {
+                    inputField.text = $"{CommandPrefix}{cmds[0]} ";
+                    inputField.caretPosition = inputField.text.Length;
+                }
+                else if (cmds.Length > 1)
+                {
+                    var general = cmds[0];
+                    var length = general.Length;
+
+                    for (var i = length - 1; i >= 0; i--)
+                    {
+                        general = general.Substring(0, i + 1);
+                        if (cmds.All(c => c.StartsWith(general)))
+                        {
+                            inputField.text = $"{CommandPrefix}{general}";
+                            inputField.caretPosition = inputField.text.Length;
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -323,18 +391,18 @@ namespace CucuTools.Terminal
             
             if (eventSystem == null)
             {
-                Debug.LogWarning("Event System was not found");
+                if (debugLog) Debug.LogWarning("Event System was not found");
                 eventSystem = new GameObject(nameof(EventSystem)).AddComponent<EventSystem>();
-                Debug.Log("Event System - Created");
+                if (debugLog) Debug.Log("Event System - Created");
             }
             
             var inputModule = eventSystem.GetComponent<StandaloneInputModule>();
 
             if (inputModule == null)
             {
-                Debug.LogWarning("Standalone Input Module was not found");
+                if (debugLog) Debug.LogWarning("Standalone Input Module was not found");
                 inputModule = eventSystem.gameObject.AddComponent<StandaloneInputModule>();
-                Debug.Log("Standalone Input Module - Created");
+                if (debugLog) Debug.Log("Standalone Input Module - Created");
             }
         }
 
@@ -353,6 +421,18 @@ namespace CucuTools.Terminal
             inputField.ActivateInputField();
             
             Submit(text);
+        }
+
+        private void InputFieldChange(string text)
+        {
+            if (text.StartsWith(CommandPrefix))
+            {
+                ShowPossibleCommands(text);
+            }
+            else
+            {
+                HidePossibleCommands();
+            }
         }
         
         private void SubmitButtonClick()
@@ -421,6 +501,170 @@ namespace CucuTools.Terminal
         
         #endregion
 
+        #region Commands
+
+        [TerminalCommand("quit")]
+        private void QuitCommand(int exitCode = 0)
+        {
+            Application.Quit(exitCode);
+        }
+        
+        [TerminalCommand("terminal.clear")]
+        private void ClearCommand()
+        {
+            ClearHistory();
+        }
+
+        [TerminalCommand("terminal.close")]
+        private void CloseCommand()
+        {
+            Hide();
+        }
+        
+        [TerminalCommand("terminal.debug")]
+        private void DebugCommand(bool value)
+        {
+            debugLog = value;
+            
+            Debug.Log($"Debug Mode = {debugLog}");
+        }
+
+        [TerminalCommand("scene.load.single")]
+        private void LoadSingleCommand(string sceneName)
+        {
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+        }
+        
+        [TerminalCommand("scene.load.additive")]
+        private void LoadAdditiveCommand(string sceneName)
+        {
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+        }
+
+        [TerminalCommand("transform.translate")]
+        private void MoveCommand(string objectName, float x, float y, float z, string spaceName)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                var move = new Vector3(x, y, z);
+                var space = spaceName != null && spaceName.ToLower().Contains("self") ? Space.Self : Space.World;
+                go.transform.Translate(move, space);
+                
+                Debug.Log($"\"{go.name}\" moved by {move} : {space}");
+            }
+        }
+        
+        [TerminalCommand("transform.rotate")]
+        private void RotateCommand(string objectName, float x, float y, float z, string spaceName)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                var eulers = new Vector3(x, y, z);
+                var space = spaceName != null && spaceName.ToLower().Contains("self") ? Space.Self : Space.World;
+                go.transform.Rotate(eulers, space);
+                
+                Debug.Log($"\"{go.name}\" rotated by {eulers} : {space}");
+            }
+        }
+        
+        [TerminalCommand("transform.scale")]
+        private void ScaleCommand(string objectName, float x, float y, float z)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                var scale = new Vector3(x, y, z);
+                go.transform.localScale = Vector3.Scale(go.transform.localScale, scale);
+                
+                Debug.Log($"\"{go.name}\" scaled by {scale}");
+            }
+        }
+        
+        [TerminalCommand("set.position")]
+        private void SetPositionCommand(string objectName, float x, float y, float z)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                var position = new Vector3(x, y, z);
+                go.transform.position = position;
+                
+                Debug.Log($"\"{go.name}\" set position {position}");
+            }
+        }
+        
+        [TerminalCommand("set.rotation")]
+        private void SetRotationCommand(string objectName, float x, float y, float z)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                var euler = new Vector3(x, y, z);
+                go.transform.rotation = Quaternion.Euler(euler);
+                
+                Debug.Log($"\"{go.name}\" set rotation {euler}");
+            }
+        }
+        
+        [TerminalCommand("set.scale")]
+        private void SetScaleCommand(string objectName, float x, float y, float z)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                var scale = new Vector3(x, y, z);
+                go.transform.localScale = new Vector3(x, y, z);
+                
+                Debug.Log($"\"{go.name}\" set scale {scale}");
+            }
+        }
+        
+        [TerminalCommand("get.position")]
+        private void GetPositionCommand(string objectName)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                Debug.Log(go.transform.position);
+            }
+        }
+        
+        [TerminalCommand("get.rotation")]
+        private void GetRotationCommand(string objectName)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                Debug.Log(go.transform.rotation);
+            }
+        }
+        
+        [TerminalCommand("get.scale")]
+        private void GetScaleCommand(string objectName)
+        {
+            var go = GameObject.Find(objectName);
+            if (go)
+            {
+                Debug.Log(go.transform.localScale);
+            }
+        }
+        
+        [TerminalCommand("log.warning")]
+        private void LogWarningCommand(params string[] args)
+        {
+            Debug.LogWarning(string.Join(CommandSeparator, args));
+        }
+        
+        [TerminalCommand("log.error")]
+        private void LogErrorCommand(params string[] args)
+        {
+            Debug.LogError(string.Join(CommandSeparator, args));
+        }
+        
+        #endregion
+
         #region MonoBehaviour
 
         private void Awake()
@@ -435,50 +679,43 @@ namespace CucuTools.Terminal
             }
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
             Application.logMessageReceived += HandleLog;
             SceneManager.sceneLoaded += SceneLoaded;
             
             inputField.onSubmit.AddListener(InputFieldSubmit);
+            inputField.onValueChanged.AddListener(InputFieldChange);
             
             submitButton.onClick.AddListener(SubmitButtonClick);
             clearButton.onClick.AddListener(ClearButtonClick);
             closeButton.onClick.AddListener(CloseButtonClick);
+            
+            base.OnEnable();
+            
+            if (showOnEnable)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+            
             Application.logMessageReceived -= HandleLog;
             SceneManager.sceneLoaded -= SceneLoaded;
             
             inputField.onSubmit.RemoveListener(InputFieldSubmit);
+            inputField.onValueChanged.RemoveListener(InputFieldChange);
             
             submitButton.onClick.RemoveListener(SubmitButtonClick);
             clearButton.onClick.RemoveListener(ClearButtonClick);
             closeButton.onClick.RemoveListener(CloseButtonClick);
-        }
-
-        private void Start()
-        {
-            if (showOnStart) Show();
-            else Hide();
-
-            var helpCommand = new ActionCommand("help", args =>
-            {
-                foreach (var command in _commands)
-                {
-                    Debug.Log($"{CommandPrefix}{command.Key}");
-                }
-            });
-
-            var clearCommand = new ActionCommand("clear", args =>
-            {
-                ClearHistory();
-            });
-            
-            RegisterCommand(helpCommand);
-            RegisterCommand(clearCommand);
         }
 
         private void Update()
@@ -489,14 +726,5 @@ namespace CucuTools.Terminal
         }
 
         #endregion
-    }
-
-    [Serializable]
-    public class LogMessage
-    {
-        public DateTime time = default;
-        public string message = string.Empty;
-        [Multiline] public string stackTrace = string.Empty;
-        public LogType type = LogType.Log;
     }
 }

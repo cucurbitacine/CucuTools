@@ -1,67 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using UnityEngine;
+﻿using System.Reflection;
 
 namespace CucuTools.Terminal
 {
-    public abstract class CommandsRegistrator : CucuBehaviour
-    {
-        private readonly List<TerminalCommand> _commands = new List<TerminalCommand>();
-        
-        private void RegisterCommands()
-        {
-            var methods = GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-            var commandMethods = methods.Where(m => m.GetCustomAttribute<TerminalCommandAttribute>() != null);
-
-            foreach (var commandMethod in commandMethods)
-            {
-                var commandName = commandMethod.GetCustomAttribute<TerminalCommandAttribute>().commandName;
-
-                if (commandName == null) commandName = commandMethod.Name;
-
-                var cmd = new MethodCommand(this, commandName, commandMethod);
-                
-                CucuTerminal.Singleton.RegisterCommand(cmd);
-            }
-        }
-
-        private void UnregisterCommands()
-        {
-            foreach (var command in _commands)
-            {
-                CucuTerminal.Singleton.UnregisterCommand(command);
-            }
-        }
-
-        protected virtual void OnEnable()
-        {
-            RegisterCommands();
-        }
-
-        protected virtual  void OnDisable()
-        {
-            UnregisterCommands();
-        }
-    }
-    
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public class TerminalCommandAttribute : Attribute
-    {
-        public string commandName { get; }
-        
-        public TerminalCommandAttribute()
-        {
-        }
-        
-        public TerminalCommandAttribute(string commandName)
-        {
-            this.commandName = commandName;
-        }
-    }
-    
     public class MethodCommand : TerminalCommand
     {
         public object target { get; }
@@ -84,8 +24,6 @@ namespace CucuTools.Terminal
         {
             var parameters = method.GetParameters();
 
-            //if (args.Length < parameters.Length) return;
-            
             var methodArgs = new object[parameters.Length];
 
             for (var i = 0; i < parameters.Length; i++)
