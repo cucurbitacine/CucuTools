@@ -1,4 +1,4 @@
-﻿namespace CucuTools.Terminal
+﻿namespace CucuTools.Terminal.Commands
 {
     public abstract class TerminalCommand
     {

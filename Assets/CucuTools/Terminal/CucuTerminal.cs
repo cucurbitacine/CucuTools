@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CucuTools.Terminal.Commands;
+using CucuTools.Terminal.View;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,40 +27,36 @@ namespace CucuTools.Terminal
             private set => _singleton = value;
         }
 
+        [Header("General Settings")]
         public KeyCode callTerminal = KeyCode.BackQuote;
-        
-        [Space]
         public bool showOnEnable = false;
+        public bool stopTime = false;
+        [Range(0.0001f, 1f)]
+        public float stopTimeScale = 0.0001f;
         public bool debugLog = false;
-        
-        [Range(1, 1024)]
+        [Min(1)]
         public int logCountMax = 128;
-        
         [Space]
         public Canvas terminalCanvas = null;
-
-        [Space]
-        public TMP_InputField inputField = null;
-        public TextMeshProUGUI commandsGUI = null;
         
-        [Space]
+        [Header("Console Panel")]
+        public GameObject consolePanel = null;
+        public Transform contentAnchor = null;
+        public LogMessageView logViewPrefab = null;
+        
+        [Header("Control Block")]
+        public TMP_InputField inputField = null;
         public Button submitButton = null;
         public Button clearButton = null;
         public Button closeButton = null;
 
-        [Space]
-        public GameObject console = null;
-        [Space]
-        public GameObject commands = null;
-        
-        [Space]
-        public Transform content = null;
-        
-        [Space]
-        public LogMessageView logMessageViewPrefab = null;
+        [Header("Commands Block")]
+        public GameObject commandsPanel = null;
+        public TextMeshProUGUI commandsGUI = null;
 
         private int _selectedCommand = 0; 
         private string _lastInput = string.Empty;
+        private float _lastTimeScale = 1f;
         
         private readonly Queue<LogMessage> _logQueue = new Queue<LogMessage>();
         private readonly List<LogMessageView> _logHistory = new List<LogMessageView>();
@@ -102,6 +100,9 @@ namespace CucuTools.Terminal
 
             inputField.text = string.Empty;
             inputField.ActivateInputField();
+
+            _lastTimeScale = Time.timeScale;
+            if (stopTime) Time.timeScale = stopTimeScale;
         }
 
         public void Hide()
@@ -110,6 +111,8 @@ namespace CucuTools.Terminal
             
             inputField.text = string.Empty;
             inputField.DeactivateInputField();
+            
+            Time.timeScale = _lastTimeScale;
         }
 
         public string[] GetPossibleCommands(string text)
@@ -177,7 +180,7 @@ namespace CucuTools.Terminal
             }
             else
             {
-                logView = Instantiate(logMessageViewPrefab, content);
+                logView = Instantiate(logViewPrefab, contentAnchor);
             }
             
             logView.SetLogMessage(logMessage);
@@ -302,8 +305,8 @@ namespace CucuTools.Terminal
             {
                 commandsGUI.text = string.Join("\n", possibleCommands.Select(c => $"/{c}"));
                 
-                console.SetActive(false);
-                commands.SetActive(true);
+                consolePanel.SetActive(false);
+                commandsPanel.SetActive(true);
             }
             else
             {
@@ -313,8 +316,8 @@ namespace CucuTools.Terminal
 
         private void HidePossibleCommands()
         {
-            console.SetActive(true);
-            commands.SetActive(false);
+            consolePanel.SetActive(true);
+            commandsPanel.SetActive(false);
         }
         
         private void UpdateInputField()
@@ -360,7 +363,7 @@ namespace CucuTools.Terminal
 
         private void UpdateInput()
         {
-            if (!inputField.isFocused && Input.GetKeyDown(callTerminal))
+            if (Input.GetKeyDown(callTerminal))
             {
                 if (terminalCanvas.enabled)
                 {
@@ -661,6 +664,22 @@ namespace CucuTools.Terminal
         private void LogErrorCommand(params string[] args)
         {
             Debug.LogError(string.Join(CommandSeparator, args));
+        }
+        
+        [TerminalCommand("time.stop.mode")]
+        private void TimeStopCommand(bool value)
+        {
+            stopTime = value;
+            
+            Debug.Log($"Time Stop Mode = {stopTime}");
+        }
+        
+        [TerminalCommand("time.stop.scale")]
+        private void TimeStopCommand(float value)
+        {
+            stopTimeScale = value;
+            
+            Debug.Log($"Time Stop = {stopTimeScale:f2}");
         }
         
         #endregion

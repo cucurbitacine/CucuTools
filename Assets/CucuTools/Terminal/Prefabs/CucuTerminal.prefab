@@ -1202,18 +1202,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   callTerminal: 96
-  showOnStart: 0
+  showOnEnable: 0
+  stopTime: 1
+  stopTimeScale: 0.0001
+  debugLog: 0
   logCountMax: 128
   terminalCanvas: {fileID: 57558500583706475}
+  consolePanel: {fileID: 57558501679470159}
+  contentAnchor: {fileID: 57558500291881437}
+  logViewPrefab: {fileID: 5077688242639289685, guid: f1c4f832932b77443a94d7c000b2752f, type: 3}
   inputField: {fileID: 57558500066861325}
-  commandsGUI: {fileID: 4260621495162231721}
   submitButton: {fileID: 57558499951145342}
   clearButton: {fileID: 57558500602721880}
   closeButton: {fileID: 57558500935281795}
-  console: {fileID: 57558501679470159}
-  commands: {fileID: 6613750142169414431}
-  content: {fileID: 57558500291881437}
-  logMessageViewPrefab: {fileID: 5077688242639289685, guid: f1c4f832932b77443a94d7c000b2752f, type: 3}
+  commandsPanel: {fileID: 6613750142169414431}
+  commandsGUI: {fileID: 4260621495162231721}
 --- !u!1 &57558500602721877
 GameObject:
   m_ObjectHideFlags: 0

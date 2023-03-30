@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CucuTools.Terminal
+namespace CucuTools.Terminal.Commands
 {
     public class MethodCommand : TerminalCommand
     {

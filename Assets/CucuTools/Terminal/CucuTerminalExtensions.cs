@@ -1,4 +1,5 @@
 ﻿using System;
+using CucuTools.Terminal.Commands;
 
 namespace CucuTools.Terminal
 {

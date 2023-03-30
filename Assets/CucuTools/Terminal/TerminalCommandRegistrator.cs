@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using CucuTools.Terminal.Commands;
 
 namespace CucuTools.Terminal
 {
@@ -10,6 +11,10 @@ namespace CucuTools.Terminal
         
         private void RegisterCommands()
         {
+            var terminal = CucuTerminal.Singleton;
+
+            if (terminal == null) return;
+            
             var methods = GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             var commandMethods = methods.Where(m => m.GetCustomAttribute<TerminalCommandAttribute>() != null);
@@ -22,7 +27,7 @@ namespace CucuTools.Terminal
 
                 var cmd = new MethodCommand(this, commandName, commandMethod);
 
-                if (CucuTerminal.Singleton.RegisterCommand(cmd))
+                if (terminal.RegisterCommand(cmd))
                 {
                     _commands.Add(cmd);
                 }
@@ -31,9 +36,13 @@ namespace CucuTools.Terminal
 
         private void UnregisterCommands()
         {
+            var terminal = CucuTerminal.Singleton;
+
+            if (terminal == null) return;
+            
             foreach (var command in _commands)
             {
-                CucuTerminal.Singleton.UnregisterCommand(command);
+                terminal.UnregisterCommand(command);
             }
         }
 

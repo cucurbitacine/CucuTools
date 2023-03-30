@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace CucuTools.Terminal
+namespace CucuTools.Terminal.View
 {
     public class LogMessageView : MonoBehaviour
     {

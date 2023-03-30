@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CucuTools.Terminal
+namespace CucuTools.Terminal.Commands
 {
     public class ActionCommand : TerminalCommand
     {
