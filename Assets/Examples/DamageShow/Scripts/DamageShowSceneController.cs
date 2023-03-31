@@ -26,7 +26,7 @@ namespace Examples.DamageShow.Scripts
         {
             if (input.shoot)
             {
-                gun.Shoot(new Ray(input.Person.eyes.position, input.Person.eyes.forward));
+                gun.Shoot(new Ray(input.person.eyes.position, input.person.eyes.forward));
             }
         }
     }

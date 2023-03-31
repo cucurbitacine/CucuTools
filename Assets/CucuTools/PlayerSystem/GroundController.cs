@@ -52,9 +52,9 @@ namespace CucuTools.PlayerSystem
             return platform != null;
         }
         
-        private Ray GetRaySphereCast(Vector3 position, Vector3 up)
+        private Ray GetRaySphereCast(Vector3 position, Vector3 normal)
         {
-            return new Ray(position + up * (radiusCheck + distanceCheck), -up);
+            return new Ray(position + normal * (radiusCheck + distanceCheck), -normal);
         }
 
         private float GetRadiusSphereCast()
@@ -103,11 +103,11 @@ namespace CucuTools.PlayerSystem
         
         private void OnDrawGizmos()
         {
-            var ray = GetRaySphereCast(pointCheck, Vector3.up);
+            var ray = GetRaySphereCast(pointCheck, normalCheck);
             var radius = GetRadiusSphereCast();
             var distance = GetDistanceSphereCast();
             
-            var wasHit = Physics.SphereCast(ray, radius, out var hit, distance, layerGround);
+            var wasHit = Physics.SphereCast(ray, radius, out var tmp, distance, layerGround);
             
             var color = Color.white;
             color.a = 0.3f;
@@ -123,8 +123,8 @@ namespace CucuTools.PlayerSystem
 
                 color = Color.green;
                 Gizmos.color = color;
-                Gizmos.DrawWireSphere(hit.point + hit.normal * radius, radius);
-                Gizmos.DrawLine(hit.point, hit.point + hit.normal * radius);
+                Gizmos.DrawWireSphere(tmp.point + tmp.normal * radius, radius);
+                Gizmos.DrawLine(tmp.point, tmp.point + tmp.normal * radius);
             }
             else
             {

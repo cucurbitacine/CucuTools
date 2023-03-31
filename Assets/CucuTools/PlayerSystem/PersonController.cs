@@ -13,7 +13,7 @@ namespace CucuTools.PlayerSystem
         
         public abstract Transform eyes { get; }
 
-        public abstract void Move(Vector2 moveInput);
+        public abstract void Move(Vector3 moveInput);
         public abstract void Rotate(Vector2 rotateInput);
         public abstract void Jump();
         

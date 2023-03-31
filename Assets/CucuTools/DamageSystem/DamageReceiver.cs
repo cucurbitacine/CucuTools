@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace CucuTools.DamageSystem
 {
-    public class DamageReceiver : MonoBehaviour
+    public class DamageReceiver : CucuBehaviour
     {
         [Space]
         public bool mute = false;

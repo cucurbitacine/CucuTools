@@ -8,16 +8,16 @@ namespace Examples
     {
         [Space]
         public bool isEnabled = true;
-        [SerializeField] private PersonController person = null;
+        [SerializeField] private PersonController player = null;
         
         [Space]
         public DragController drag = null;
         
         [Space]
         public Vector2 sensitivity = Vector2.one * 4;
-        
+
         [Space]
-        public Vector2 move = Vector2.zero;
+        public Vector3 move = Vector3.zero;
         public Vector2 view = Vector2.zero;
         public Vector2 angles = Vector2.zero;
 
@@ -30,11 +30,12 @@ namespace Examples
         
         public Vector2 mouseScrollDelta = Vector2.zero;
 
-        public override PersonController Person => person;
+        public override PersonController person => player;
         
         private void UpdateInput()
         {
-            move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            var yMove = Input.GetKey(KeyCode.R) ? 1f : (Input.GetKey(KeyCode.F) ? -1f : 0f);
+            move = new Vector3(Input.GetAxisRaw("Horizontal"), yMove, Input.GetAxisRaw("Vertical"));
             move = Vector3.ClampMagnitude(move, 1);
 
             view = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
@@ -51,13 +52,13 @@ namespace Examples
 
         private void UpdatePlayer()
         {
-            Person.Move(move);
-
             angles = Vector2.Scale(view, sensitivity);
             
-            Person.Rotate(angles);
+            person.Move(move);
+
+            person.Rotate(angles);
         
-            if (jump) Person.Jump();
+            if (jump) person.Jump();
 
             if (drag) drag.inputDragging = dragging;
         }
@@ -68,12 +69,27 @@ namespace Examples
             {
                 UpdateInput();
 
-                if (Person != null) UpdatePlayer();
+                if (person != null) UpdatePlayer();
             }
 
-            if (Input.GetKeyDown(KeyCode.P)) isEnabled = !isEnabled;
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                isEnabled = !isEnabled;
+                if (!isEnabled) person?.Stop();
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+                if (isEnabled)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
+            }
+
+            if (isEnabled && Input.GetKeyDown(KeyCode.Mouse0))
             {
                 Cursor.visible = false;
             }
@@ -81,7 +97,7 @@ namespace Examples
         
         private void OnEnable()
         {
-            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
         

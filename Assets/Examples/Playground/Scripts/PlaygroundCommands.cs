@@ -22,7 +22,7 @@ namespace Examples.Playground.Scripts
         [TerminalCommand("player.set.gravity")]
         private void SetGravity(float gravity)
         {
-            player.settings.gravityMax = gravity;
+            player.settings.gravityMax = player.normal * gravity;
         }
     }
 }

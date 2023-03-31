@@ -1,8 +1,9 @@
 using System.Linq;
+using CucuTools;
 using CucuTools.Attributes;
 using UnityEngine;
 
-namespace CucuTools.Builders
+namespace Examples.Playground.Scripts
 {
     public class CucuStairs : CucuBehaviour
     {

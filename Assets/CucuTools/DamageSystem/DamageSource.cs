@@ -2,7 +2,7 @@
 
 namespace CucuTools.DamageSystem
 {
-    public abstract class DamageSource : MonoBehaviour
+    public abstract class DamageSource : CucuBehaviour
     {
         [Space] public bool mute = false;
 

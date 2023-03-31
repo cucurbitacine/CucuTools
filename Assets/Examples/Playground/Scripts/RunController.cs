@@ -17,7 +17,7 @@ namespace Examples.Playground.Scripts
         public float fovDamp = 4;
         public Camera playerCamera;
         
-        public PersonController Person => input.Person;
+        public PersonController Person => input.person;
 
         private float _fieldOfView;
         
@@ -39,7 +39,7 @@ namespace Examples.Playground.Scripts
                 Person.settings.moveSpeed = sneakSpeedMax;
             }
 
-            var fov = input.run && input.Person.info.moving ? runFieldOfView : _fieldOfView;
+            var fov = input.run && input.person.info.moving ? runFieldOfView : _fieldOfView;
             
             fov = input.sneak ? _fieldOfView - (runFieldOfView - _fieldOfView) : fov;
             

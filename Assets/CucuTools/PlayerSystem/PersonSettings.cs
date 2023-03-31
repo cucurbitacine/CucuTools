@@ -22,7 +22,7 @@ namespace CucuTools.PlayerSystem
         [Min(0f)] public float jumpHeight = 1.2f;
 
         [Header("Gravity")]
-        public float gravityMax = Physics.gravity.y;
+        public Vector3 gravityMax = Physics.gravity;
         public float gravityModificator = 1f;
         
         public float moveSpeed
@@ -37,10 +37,10 @@ namespace CucuTools.PlayerSystem
             set => rotateSpeedModificator = value / rotateSpeedMax;
         }
         
-        public float gravity
+        public Vector3 gravity
         {
             get => gravityMax * gravityModificator;
-            set => gravityModificator = value / gravityMax;
+            set => gravityMax = value / gravityModificator;
         }
     }
 

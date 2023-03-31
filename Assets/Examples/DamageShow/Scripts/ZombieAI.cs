@@ -27,7 +27,7 @@ namespace Examples.DamageShow.Scripts
 
         private Vector3 _lastValidPosition = Vector3.zero;
 
-        public override PersonController Person => _person;
+        public override PersonController person => _person;
         
         private void ReceiveDamage(DamageEvent info)
         {
@@ -42,12 +42,12 @@ namespace Examples.DamageShow.Scripts
             {
                 if (wasHit)
                 {
-                    Person.Stop();
+                    person.Stop();
                     yield return new WaitForSeconds(freezeDurationAfterHit);
                     wasHit = false;
                 }
 
-                var havePath = NavMesh.CalculatePath(Person.position, target.position, NavMesh.AllAreas, _path);
+                var havePath = NavMesh.CalculatePath(person.position, target.position, NavMesh.AllAreas, _path);
 
                 if (havePath)
                 {
@@ -55,22 +55,22 @@ namespace Examples.DamageShow.Scripts
                 }
                 else
                 {
-                    havePath = NavMesh.CalculatePath(Person.position, _lastValidPosition, NavMesh.AllAreas, _path);
+                    havePath = NavMesh.CalculatePath(person.position, _lastValidPosition, NavMesh.AllAreas, _path);
                 }
                 
                 if (havePath)
                 {
-                    var move = _path.corners[1] - Person.position;
+                    var move = _path.corners[1] - person.position;
 
                     _lastMove = move;
                     _lastLook = Vector3.Lerp(_lastLook, _lastMove, Time.deltaTime * damp);
                     
-                    Person.MoveInDirection(_lastMove);
-                    Person.LookInDirection(Vector3.ProjectOnPlane(_lastLook, Vector3.up).normalized);
+                    person.MoveInDirection(_lastMove);
+                    person.LookInDirection(Vector3.ProjectOnPlane(_lastLook, Vector3.up).normalized);
                 }
                 else
                 {
-                    Person.Stop();
+                    person.Stop();
                 }
 
                 yield return null;

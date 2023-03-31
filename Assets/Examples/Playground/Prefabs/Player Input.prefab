@@ -156,7 +156,7 @@ MonoBehaviour:
   isEnabled: 1
   person: {fileID: 0}
   drag: {fileID: 1280369204138455718}
-  sensitivity: {x: 4, y: 4}
+  sensitivity: {x: 3, y: 3}
   move: {x: 0, y: 0}
   view: {x: 0, y: 0}
   angles: {x: 0, y: 0}

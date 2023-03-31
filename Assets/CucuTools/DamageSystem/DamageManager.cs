@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace CucuTools.DamageSystem
 {
-    public class DamageManager : MonoBehaviour
+    public class DamageManager : CucuBehaviour
     {
         [Space]
         public UnityEvent<DamageEvent> onDamageReceived = new UnityEvent<DamageEvent>();
