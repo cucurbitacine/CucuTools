@@ -55,7 +55,7 @@ namespace Examples.DamageShow.Scripts.Sources
         
         protected override void HandleDamage(DamageEvent e)
         {
-            e.damage.amount += (level - 1);
+            e.damage.amount += (level / 2);
 
             base.HandleDamage(e);
         }

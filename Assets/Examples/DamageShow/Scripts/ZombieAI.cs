@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 namespace Examples.DamageShow.Scripts
 {
-    public class ZombieAI : PersonInput
+    public class ZombieAI : PersonInput<FirstPersonRigidController>
     {
         public float damp = 8f;
         public bool wasHit;
@@ -17,8 +17,6 @@ namespace Examples.DamageShow.Scripts
         public PersonController target;
         public ZombieDamageManager zombie;
         
-        private PersonController _person;
-        
         private Vector3 _lastMove;
         private Vector3 _lastLook;
         private NavMeshPath _path = null;
@@ -27,8 +25,6 @@ namespace Examples.DamageShow.Scripts
 
         private Vector3 _lastValidPosition = Vector3.zero;
 
-        public override PersonController person => _person;
-        
         private void ReceiveDamage(DamageEvent info)
         {
             wasHit = true;
@@ -79,7 +75,6 @@ namespace Examples.DamageShow.Scripts
 
         private void Awake()
         {
-            if (_person == null) _person = GetComponent<PersonController>();
             if (zombie == null) zombie = GetComponent<ZombieDamageManager>();
         }
 
