@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using CucuTools.DamageSystem;
+using CucuTools.DamageSystem.Extended;
+using CucuTools.DamageSystem.Extended.Impl;
 using UnityEngine;
 
 namespace Examples.DamageShow.Scripts.Sources
 {
-    public class Gun : DamageSourceReference
+    public class Gun : DamageSourceReferenceExtended
     {
         [Space]
         [Min(0)]
@@ -54,6 +56,8 @@ namespace Examples.DamageShow.Scripts.Sources
         protected override void HandleDamage(DamageEvent e)
         {
             e.damage.amount += (level - 1);
+
+            base.HandleDamage(e);
         }
         
         private void Projectile(Vector3 start, Vector3 end)

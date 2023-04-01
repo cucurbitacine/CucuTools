@@ -532,6 +532,22 @@ namespace CucuTools.Terminal
             Debug.Log($"Debug Mode = {debugLog}");
         }
 
+        [TerminalCommand("terminal.timestop.mode")]
+        private void TimeStopCommand(bool value)
+        {
+            stopTime = value;
+            
+            Debug.Log($"Time Stop Mode = {stopTime}");
+        }
+        
+        [TerminalCommand("terminal.timestop.scale")]
+        private void TimeStopCommand(float value)
+        {
+            stopTimeScale = value;
+            
+            Debug.Log($"Time Stop = {stopTimeScale:f2}");
+        }
+        
         [TerminalCommand("scene.load.single")]
         private void LoadSingleCommand(string sceneName)
         {
@@ -665,23 +681,7 @@ namespace CucuTools.Terminal
         {
             Debug.LogError(string.Join(CommandSeparator, args));
         }
-        
-        [TerminalCommand("time.stop.mode")]
-        private void TimeStopCommand(bool value)
-        {
-            stopTime = value;
-            
-            Debug.Log($"Time Stop Mode = {stopTime}");
-        }
-        
-        [TerminalCommand("time.stop.scale")]
-        private void TimeStopCommand(float value)
-        {
-            stopTimeScale = value;
-            
-            Debug.Log($"Time Stop = {stopTimeScale:f2}");
-        }
-        
+
         #endregion
 
         #region MonoBehaviour

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5846369306021091409}
   - component: {fileID: 5846369306021091408}
   - component: {fileID: 5846369306021091415}
-  - component: {fileID: 5846369306021091410}
+  - component: {fileID: 2531107487635635580}
   m_Layer: 2
   m_Name: Head
   m_TagString: Untagged
@@ -100,7 +100,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5846369306021091410
+--- !u!114 &2531107487635635580
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5846369306021091413}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41a6606cb1554ea09b1cfa4945aa37a3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a1d82a1ebd64bf090575d3ef6cc80e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mute: 0
@@ -117,6 +117,16 @@ MonoBehaviour:
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
+  effects:
+    list:
+    - {fileID: 11400000, guid: 05fb14f744aeddb4b8fa37b66008761f, type: 2}
+    events:
+      onAdded:
+        m_PersistentCalls:
+          m_Calls: []
+      onRemoved:
+        m_PersistentCalls:
+          m_Calls: []
 --- !u!1 &5846369306231502554
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,31 +276,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _info:
-    isMoving: 0
-    isViewing: 0
-    isJumping: 0
-    isFalling: 0
-    onGround: 0
+    moving: 0
+    rotating: 0
+    jumping: 0
+    falling: 0
   _settings:
     canMove: 1
-    speedMax: 2
-    speedModificator: 1
-    useWalkDamping: 1
-    dampWalk: 24
-    canView: 1
-    fovUpper: 89
-    fovBottom: 89
-    useViewDamping: 1
-    dampView: 24
+    moveSpeedMax: 2
+    moveSpeedModificator: 1
+    canRotate: 1
+    rotateSpeedMax: 1
+    rotateSpeedModificator: 1
     canJump: 1
     jumpHeight: 1
-    jumpDelay: 0.2
+    gravityMax: {x: 0, y: -9.81, z: 0}
+    gravityModificator: 1
   _ground: {fileID: 5974280714850852299}
-  gravityForce: -9.81
   _eyes: {fileID: 5846369306021091414}
-  useMoveRotation: 0
-  updateAngularVelocity: 1
-  overrideAngularVelocity: 0
+  speedChangeRate: 24
+  rotationChangeRate: 24
+  inertionSpeedFade: 0.05
+  fovUpper: 89
+  fovBottom: 89
+  jumpTimeout: 0.05
+  airMoveControl: 1
+  velocityExternal: {x: 0, y: 0, z: 0}
+  useAngularVelocity: 1
 --- !u!114 &2255687251064228676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,16 +331,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27df392057fb49fdba37949306eb55f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerGround:
-    serializedVersion: 2
-    m_Bits: 1
-  onGround: 0
-  onPlatform: 0
-  wasOnGround: 0
-  checkPosition: {x: 0, y: 0, z: 0}
+  grounded: 0
+  platform: 0
+  wasGrounded: 0
+  pointCheck: {x: 0, y: 0, z: 10}
+  normalCheck: {x: 0, y: 1, z: 0}
   onGroundChanged:
     m_PersistentCalls:
       m_Calls: []
+  layerGround:
+    serializedVersion: 2
+    m_Bits: 1
   radiusCheck: 0.49
   distanceCheck: 0.01
   maxAngleSlope: 60
@@ -350,10 +362,29 @@ MonoBehaviour:
       m_Calls: []
   sources: []
   receivers:
-  - {fileID: 5846369307786554067}
-  - {fileID: 5846369306021091410}
-  - {fileID: 5846369306950287310}
-  - {fileID: 5846369307794789197}
+  - {fileID: 2531107487635635580}
+  - {fileID: 3960742176018733386}
+  - {fileID: 2445461841745401907}
+  - {fileID: 4378951888899896935}
+  sourceEffects:
+    list: []
+    events:
+      onAdded:
+        m_PersistentCalls:
+          m_Calls: []
+      onRemoved:
+        m_PersistentCalls:
+          m_Calls: []
+  receiverEffects:
+    list:
+    - {fileID: 11400000, guid: b51298fbca7123a438b21cae767c0cf3, type: 2}
+    events:
+      onAdded:
+        m_PersistentCalls:
+          m_Calls: []
+      onRemoved:
+        m_PersistentCalls:
+          m_Calls: []
   health: 0
   healthTotal: 16
   onDied:
@@ -372,9 +403,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Interpolate: 1
+  m_Constraints: 80
+  m_CollisionDetection: 2
 --- !u!136 &5846369306439786931
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -534,7 +565,7 @@ GameObject:
   - component: {fileID: 5846369306950287309}
   - component: {fileID: 5846369306950287308}
   - component: {fileID: 5846369306950287299}
-  - component: {fileID: 5846369306950287310}
+  - component: {fileID: 2445461841745401907}
   m_Layer: 2
   m_Name: Arm Right
   m_TagString: Untagged
@@ -620,7 +651,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5846369306950287310
+--- !u!114 &2445461841745401907
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -629,7 +660,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5846369306950287297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a1d82a1ebd64bf090575d3ef6cc80e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mute: 0
@@ -637,6 +668,16 @@ MonoBehaviour:
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
+  effects:
+    list:
+    - {fileID: 11400000, guid: 9d814869c3591454bbb074dd4fc77053, type: 2}
+    events:
+      onAdded:
+        m_PersistentCalls:
+          m_Calls: []
+      onRemoved:
+        m_PersistentCalls:
+          m_Calls: []
 --- !u!1 &5846369307321746393
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +884,7 @@ GameObject:
   - component: {fileID: 5846369307786554066}
   - component: {fileID: 5846369307786554065}
   - component: {fileID: 5846369307786554064}
-  - component: {fileID: 5846369307786554067}
+  - component: {fileID: 3960742176018733386}
   m_Layer: 2
   m_Name: Body
   m_TagString: Untagged
@@ -930,7 +971,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5846369307786554067
+--- !u!114 &3960742176018733386
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -939,7 +980,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5846369307786554070}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a1d82a1ebd64bf090575d3ef6cc80e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mute: 0
@@ -947,6 +988,15 @@ MonoBehaviour:
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
+  effects:
+    list: []
+    events:
+      onAdded:
+        m_PersistentCalls:
+          m_Calls: []
+      onRemoved:
+        m_PersistentCalls:
+          m_Calls: []
 --- !u!1 &5846369307794789184
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,7 +1009,7 @@ GameObject:
   - component: {fileID: 5846369307794789196}
   - component: {fileID: 5846369307794789187}
   - component: {fileID: 5846369307794789186}
-  - component: {fileID: 5846369307794789197}
+  - component: {fileID: 4378951888899896935}
   m_Layer: 2
   m_Name: Arm Left
   m_TagString: Untagged
@@ -1045,7 +1095,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5846369307794789197
+--- !u!114 &4378951888899896935
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1054,7 +1104,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5846369307794789184}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc381e934d234eb88119ea02d6765ca6, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a1d82a1ebd64bf090575d3ef6cc80e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mute: 0
@@ -1062,3 +1112,13 @@ MonoBehaviour:
   onDamageReceived:
     m_PersistentCalls:
       m_Calls: []
+  effects:
+    list:
+    - {fileID: 11400000, guid: 9d814869c3591454bbb074dd4fc77053, type: 2}
+    events:
+      onAdded:
+        m_PersistentCalls:
+          m_Calls: []
+      onRemoved:
+        m_PersistentCalls:
+          m_Calls: []

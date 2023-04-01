@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Examples.DamageShow.Scripts.Sources
 {
-    [CreateAssetMenu(menuName = "Examples/Damage/" + nameof(ElementalDamageFactory), fileName = nameof(ElementalDamageFactory), order = 0)]
+    [CreateAssetMenu(menuName = "Examples/Damage/Factory/" + nameof(ElementalDamageFactory), fileName = nameof(ElementalDamageFactory), order = 0)]
     public class ElementalDamageFactory : DamageFactory
     {
         [Space] public DamageTemplate template = new DamageTemplate();

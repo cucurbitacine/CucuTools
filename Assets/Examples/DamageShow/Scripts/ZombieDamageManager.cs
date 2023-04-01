@@ -1,24 +1,18 @@
 ﻿using CucuTools.DamageSystem;
+using CucuTools.DamageSystem.Extended;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Examples.DamageShow.Scripts
 {
-    public class ZombieDamageManager : DamageManager
+    public class ZombieDamageManager : DamageManagerExtended
     {
+        [Space]
         public int health = 32;
         public int healthTotal = 32;
 
         [Space] public UnityEvent<ZombieDamageManager> onDied = new UnityEvent<ZombieDamageManager>();
-
-        public override void HandleDamageAsReceiver(DamageEvent e)
-        {
-            if (e.damage is FireDamage fire)
-            {
-                fire.amount *= 2;
-            }
-        }
-
+        
         private void HandleHealth(DamageEvent info)
         {
             health -= info.damage.amount;
