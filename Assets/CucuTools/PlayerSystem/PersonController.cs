@@ -11,10 +11,10 @@ namespace CucuTools.PlayerSystem
         public abstract PersonSettings settings { get; }
         public abstract GroundController ground { get; }
         
-        public abstract Transform eyes { get; }
+        public abstract Transform head { get; }
 
-        public abstract void Move(Vector3 moveInput);
-        public abstract void Rotate(Vector2 rotateInput);
+        public abstract void Move(Vector3 move);
+        public abstract void View(Vector2 view);
         public abstract void Jump();
         
         public abstract void MoveInDirection(Vector3 direction);

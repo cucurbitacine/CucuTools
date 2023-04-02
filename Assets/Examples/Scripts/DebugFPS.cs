@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace Examples
+namespace Examples.Scripts
 {
     public class DebugFPS : MonoBehaviour
     {

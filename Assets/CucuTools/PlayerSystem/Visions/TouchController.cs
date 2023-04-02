@@ -25,13 +25,20 @@ namespace CucuTools.PlayerSystem.Visions
         
         [Header("References")]
         public VisionController vision = null;
+        [SerializeField] private Transform _origin = null;
 
+        public Transform origin
+        {
+            get => _origin != null ? _origin : (_origin = vision.eyes);
+            set => _origin = value;
+        }
+        
         private void UpdateTouch()
         {
             last = current;
             current = new TouchInfo()
             {
-                inTouch = vision.seeSomething && vision.current.distance <= maxDistance,
+                inTouch = vision.seeSomething && Vector3.Distance(origin.position, vision.current.point) <= maxDistance,
                 hit = vision.current,
             };
 

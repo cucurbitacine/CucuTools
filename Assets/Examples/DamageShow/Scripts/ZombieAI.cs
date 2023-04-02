@@ -2,6 +2,7 @@
 using CucuTools;
 using CucuTools.DamageSystem;
 using CucuTools.PlayerSystem;
+using CucuTools.PlayerSystem.Impl;
 using UnityEngine;
 using UnityEngine.AI;
 

@@ -1,4 +1,5 @@
 using Examples.DamageShow.Scripts.Sources;
+using Examples.Scripts.Input;
 using UnityEngine;
 
 namespace Examples.DamageShow.Scripts
@@ -6,7 +7,7 @@ namespace Examples.DamageShow.Scripts
     public class DamageShowSceneController : MonoBehaviour
     {
         public Gun gun;
-        public PlayerInput input;
+        public FirstPersonInput input;
         public DamageMessageGUI logger;
         
         private void Start()
@@ -25,7 +26,7 @@ namespace Examples.DamageShow.Scripts
         {
             if (input.shoot)
             {
-                gun.Shoot(new Ray(input.person.eyes.position, input.person.eyes.forward));
+                gun.Shoot(new Ray(input.person.head.position, input.person.head.forward));
             }
         }
     }

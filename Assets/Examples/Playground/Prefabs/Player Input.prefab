@@ -57,56 +57,6 @@ MonoBehaviour:
       m_Calls: []
   eyes: {fileID: 1280369202768145841}
   debugLog: 0
---- !u!1 &1280369203054676113
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1280369203054676112}
-  - component: {fileID: 1280369203054676115}
-  m_Layer: 0
-  m_Name: Run
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1280369203054676112
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1280369203054676113}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1280369203092484670}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1280369203054676115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1280369203054676113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1075e7ec3b01dd14295fb543abbe9379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  runSpeedMax: 4
-  sneakSpeedMax: 0.5
-  input: {fileID: 1280369203092484671}
-  runFieldOfView: 80
-  fovDamp: 8
-  playerCamera: {fileID: 0}
 --- !u!1 &1280369203092484668
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +87,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1280369202768145841}
-  - {fileID: 1280369203054676112}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -153,19 +102,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029aacfa3ca24fcab09be6bb84a7ff62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  personTyped: {fileID: 0}
   isEnabled: 1
-  person: {fileID: 0}
-  drag: {fileID: 1280369204138455718}
-  sensitivity: {x: 3, y: 3}
-  move: {x: 0, y: 0}
+  cam: {fileID: 0}
+  viewSens: {x: 4, y: 4}
+  fovIdle: 60
+  fovRunOffset: 20
+  fovAimOffset: -20
+  move: {x: 0, y: 0, z: 0}
   view: {x: 0, y: 0}
-  angles: {x: 0, y: 0}
   run: 0
-  sneak: 0
   jump: 0
+  aim: 0
   shoot: 0
   dragging: 0
-  mouseScrollDelta: {x: 0, y: 0}
+  runScale: 2
+  drag: {fileID: 1280369204138455718}
+  fovChangeRate: 8
 --- !u!1 &1280369203493541172
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +176,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   vision: {fileID: 1280369202768145846}
+  _origin: {fileID: 0}
 --- !u!1 &1280369204138455717
 GameObject:
   m_ObjectHideFlags: 0

@@ -206,7 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8945487971165834385}
   m_Layer: 0
-  m_Name: Eyes
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -295,17 +295,16 @@ MonoBehaviour:
     gravityMax: {x: 0, y: -9.81, z: 0}
     gravityModificator: 1
   _ground: {fileID: 8945487971485250974}
-  _eyes: {fileID: 8945487971165834385}
+  _head: {fileID: 8945487971165834385}
   speedChangeRate: 24
   rotationChangeRate: 24
+  inertionSpeedFade: 0.05
   fovUpper: 89
   fovBottom: 89
   jumpTimeout: 0.05
   airMoveControl: 1
   velocityExternal: {x: 0, y: 0, z: 0}
   useAngularVelocity: 1
-  _velocityInertion: {x: 0, y: 0, z: 0}
-  InertionSpeedRate: 0.05
 --- !u!114 &8945487971485250974
 MonoBehaviour:
   m_ObjectHideFlags: 0
