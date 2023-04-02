@@ -19,18 +19,18 @@ namespace Examples.Scripts.Input
         
         protected override void UpdatePerson(float deltaTime)
         {
-            var moveDir = Vector3.ProjectOnPlane(cam.transform.TransformDirection(move), personTyped.normal).normalized;
+            var moveDir = Vector3.ProjectOnPlane(cam.transform.TransformDirection(data.move), personTyped.normal).normalized;
             person.MoveInDirection(moveDir);
             
-            var lookDir = aim ? cam.transform.forward : Vector3.ProjectOnPlane(moveDir, personTyped.normal);
+            var lookDir = data.aim ? cam.transform.forward : Vector3.ProjectOnPlane(moveDir, personTyped.normal);
             //var lookDir = cam.transform.forward;
             person.LookInDirection(lookDir);
             
-            if (jump) person.Jump();
+            if (data.jump) person.Jump();
 
-            person.settings.moveSpeedModificator = run ? runScale : 1f;
+            person.settings.moveSpeedModificator = data.run ? runScale : 1f;
 
-            if (drag) drag.inputDragging = dragging;
+            if (drag) drag.inputDragging = data.dragging;
         }
 
         private Quaternion GetCamRotation()
@@ -62,8 +62,8 @@ namespace Examples.Scripts.Input
         
         protected override void UpdateCamera(float deltaTime)
         {
-            _camTargetYaw += view.x * viewSens.x;
-            _camTargetPitch += -view.y * viewSens.y;
+            _camTargetYaw += data.view.x * viewSens.x;
+            _camTargetPitch += -data.view.y * viewSens.y;
 
             var targetRotation = GetCamRotation();
             targetRotation = Quaternion.Lerp(cam.transform.rotation, targetRotation, camRotChangeRate * deltaTime);
@@ -74,8 +74,8 @@ namespace Examples.Scripts.Input
             cam.transform.position = targetPosition;
             
             var fov = fovIdle;
-            if (aim) fov += fovAimOffset;
-            if (run && person.info.moving) fov += fovRunOffset;
+            if (data.aim) fov += fovAimOffset;
+            if (data.run && person.info.moving) fov += fovRunOffset;
             
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, camRotChangeRate * deltaTime);
         }

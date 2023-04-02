@@ -18,9 +18,6 @@ namespace CucuTools.PlayerSystem.Impl
         
         private float _jumpTimeoutDelta = 0f;
         
-        private Rigidbody _rigid = null;
-        private CapsuleCollider _capsule = null;
-
         private Quaternion _personRotation = Quaternion.identity;
         
         #endregion
@@ -110,6 +107,8 @@ namespace CucuTools.PlayerSystem.Impl
 
         private void UpdateBody()
         {
+            capsule.height = height;
+            capsule.radius = radius;
             capsule.center = Vector3.up * (capsule.height * 0.5f);
             
             ground.pointCheck = position;
@@ -166,13 +165,13 @@ namespace CucuTools.PlayerSystem.Impl
                 // update jumping state
                 if (info.jumping)
                 {
-                    info.jumping = 0 <= velocity.y;
+                    info.jumping = 0 <= velocitySelf.y;
                 }
 
                 // update falling state
                 if (!info.falling)
                 {
-                    info.falling = !info.jumping;
+                    info.falling = velocitySelf.y < 0;
                 }
                 
                 // just have left ground

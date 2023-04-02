@@ -11,8 +11,12 @@ namespace CucuTools.PlayerSystem
         [SerializeField] private PersonSettings _settings = new PersonSettings();
         [SerializeField] private GroundController _ground = null;
         [SerializeField] private Transform _head = null;
-        
+
         [Header("Rigid Settings")]
+        [Min(0f)] public float height = 2f;
+        [Min(0f)] public float radius = 0.5f;
+        
+        [Space]
         [Min(0f)] public float speedChangeRate = 24f;
         [Min(0f)] public float rotationChangeRate = 24f;
         [Min(0f)] public float inertionSpeedFade = 0.05f;

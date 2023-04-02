@@ -10,13 +10,13 @@ namespace Examples.Scripts.Input
         
         protected override void UpdatePerson(float deltaTime)
         {
-            person.Move(move);
+            person.Move(data.move);
 
-            person.View(Vector2.Scale(view, viewSens));
+            person.View(Vector2.Scale(data.view, viewSens));
         
-            if (jump) person.Jump();
+            if (data.jump) person.Jump();
 
-            person.settings.moveSpeedModificator = run ? runScale : 1f;
+            person.settings.moveSpeedModificator = data.run ? runScale : 1f;
         }
 
         protected override void UpdateCamera(float deltaTime)
@@ -25,8 +25,8 @@ namespace Examples.Scripts.Input
             cam.transform.rotation = person.head.rotation;
 
             var fov = fovIdle;
-            if (aim) fov += fovAimOffset;
-            if (run && person.info.moving) fov += fovRunOffset;
+            if (data.aim) fov += fovAimOffset;
+            if (data.run && person.info.moving) fov += fovRunOffset;
             
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, fovChangeRate * deltaTime);
         }

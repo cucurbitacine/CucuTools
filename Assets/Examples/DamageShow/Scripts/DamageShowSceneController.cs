@@ -24,7 +24,7 @@ namespace Examples.DamageShow.Scripts
 
         private void Update()
         {
-            if (input.shoot)
+            if (input.data.shoot)
             {
                 gun.Shoot(new Ray(input.person.head.position, input.person.head.forward));
             }

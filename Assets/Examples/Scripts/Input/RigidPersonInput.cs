@@ -1,3 +1,4 @@
+using System;
 using CucuTools.PlayerSystem;
 using CucuTools.PlayerSystem.Visions.Dragging;
 using UnityEngine;
@@ -17,16 +18,9 @@ namespace Examples.Scripts.Input
         public float fovRunOffset = 20f;
         [Range(-90, 0)]
         public float fovAimOffset = -20f;
-        
+
         [Header("Input")]
-        public Vector3 move = Vector3.zero;
-        public Vector2 view = Vector2.zero;
-        [Space] 
-        public bool run = false;
-        public bool jump = false;
-        public bool aim = false;
-        public bool shoot = false;
-        public bool dragging = false;
+        public InputData data = new InputData();
         
         [Header("Person Settings")]
         [Space] public float runScale = 2f;
@@ -34,18 +28,18 @@ namespace Examples.Scripts.Input
         
         protected virtual void UpdateInput()
         {
-            move = new Vector3(UnityEngine.Input.GetAxisRaw("Horizontal"), 0f, UnityEngine.Input.GetAxisRaw("Vertical"));
-            move = Vector3.ClampMagnitude(move, 1);
+            data.move = new Vector3(UnityEngine.Input.GetAxisRaw("Horizontal"), 0f, UnityEngine.Input.GetAxisRaw("Vertical"));
+            data.move = Vector3.ClampMagnitude(data.move, 1);
 
-            view = new Vector2(UnityEngine.Input.GetAxis("Mouse X"), UnityEngine.Input.GetAxis("Mouse Y"));
+            data.view = new Vector2(UnityEngine.Input.GetAxis("Mouse X"), UnityEngine.Input.GetAxis("Mouse Y"));
 
-            run = UnityEngine.Input.GetKey(KeyCode.LeftShift);
-            jump = UnityEngine.Input.GetKeyDown(KeyCode.Space);
-            aim = UnityEngine.Input.GetKey(KeyCode.Mouse1);
-            shoot = UnityEngine.Input.GetKeyDown(KeyCode.Mouse0);
-            dragging = UnityEngine.Input.GetKey(KeyCode.Mouse0);
+            data.run = UnityEngine.Input.GetKey(KeyCode.LeftShift);
+            data.jump = UnityEngine.Input.GetKeyDown(KeyCode.Space);
+            data.aim = UnityEngine.Input.GetKey(KeyCode.Mouse1);
+            data.shoot = UnityEngine.Input.GetKeyDown(KeyCode.Mouse0);
+            data.dragging = UnityEngine.Input.GetKey(KeyCode.Mouse0);
             
-            if (drag) drag.inputDragging = dragging;
+            if (drag) drag.inputDragging = data.dragging;
         }
 
         protected abstract void UpdatePerson(float deltaTime);
@@ -103,6 +97,19 @@ namespace Examples.Scripts.Input
         protected virtual void LateUpdate()
         {
             if (isEnabled) UpdateCamera(Time.deltaTime);
+        }
+
+        [Serializable]
+        public struct InputData
+        {
+            public Vector3 move;
+            public Vector2 view;
+            [Space] 
+            public bool run;
+            public bool jump;
+            public bool aim;
+            public bool shoot;
+            public bool dragging;
         }
     }
     
