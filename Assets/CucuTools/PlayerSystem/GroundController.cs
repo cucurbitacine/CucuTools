@@ -7,6 +7,7 @@ namespace CucuTools.PlayerSystem
     public class GroundController : MonoBehaviour
     {
         public RaycastHit hit = default;
+        public GameObject groundGameObject = null;
         
         [Space]
         public bool grounded = false;
@@ -24,12 +25,16 @@ namespace CucuTools.PlayerSystem
         [Space]
         public LayerMask layerGround = 1;
         public float radiusCheck = 0.5f;
-        public float distanceCheck = 0.01f;
+        public float distanceCheck = 0.1f;
         [Range(0f, 90f)]
         public float maxAngleSlope = 60f;
 
+        [Space]
+        public bool fastCast = false;
+        
         private readonly Dictionary<Rigidbody, GroundPlatform> _platformCache = new Dictionary<Rigidbody, GroundPlatform>();
-
+        private readonly RaycastHit[] _overlap = new RaycastHit[32];
+        
         private bool IsPlatform(Rigidbody rigid)
         {
             if (rigid == null) return false;
@@ -67,9 +72,54 @@ namespace CucuTools.PlayerSystem
             return 2 * distanceCheck;
         }
 
-        public void UpdateGround(Vector3 point, Vector3 normal)
+        private bool PhysicsCast(Ray ray, float radius, out RaycastHit raycastHit, float distance)
         {
-            var ray = GetRaySphereCast(point, normal);
+            if (fastCast)
+            {
+                return Physics.SphereCast(ray, radius, out raycastHit, distance, layerGround, QueryTriggerInteraction.Ignore);
+            }
+            
+            return PhysicsCastNonAlloc(ray, radius, out raycastHit, distance);
+        }
+
+        private bool PhysicsCastNonAlloc(Ray ray, float radius, out RaycastHit raycastHit, float distance)
+        {
+            var count = Physics.SphereCastNonAlloc(ray, radius, _overlap, distance, layerGround, QueryTriggerInteraction.Ignore);
+
+            if (count == 0)
+            {
+                raycastHit = default;
+                return false;
+            }
+            
+            var index = 0;
+
+            if (count > 1)
+            {
+                var distanceMax = float.MaxValue;
+                for (var i = 0; i < count; i++)
+                {
+                    if (_overlap[i].collider.gameObject == gameObject) continue;
+
+                    if (Vector3.Angle(normalCheck, _overlap[i].normal) < maxAngleSlope)
+                    {
+                        if (_overlap[i].distance < distanceMax)
+                        {
+                            distanceMax = _overlap[i].distance;
+                            index = i;
+                        }
+                    }
+                }
+            }
+            
+            raycastHit = _overlap[index];
+
+            return raycastHit.collider.gameObject != gameObject;
+        }
+
+        public void UpdateGround()
+        {
+            var ray = GetRaySphereCast(pointCheck, normalCheck);
             var radius = GetRadiusSphereCast();
             var distance = GetDistanceSphereCast();
             
@@ -77,12 +127,12 @@ namespace CucuTools.PlayerSystem
             wasGrounded = grounded;
 
             // check ground
-            grounded = Physics.SphereCast(ray, radius, out hit, distance, layerGround);
+            grounded = PhysicsCast(ray, radius, out hit, distance);
 
             if (grounded)
             {
                 // check angle slope. it's looks like easy
-                var angleSlope = Vector3.Angle(normal, hit.normal);
+                var angleSlope = Vector3.Angle(normalCheck, hit.normal);
                 grounded = angleSlope < maxAngleSlope;
             }
 
@@ -94,11 +144,17 @@ namespace CucuTools.PlayerSystem
             {
                 platform = IsPlatform(hit.rigidbody);
             }
+
+            if (grounded)
+            {
+                groundGameObject = hit.collider.gameObject;
+            }
+            else groundGameObject = null;
         }
         
         private void Update()
         {
-            UpdateGround(pointCheck, normalCheck);
+            UpdateGround();
         }
         
         private void OnDrawGizmos()
@@ -106,8 +162,8 @@ namespace CucuTools.PlayerSystem
             var ray = GetRaySphereCast(pointCheck, normalCheck);
             var radius = GetRadiusSphereCast();
             var distance = GetDistanceSphereCast();
-            
-            var wasHit = Physics.SphereCast(ray, radius, out var tmp, distance, layerGround);
+
+            var wasHit = PhysicsCast(ray, radius, out var tmp, distance);
             
             var color = Color.white;
             color.a = 0.3f;

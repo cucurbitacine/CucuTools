@@ -113,8 +113,8 @@ namespace CucuTools.PlayerSystem.Impl
 
         private void UpdateBody()
         {
-            capsule.height = height;
-            capsule.radius = radius;
+            capsule.height = heightPerson;
+            capsule.radius = radiusPerson;
             capsule.center = Vector3.up * (capsule.height * 0.5f);
             
             ground.pointCheck = position;
@@ -140,10 +140,10 @@ namespace CucuTools.PlayerSystem.Impl
             // correcting velocity movement if in air  
             if (!ground.grounded)
             {
-                velocityMove = Vector3.Lerp(this._velocityMove, velocityMove, airMoveControl);
+                velocityMove = Vector3.Lerp(_velocityMove, velocityMove, airMoveControl);
             }
             
-            this._velocityMove = Vector3.Lerp(this._velocityMove, velocityMove, speedChangeRate * deltaTime);
+            _velocityMove = Vector3.Lerp(_velocityMove, velocityMove, speedChangeRate * deltaTime);
         }
         
         private void UpdateFall(float deltaTime)
@@ -183,6 +183,7 @@ namespace CucuTools.PlayerSystem.Impl
                 // just have left ground
                 if (ground.wasGrounded)
                 {
+                    // start time out
                     _jumpTimeoutDelta = jumpTimeout;
 
                     // save inertion speed from platform

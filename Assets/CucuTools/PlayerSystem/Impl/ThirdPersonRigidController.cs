@@ -107,8 +107,8 @@ namespace CucuTools.PlayerSystem.Impl
 
         private void UpdateBody()
         {
-            capsule.height = height;
-            capsule.radius = radius;
+            capsule.height = heightPerson;
+            capsule.radius = radiusPerson;
             capsule.center = Vector3.up * (capsule.height * 0.5f);
             
             ground.pointCheck = position;
@@ -127,6 +127,8 @@ namespace CucuTools.PlayerSystem.Impl
             {
                 moveDir = (Vector3.Project(moveDir, normal) + Vector3.ProjectOnPlane(moveDir, ground.hit.normal)).normalized;
             }
+            
+            Debug.DrawLine(position, position + moveDir.normalized, Color.cyan, 1f);
             
             // calculating velocity movement
             var velocityMove = moveDir *  settings.moveSpeed;
@@ -165,7 +167,7 @@ namespace CucuTools.PlayerSystem.Impl
                 // update jumping state
                 if (info.jumping)
                 {
-                    info.jumping = 0 <= velocitySelf.y;
+                    info.jumping = velocity.y >= 0;
                 }
 
                 // update falling state
@@ -177,6 +179,7 @@ namespace CucuTools.PlayerSystem.Impl
                 // just have left ground
                 if (ground.wasGrounded)
                 {
+                    // start time out
                     _jumpTimeoutDelta = jumpTimeout;
 
                     // save inertion speed from platform
@@ -273,8 +276,9 @@ namespace CucuTools.PlayerSystem.Impl
                 var angVel = ground.hit.rigidbody.angularVelocity.y * Mathf.Rad2Deg;
                 _personRotation = Quaternion.AngleAxis(angVel * deltaTime, normal) * _personRotation;
             }
-            
-            rigid.MoveRotation(Quaternion.Lerp(rigid.rotation, _personRotation, rotationChangeRate * deltaTime));
+
+            var changeRate = rotationChangeRate * (ground.grounded ? 1f : airMoveControl);
+            rigid.MoveRotation(Quaternion.Lerp(rigid.rotation, _personRotation, changeRate * deltaTime));
         }
         
         private void CheckObstaclesInAir(Collision collision)

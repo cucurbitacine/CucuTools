@@ -1,6 +1,4 @@
-using System;
 using CucuTools.PlayerSystem;
-using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 
 namespace Examples.Playground.Scripts
@@ -9,6 +7,8 @@ namespace Examples.Playground.Scripts
     {
         public RigidPersonController person;
         public Animator animator;
+        public AudioSource audioSource;
+        
         private static readonly int Grounded = Animator.StringToHash("Grounded");
         private static readonly int FreeFall = Animator.StringToHash("FreeFall");
         private static readonly int Jump = Animator.StringToHash("Jump");
@@ -16,9 +16,33 @@ namespace Examples.Playground.Scripts
 
         public float fallTimeout = 0.2f;
         public float speedChangeRate = 8f;
+
+        [Space]
+        public AudioClip landSfx;
+        public AudioClip[] footstepSfx;
         
         private float _speed = 0f;
         private float _fallTimeoutDelta = 0f;
+
+        private void OnFootstep(AnimationEvent animationEvent)
+        {
+            if (animationEvent.animatorClipInfo.weight > 0.5f)
+            {
+                if (footstepSfx.Length > 0)
+                {
+                    var index = Random.Range(0, footstepSfx.Length);
+                    audioSource.PlayOneShot(footstepSfx[index]);
+                }
+            }
+        }
+
+        private void OnLand(AnimationEvent animationEvent)
+        {
+            if (animationEvent.animatorClipInfo.weight > 0.5f)
+            {
+                audioSource.PlayOneShot(landSfx);
+            }
+        }
         
         private void LateUpdate()
         {

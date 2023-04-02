@@ -13,8 +13,8 @@ namespace CucuTools.PlayerSystem
         [SerializeField] private Transform _head = null;
 
         [Header("Rigid Settings")]
-        [Min(0f)] public float height = 2f;
-        [Min(0f)] public float radius = 0.5f;
+        [Min(0f)] public float heightPerson = 2f;
+        [Min(0f)] public float radiusPerson = 0.5f;
         
         [Space]
         [Min(0f)] public float speedChangeRate = 24f;

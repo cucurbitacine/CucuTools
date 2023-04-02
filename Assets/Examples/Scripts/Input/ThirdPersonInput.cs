@@ -22,7 +22,7 @@ namespace Examples.Scripts.Input
             var moveDir = Vector3.ProjectOnPlane(cam.transform.TransformDirection(data.move), personTyped.normal).normalized;
             person.MoveInDirection(moveDir);
             
-            var lookDir = data.aim ? cam.transform.forward : Vector3.ProjectOnPlane(moveDir, personTyped.normal);
+            var lookDir = data.aim || data.dragging ? cam.transform.forward : Vector3.ProjectOnPlane(moveDir, personTyped.normal);
             //var lookDir = cam.transform.forward;
             person.LookInDirection(lookDir);
             

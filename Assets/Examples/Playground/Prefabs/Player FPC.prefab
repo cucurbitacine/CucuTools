@@ -296,6 +296,8 @@ MonoBehaviour:
     gravityModificator: 1
   _ground: {fileID: 8945487971485250974}
   _head: {fileID: 8945487971165834385}
+  height: 2
+  radius: 0.5
   speedChangeRate: 24
   rotationChangeRate: 24
   inertionSpeedFade: 0.05
@@ -303,7 +305,7 @@ MonoBehaviour:
   fovBottom: 89
   jumpTimeout: 0.05
   airMoveControl: 1
-  velocityExternal: {x: 0, y: 0, z: 0}
+  velocityAdditional: {x: 0, y: 0, z: 0}
   useAngularVelocity: 1
 --- !u!114 &8945487971485250974
 MonoBehaviour:
@@ -329,8 +331,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   radiusCheck: 0.5
-  distanceCheck: 0.01
+  distanceCheck: 0.1
   maxAngleSlope: 60
+  ground: {fileID: 0}
 --- !u!54 &8945487971485250971
 Rigidbody:
   m_ObjectHideFlags: 0
