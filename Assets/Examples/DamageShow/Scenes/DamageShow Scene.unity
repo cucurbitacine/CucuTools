@@ -1667,7 +1667,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 39
+    m_Bits: 37
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -3257,7 +3257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -13657,6 +13657,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1280369202768145846, guid: 9853d942fa19126448b18b870c43a980, type: 3}
+      propertyPath: eyes
+      value: 
+      objectReference: {fileID: 1829979904}
     - target: {fileID: 1280369203054676115, guid: 9853d942fa19126448b18b870c43a980, type: 3}
       propertyPath: playerCamera
       value: 
@@ -13710,11 +13714,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 64411756}
+    - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
       propertyPath: person
       value: 
       objectReference: {fileID: 1899406348}
     - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
       propertyPath: player
+      value: 
+      objectReference: {fileID: 1899406348}
+    - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
+      propertyPath: personTyped
       value: 
       objectReference: {fileID: 1899406348}
     m_RemovedComponents: []
@@ -15046,7 +15058,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -22185,7 +22197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -24208,7 +24220,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -25293,7 +25305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -34407,7 +34419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -35539,7 +35551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -37876,7 +37888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -40584,7 +40596,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -48305,7 +48317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -50536,6 +50548,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+--- !u!4 &1829979904 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8945487971165834385, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+  m_PrefabInstance: {fileID: 1829979903}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1835847196
 GameObject:
   m_ObjectHideFlags: 0
@@ -51312,7 +51329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
@@ -54770,7 +54787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: radiusCheck
-      value: 0.49000013
+      value: 0.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 5974280714850852299, guid: 5f893b1b58856bd42882dd48d6dc96a4, type: 3}
       propertyPath: pointCheck.x
