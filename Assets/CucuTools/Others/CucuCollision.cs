@@ -4,46 +4,46 @@ using UnityEngine.Events;
 
 namespace CucuTools.Others
 {
-    public class CucuCollision : MonoBehaviour
+    public class CucuCollision : CucuBehaviour
     {
         public bool isEnabled = true;
         public bool invokeOnce = false;
         public CollisionMode mode = CollisionMode.Enter;
         public LayerMask layerMask = 1;
 
-        [Space] public UnityEvent<Collision> onChanged = new UnityEvent<Collision>();
+        [Space] public UnityEvent<Collision> onCollisionChanged = new UnityEvent<Collision>();
 
         public List<Collider> whiteList = new List<Collider>();
 
         [SerializeField] private bool debugLog = true;
 
-        public void SetEnable(bool value)
+        public void SetEnableCollision(bool value)
         {
             isEnabled = value;
         }
         
-        public void SwitchEnable()
+        public void SwitchEnableCollision()
         {
-            SetEnable(!isEnabled);
+            SetEnableCollision(!isEnabled);
         }
 
-        public void Enable()
+        public void EnableCollision()
         {
-            SetEnable(true);
+            SetEnableCollision(true);
         }
         
-        public void Disable()
+        public void DisableCollision()
         {
-            SetEnable(false);
+            SetEnableCollision(false);
         }
         
         private void Invoke(Collision other)
         {
             if (debugLog) Debug.Log($"[{name}] On Collision {mode} with [{other.gameObject.name}]");
 
-            onChanged.Invoke(other);
+            onCollisionChanged.Invoke(other);
 
-            if (invokeOnce) Disable();
+            if (invokeOnce) DisableCollision();
         }
 
         private void OnCollision(CollisionMode collisionMode, Collision other)

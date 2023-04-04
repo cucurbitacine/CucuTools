@@ -1,5 +1,6 @@
 using System;
 using CucuTools.PlayerSystem;
+using CucuTools.PlayerSystem.Visions;
 using CucuTools.PlayerSystem.Visions.Dragging;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ namespace Examples.Scripts.Input
         
         [Header("Person Settings")]
         [Space] public float runScale = 2f;
+        [Space] public VisionController vision;
+        [Space] public TouchController touch;
         [Space] public DragController drag;
         
         protected virtual void UpdateInput()
@@ -69,7 +72,16 @@ namespace Examples.Scripts.Input
                 Cursor.visible = false;
             }
         }
-        
+
+        protected virtual void Awake()
+        {
+            if (vision == null) vision = GetComponentInChildren<VisionController>();
+            if (touch == null) touch = GetComponentInChildren<TouchController>();
+            if (drag == null) drag = GetComponentInChildren<DragController>();
+
+            if (cam == null) cam = Camera.main;
+        }
+
         protected virtual void OnEnable()
         {
             Cursor.lockState = CursorLockMode.Locked;

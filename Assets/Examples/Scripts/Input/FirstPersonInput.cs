@@ -6,7 +6,10 @@ namespace Examples.Scripts.Input
     public class FirstPersonInput : RigidPersonInput<FirstPersonRigidController>
     {
         [Header("First Person Settings")]
-        [Min(0)] public float fovChangeRate = 8;
+        [Min(0)]
+        public float fovChangeRate = 8;
+
+        public Vector3 camOffset = Vector3.zero;
         
         protected override void UpdatePerson(float deltaTime)
         {
@@ -21,14 +24,22 @@ namespace Examples.Scripts.Input
 
         protected override void UpdateCamera(float deltaTime)
         {
-            cam.transform.position = person.head.position;
             cam.transform.rotation = person.head.rotation;
-
+            cam.transform.position = person.head.TransformPoint(camOffset);
+            
             var fov = fovIdle;
             if (data.aim) fov += fovAimOffset;
             if (data.run && person.info.moving) fov += fovRunOffset;
             
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, fovChangeRate * deltaTime);
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            vision.eyes = cam.transform;
+            touch.origin = vision.eyes;
         }
 
         private void OnValidate()
@@ -37,8 +48,8 @@ namespace Examples.Scripts.Input
 
             if (gameObject.activeInHierarchy && cam != null && person != null)
             {
-                cam.transform.position = person.head.position;
                 cam.transform.rotation = person.head.rotation;
+                cam.transform.position = person.head.TransformPoint(camOffset);
             }
         }
     }

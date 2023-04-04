@@ -6,8 +6,16 @@ namespace Examples.Playground.Scripts
 {
     public class PlaygroundCommands : TerminalCommandRegistrator
     {
-        public FirstPersonRigidController player;
+        public PlaygroundController playground;
 
+        private RigidPersonController player => playground.player;
+        
+        [TerminalCommand("player.spawn")]
+        private void SpawnPlayer()
+        {
+            playground.SpawnPlayer();
+        }
+        
         [TerminalCommand("player.set.speed")]
         private void SetMoveSpeedMax(float speedMax)
         {

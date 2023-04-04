@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 2297608904907501798}
   - component: {fileID: 2297608904907501801}
   m_Layer: 0
-  m_Name: Player TPC
+  m_Name: Third Person - Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

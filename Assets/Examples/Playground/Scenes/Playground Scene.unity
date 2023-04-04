@@ -1031,7 +1031,8 @@ GameObject:
   - component: {fileID: 87219655}
   - component: {fileID: 87219654}
   - component: {fileID: 87219653}
-  - component: {fileID: 87219652}
+  - component: {fileID: 87219658}
+  - component: {fileID: 87219657}
   m_Layer: 2
   m_Name: DEAD ZONE
   m_TagString: Untagged
@@ -1039,43 +1040,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &87219652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 87219651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa163270dad64b5ab58a68121b3c725d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnabled: 1
-  invokeOnce: 0
-  mode: 0
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  onChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
 --- !u!65 &87219653
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1154,6 +1118,47 @@ Transform:
   m_Father: {fileID: 913603064}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &87219657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87219651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
+--- !u!114 &87219658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87219651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf8ac1d3c814ba79bbd628e4882dba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 1
+  invokeOnce: 0
+  mode: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  onCollisionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!1 &93467879
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,6 +1820,7 @@ GameObject:
   - component: {fileID: 147126452}
   - component: {fileID: 147126451}
   - component: {fileID: 147126450}
+  - component: {fileID: 147126454}
   m_Layer: 0
   m_Name: Cube (17)
   m_TagString: Untagged
@@ -1851,29 +1857,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &147126451
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1937,6 +1929,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147126448}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &147126454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147126448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &150558960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,6 +1960,7 @@ GameObject:
   - component: {fileID: 150558964}
   - component: {fileID: 150558963}
   - component: {fileID: 150558962}
+  - component: {fileID: 150558966}
   m_Layer: 0
   m_Name: Cube (19)
   m_TagString: Untagged
@@ -1986,29 +1997,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &150558963
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2072,6 +2069,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 150558960}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &150558966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150558960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &151066052
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,6 +2100,7 @@ GameObject:
   - component: {fileID: 151066056}
   - component: {fileID: 151066055}
   - component: {fileID: 151066054}
+  - component: {fileID: 151066058}
   m_Layer: 0
   m_Name: Cube (14)
   m_TagString: Untagged
@@ -2121,29 +2137,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &151066055
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2207,6 +2209,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 151066052}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &151066058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151066052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &151847609
 GameObject:
   m_ObjectHideFlags: 0
@@ -2223,6 +2243,7 @@ GameObject:
   - component: {fileID: 151847613}
   - component: {fileID: 151847612}
   - component: {fileID: 151847611}
+  - component: {fileID: 151847618}
   m_Layer: 0
   m_Name: Cube (54)
   m_TagString: Untagged
@@ -2317,29 +2338,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &151847615
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2403,6 +2410,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 151847609}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &151847618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151847609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &153796840
 GameObject:
   m_ObjectHideFlags: 0
@@ -2577,6 +2602,7 @@ GameObject:
   - component: {fileID: 159706466}
   - component: {fileID: 159706465}
   - component: {fileID: 159706464}
+  - component: {fileID: 159706471}
   m_Layer: 0
   m_Name: Cube (29)
   m_TagString: Untagged
@@ -2671,29 +2697,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &159706468
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2757,6 +2769,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159706462}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &159706471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159706462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &165173076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2773,6 +2803,7 @@ GameObject:
   - component: {fileID: 165173080}
   - component: {fileID: 165173079}
   - component: {fileID: 165173078}
+  - component: {fileID: 165173085}
   m_Layer: 0
   m_Name: Cube (51)
   m_TagString: Untagged
@@ -2867,29 +2898,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &165173082
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2953,6 +2970,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165173076}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &165173085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 165173076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &170885106
 GameObject:
   m_ObjectHideFlags: 0
@@ -3063,6 +3098,7 @@ GameObject:
   - component: {fileID: 172675135}
   - component: {fileID: 172675134}
   - component: {fileID: 172675133}
+  - component: {fileID: 172675137}
   m_Layer: 0
   m_Name: Cube (47)
   m_TagString: Untagged
@@ -3099,29 +3135,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &172675134
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3185,6 +3207,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172675131}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &172675137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172675131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &187918849
 GameObject:
   m_ObjectHideFlags: 0
@@ -3873,6 +3913,7 @@ GameObject:
   - component: {fileID: 258888890}
   - component: {fileID: 258888889}
   - component: {fileID: 258888888}
+  - component: {fileID: 258888892}
   m_Layer: 0
   m_Name: Cube (45)
   m_TagString: Untagged
@@ -3909,29 +3950,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &258888889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3995,6 +4022,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258888886}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &258888892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 258888886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &275536146
 GameObject:
   m_ObjectHideFlags: 0
@@ -4794,6 +4839,7 @@ GameObject:
   - component: {fileID: 348771261}
   - component: {fileID: 348771260}
   - component: {fileID: 348771259}
+  - component: {fileID: 348771266}
   m_Layer: 0
   m_Name: Cube (30)
   m_TagString: Untagged
@@ -4888,29 +4934,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &348771263
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4974,6 +5006,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 348771257}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &348771266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348771257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &350013171
 GameObject:
   m_ObjectHideFlags: 0
@@ -5383,6 +5433,7 @@ GameObject:
   - component: {fileID: 368598741}
   - component: {fileID: 368598740}
   - component: {fileID: 368598739}
+  - component: {fileID: 368598746}
   m_Layer: 0
   m_Name: Cube (52)
   m_TagString: Untagged
@@ -5477,29 +5528,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &368598743
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5563,6 +5600,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 368598737}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &368598746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368598737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &370590969
 GameObject:
   m_ObjectHideFlags: 0
@@ -5658,7 +5713,7 @@ RectTransform:
   - {fileID: 725776836}
   - {fileID: 861692267}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5806,6 +5861,11 @@ Transform:
   m_Father: {fileID: 2120530536}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &398065053 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5179563175759528875, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+  m_PrefabInstance: {fileID: 6341981301251468437}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &412193557
 GameObject:
   m_ObjectHideFlags: 0
@@ -6015,6 +6075,7 @@ GameObject:
   - component: {fileID: 435425034}
   - component: {fileID: 435425033}
   - component: {fileID: 435425032}
+  - component: {fileID: 435425038}
   m_Layer: 0
   m_Name: Cube (41)
   m_TagString: Untagged
@@ -6089,29 +6150,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &435425035
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6175,6 +6222,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435425030}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &435425038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435425030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &458101817
 GameObject:
   m_ObjectHideFlags: 0
@@ -6748,7 +6813,7 @@ Transform:
   - {fileID: 1969804335}
   - {fileID: 1225715524}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &525256587
 GameObject:
@@ -7274,6 +7339,7 @@ GameObject:
   - component: {fileID: 559466640}
   - component: {fileID: 559466639}
   - component: {fileID: 559466638}
+  - component: {fileID: 559466642}
   m_Layer: 0
   m_Name: Cube (48)
   m_TagString: Untagged
@@ -7310,29 +7376,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &559466639
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7396,6 +7448,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 559466636}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &559466642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559466636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &567644472
 GameObject:
   m_ObjectHideFlags: 0
@@ -7570,6 +7640,7 @@ GameObject:
   - component: {fileID: 568097842}
   - component: {fileID: 568097841}
   - component: {fileID: 568097840}
+  - component: {fileID: 568097847}
   m_Layer: 0
   m_Name: Cube (59)
   m_TagString: Untagged
@@ -7664,29 +7735,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &568097844
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7750,6 +7807,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568097838}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &568097847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568097838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &571163429
 GameObject:
   m_ObjectHideFlags: 0
@@ -8095,6 +8170,7 @@ GameObject:
   - component: {fileID: 580667418}
   - component: {fileID: 580667417}
   - component: {fileID: 580667416}
+  - component: {fileID: 580667420}
   m_Layer: 0
   m_Name: Cube (40)
   m_TagString: Untagged
@@ -8131,29 +8207,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &580667417
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8217,6 +8279,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 580667414}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &580667420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 580667414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &591107665
 GameObject:
   m_ObjectHideFlags: 0
@@ -8626,6 +8706,7 @@ GameObject:
   - component: {fileID: 608432914}
   - component: {fileID: 608432913}
   - component: {fileID: 608432912}
+  - component: {fileID: 608432919}
   m_Layer: 0
   m_Name: Cube (57)
   m_TagString: Untagged
@@ -8720,29 +8801,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &608432916
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8806,6 +8873,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 608432910}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &608432919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 608432910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &611224604
 GameObject:
   m_ObjectHideFlags: 0
@@ -8821,6 +8906,7 @@ GameObject:
   - component: {fileID: 611224606}
   - component: {fileID: 611224605}
   - component: {fileID: 611224611}
+  - component: {fileID: 611224612}
   m_Layer: 0
   m_Name: Cylinder (10)
   m_TagString: Untagged
@@ -8959,29 +9045,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
+--- !u!114 &611224612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611224604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &618462511
 GameObject:
   m_ObjectHideFlags: 0
@@ -9494,8 +9584,8 @@ MeshFilter:
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &640915595 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1280369204138455718, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-  m_PrefabInstance: {fileID: 1280369203638315565}
+  m_CorrespondingSourceObject: {fileID: 640915595, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
+  m_PrefabInstance: {fileID: 2154966856257331707}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -10201,6 +10291,7 @@ GameObject:
   - component: {fileID: 685876093}
   - component: {fileID: 685876092}
   - component: {fileID: 685876091}
+  - component: {fileID: 685876098}
   m_Layer: 0
   m_Name: Cube (31)
   m_TagString: Untagged
@@ -10295,29 +10386,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &685876095
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10381,6 +10458,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685876089}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &685876098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 685876089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &697502056
 GameObject:
   m_ObjectHideFlags: 0
@@ -10959,6 +11054,7 @@ GameObject:
   - component: {fileID: 728184495}
   - component: {fileID: 728184494}
   - component: {fileID: 728184500}
+  - component: {fileID: 728184501}
   m_Layer: 0
   m_Name: Cylinder (6)
   m_TagString: Untagged
@@ -11097,29 +11193,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
+--- !u!114 &728184501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728184493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &733123463
 GameObject:
   m_ObjectHideFlags: 0
@@ -11391,6 +11491,7 @@ GameObject:
   - component: {fileID: 748213802}
   - component: {fileID: 748213801}
   - component: {fileID: 748213800}
+  - component: {fileID: 748213807}
   m_Layer: 0
   m_Name: Cube (24)
   m_TagString: Untagged
@@ -11485,29 +11586,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &748213804
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11571,6 +11658,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748213798}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &748213807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748213798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &768031140
 GameObject:
   m_ObjectHideFlags: 0
@@ -11584,6 +11689,7 @@ GameObject:
   - component: {fileID: 768031144}
   - component: {fileID: 768031143}
   - component: {fileID: 768031142}
+  - component: {fileID: 768031146}
   m_Layer: 0
   m_Name: Cube (32)
   m_TagString: Untagged
@@ -11620,29 +11726,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &768031143
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11706,6 +11798,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768031140}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &768031146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 768031140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &780413569
 GameObject:
   m_ObjectHideFlags: 0
@@ -11834,7 +11944,7 @@ Transform:
   - {fileID: 2094201911}
   - {fileID: 1279266681}
   m_Father: {fileID: 0}
-  m_RootOrder: 20
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &813380467
 GameObject:
@@ -12106,6 +12216,7 @@ GameObject:
   - component: {fileID: 838536903}
   - component: {fileID: 838536902}
   - component: {fileID: 838536908}
+  - component: {fileID: 838536909}
   m_Layer: 0
   m_Name: Cylinder (2)
   m_TagString: Untagged
@@ -12244,29 +12355,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
+--- !u!114 &838536909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 838536901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &846027541
 GameObject:
   m_ObjectHideFlags: 0
@@ -12283,6 +12398,7 @@ GameObject:
   - component: {fileID: 846027545}
   - component: {fileID: 846027544}
   - component: {fileID: 846027543}
+  - component: {fileID: 846027550}
   m_Layer: 0
   m_Name: Cube (53)
   m_TagString: Untagged
@@ -12377,29 +12493,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &846027547
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12463,6 +12565,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 846027541}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &846027550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846027541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &857482289
 GameObject:
   m_ObjectHideFlags: 0
@@ -12630,7 +12750,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 280a4084ee9dd2f49a1eb93d07af2f6b, type: 3}
       propertyPath: m_RootOrder
-      value: 23
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 280a4084ee9dd2f49a1eb93d07af2f6b, type: 3}
       propertyPath: m_LocalScale.x
@@ -13158,6 +13278,7 @@ GameObject:
   - component: {fileID: 880392924}
   - component: {fileID: 880392923}
   - component: {fileID: 880392922}
+  - component: {fileID: 880392928}
   m_Layer: 0
   m_Name: Cube (36)
   m_TagString: Untagged
@@ -13232,29 +13353,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &880392925
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13318,6 +13425,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880392920}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &880392928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880392920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &885428985
 GameObject:
   m_ObjectHideFlags: 0
@@ -13703,6 +13828,7 @@ GameObject:
   - component: {fileID: 899777505}
   - component: {fileID: 899777504}
   - component: {fileID: 899777503}
+  - component: {fileID: 899777507}
   m_Layer: 0
   m_Name: Cube (46)
   m_TagString: Untagged
@@ -13739,29 +13865,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &899777504
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13825,6 +13937,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899777501}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &899777507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899777501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &913404967
 GameObject:
   m_ObjectHideFlags: 0
@@ -14080,7 +14210,7 @@ Transform:
   m_Children:
   - {fileID: 87219656}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &920453314
 GameObject:
@@ -14179,11 +14309,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 920453314}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &921777901 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2297608904162346375, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-  m_PrefabInstance: {fileID: 1448943574}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &928322692
 GameObject:
   m_ObjectHideFlags: 0
@@ -14713,6 +14838,7 @@ GameObject:
   - component: {fileID: 955599931}
   - component: {fileID: 955599937}
   - component: {fileID: 955599936}
+  - component: {fileID: 955599938}
   m_Layer: 0
   m_Name: Cube (20)
   m_TagString: Untagged
@@ -14765,29 +14891,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &955599933
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14893,6 +15005,24 @@ MonoBehaviour:
     colorHovering: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
     colorShift: 0.618
   target: {fileID: 0}
+--- !u!114 &955599938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955599929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &958074508
 GameObject:
   m_ObjectHideFlags: 0
@@ -15006,6 +15136,7 @@ GameObject:
   - component: {fileID: 963163240}
   - component: {fileID: 963163239}
   - component: {fileID: 963163238}
+  - component: {fileID: 963163244}
   m_Layer: 0
   m_Name: Cube (42)
   m_TagString: Untagged
@@ -15080,29 +15211,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &963163241
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15166,6 +15283,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963163236}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &963163244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963163236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &968113689
 GameObject:
   m_ObjectHideFlags: 0
@@ -15357,7 +15492,7 @@ Transform:
   - {fileID: 1591473431}
   - {fileID: 553362489}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &977587997
 GameObject:
@@ -15375,6 +15510,7 @@ GameObject:
   - component: {fileID: 977588001}
   - component: {fileID: 977588000}
   - component: {fileID: 977587999}
+  - component: {fileID: 977588006}
   m_Layer: 0
   m_Name: Cube (55)
   m_TagString: Untagged
@@ -15469,29 +15605,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &977588003
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15555,6 +15677,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977587997}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &977588006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977587997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &978812513
 GameObject:
   m_ObjectHideFlags: 0
@@ -15749,143 +15889,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981240843}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &987560608
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 987560614}
-  - component: {fileID: 987560613}
-  - component: {fileID: 987560612}
-  - component: {fileID: 987560611}
-  - component: {fileID: 987560610}
-  - component: {fileID: 987560609}
-  m_Layer: 0
-  m_Name: Platform (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &987560609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987560608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e62c89f4004d76540a899162226ca37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeMove: 0
-  timePauseMove: 0
-  blendMove: 0
-  move: 0
-  directionMove: {x: 9, y: 0, z: 0}
-  durationMove: 4
-  durationPauseMove: 2
-  rotate: 0
-  angularVelocity: 1
-  axis: {x: 0, y: 0, z: 1}
---- !u!54 &987560610
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987560608}
-  serializedVersion: 2
-  m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!65 &987560611
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987560608}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &987560612
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987560608}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 4d86a474a2f808245bbda3115832e8cf, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &987560613
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987560608}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &987560614
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 987560608}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.59, y: 2.02, z: -17.959068}
-  m_LocalScale: {x: 10, y: 0.19999999, z: 2}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 27
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &988618866
 GameObject:
   m_ObjectHideFlags: 0
@@ -15948,6 +15951,7 @@ GameObject:
   - component: {fileID: 1005375479}
   - component: {fileID: 1005375478}
   - component: {fileID: 1005375477}
+  - component: {fileID: 1005375484}
   m_Layer: 0
   m_Name: Cube (26)
   m_TagString: Untagged
@@ -16042,29 +16046,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1005375481
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16128,6 +16118,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1005375475}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1005375484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005375475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1015071125
 GameObject:
   m_ObjectHideFlags: 0
@@ -16302,6 +16310,7 @@ GameObject:
   - component: {fileID: 1019847492}
   - component: {fileID: 1019847491}
   - component: {fileID: 1019847490}
+  - component: {fileID: 1019847497}
   m_Layer: 0
   m_Name: Cube (23)
   m_TagString: Untagged
@@ -16396,29 +16405,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1019847494
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16482,6 +16477,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1019847488}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1019847497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019847488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1037058948
 GameObject:
   m_ObjectHideFlags: 0
@@ -16592,6 +16605,7 @@ GameObject:
   - component: {fileID: 1047425605}
   - component: {fileID: 1047425604}
   - component: {fileID: 1047425603}
+  - component: {fileID: 1047425607}
   m_Layer: 0
   m_Name: Cube (15)
   m_TagString: Untagged
@@ -16628,29 +16642,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1047425604
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16714,6 +16714,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1047425601}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1047425607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047425601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1072807768
 GameObject:
   m_ObjectHideFlags: 0
@@ -17858,6 +17876,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1126390721}
   - component: {fileID: 1126390722}
+  - component: {fileID: 1126390723}
   m_Layer: 0
   m_Name: Playground Controller
   m_TagString: Untagged
@@ -17914,33 +17933,22 @@ MonoBehaviour:
       m_Calls: []
   onPlayerSpawned:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1985523732}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathTracker, Playground
-        m_MethodName: ResetTrack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2094201910}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathTracker, Playground
-        m_MethodName: ResetTrack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  person: {fileID: 1602473314}
+      m_Calls: []
+  player: {fileID: 0}
   startSpawnPoint: {fileID: 1484361548}
+--- !u!114 &1126390723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126390720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89833911e12498bb24ab9e0cd43a2a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factoryDefault: {fileID: 11400000, guid: 29a6a0773a441084db27054dd3c6a7fb, type: 2}
 --- !u!1 &1130778058
 GameObject:
   m_ObjectHideFlags: 0
@@ -18419,7 +18427,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1156547156
 GameObject:
@@ -18434,6 +18442,7 @@ GameObject:
   - component: {fileID: 1156547160}
   - component: {fileID: 1156547159}
   - component: {fileID: 1156547158}
+  - component: {fileID: 1156547162}
   m_Layer: 0
   m_Name: Cube (17)
   m_TagString: Untagged
@@ -18470,29 +18479,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1156547159
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18556,6 +18551,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1156547156}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1156547162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1156547156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1163587901
 GameObject:
   m_ObjectHideFlags: 0
@@ -18569,6 +18582,7 @@ GameObject:
   - component: {fileID: 1163587904}
   - component: {fileID: 1163587903}
   - component: {fileID: 1163587906}
+  - component: {fileID: 1163587907}
   m_Layer: 0
   m_Name: Cube (14)
   m_TagString: Untagged
@@ -18668,29 +18682,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
+--- !u!114 &1163587907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1163587901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1163878330
 GameObject:
   m_ObjectHideFlags: 0
@@ -18767,87 +18785,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1163878330}
   m_CullTransparentMesh: 1
---- !u!1001 &1180581886
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4122035155864623080, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_Name
-      value: Player Input TPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623080, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_RootOrder
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623081, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4122035155864623086, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 893175639}
-    - target: {fileID: 4122035155864623086, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: personTyped
-      value: 
-      objectReference: {fileID: 1448943575}
-    - target: {fileID: 4122035155864623086, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: CameraAngleOverride
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6298158823399580185, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: _origin
-      value: 
-      objectReference: {fileID: 921777901}
-    - target: {fileID: 6791219561598533761, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
-      propertyPath: eyes
-      value: 
-      objectReference: {fileID: 893175640}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: c5488f96db07e2745b2f78b6273d5bde, type: 3}
 --- !u!1 &1187995879
 GameObject:
   m_ObjectHideFlags: 0
@@ -18877,7 +18814,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1194368920
 GameObject:
@@ -18984,6 +18921,7 @@ GameObject:
   - component: {fileID: 1196479772}
   - component: {fileID: 1196479771}
   - component: {fileID: 1196479770}
+  - component: {fileID: 1196479776}
   m_Layer: 0
   m_Name: Cube (39)
   m_TagString: Untagged
@@ -19058,29 +18996,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1196479773
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19144,6 +19068,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1196479768}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1196479776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196479768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1225715523
 GameObject:
   m_ObjectHideFlags: 0
@@ -19418,6 +19360,7 @@ GameObject:
   - component: {fileID: 1311444310}
   - component: {fileID: 1311444309}
   - component: {fileID: 1311444308}
+  - component: {fileID: 1311444314}
   m_Layer: 0
   m_Name: Cube (44)
   m_TagString: Untagged
@@ -19492,29 +19435,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1311444311
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19578,6 +19507,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1311444306}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1311444314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311444306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1312523872
 GameObject:
   m_ObjectHideFlags: 0
@@ -19622,6 +19569,7 @@ GameObject:
   - component: {fileID: 1315260479}
   - component: {fileID: 1315260478}
   - component: {fileID: 1315260477}
+  - component: {fileID: 1315260481}
   m_Layer: 0
   m_Name: Cube (35)
   m_TagString: Untagged
@@ -19658,29 +19606,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1315260478
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19744,6 +19678,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1315260475}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1315260481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315260475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1319432493
 GameObject:
   m_ObjectHideFlags: 0
@@ -20583,7 +20535,8 @@ GameObject:
   - component: {fileID: 1380085564}
   - component: {fileID: 1380085563}
   - component: {fileID: 1380085562}
-  - component: {fileID: 1380085561}
+  - component: {fileID: 1380085566}
+  - component: {fileID: 1380085565}
   m_Layer: 0
   m_Name: Killer
   m_TagString: Untagged
@@ -20606,43 +20559,6 @@ Transform:
   m_Father: {fileID: 931735765}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 30, y: 35.264, z: -35.264}
---- !u!114 &1380085561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380085559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa163270dad64b5ab58a68121b3c725d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isEnabled: 1
-  invokeOnce: 0
-  mode: 0
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  onChanged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
 --- !u!65 &1380085562
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20706,6 +20622,47 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1380085559}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1380085565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380085559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
+--- !u!114 &1380085566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380085559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf8ac1d3c814ba79bbd628e4882dba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 1
+  invokeOnce: 0
+  mode: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  onCollisionChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!1 &1386217214
 GameObject:
   m_ObjectHideFlags: 0
@@ -20880,6 +20837,7 @@ GameObject:
   - component: {fileID: 1397781657}
   - component: {fileID: 1397781656}
   - component: {fileID: 1397781655}
+  - component: {fileID: 1397781662}
   m_Layer: 0
   m_Name: Cube (62)
   m_TagString: Untagged
@@ -20974,29 +20932,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1397781659
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21060,6 +21004,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1397781653}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1397781662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397781653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1402672305
 GameObject:
   m_ObjectHideFlags: 0
@@ -22105,143 +22067,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433890004}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1446525859
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1446525865}
-  - component: {fileID: 1446525864}
-  - component: {fileID: 1446525863}
-  - component: {fileID: 1446525862}
-  - component: {fileID: 1446525861}
-  - component: {fileID: 1446525860}
-  m_Layer: 0
-  m_Name: Platform (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1446525860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446525859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e62c89f4004d76540a899162226ca37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeMove: 0
-  timePauseMove: 0
-  blendMove: 0
-  move: 1
-  directionMove: {x: 9, y: 0, z: 0}
-  durationMove: 4
-  durationPauseMove: 2
-  rotate: 1
-  angularVelocity: 30
-  axis: {x: 0, y: 1, z: 0}
---- !u!54 &1446525861
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446525859}
-  serializedVersion: 2
-  m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!65 &1446525862
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446525859}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1446525863
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446525859}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 4d86a474a2f808245bbda3115832e8cf, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1446525864
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446525859}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1446525865
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1446525859}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.627872, y: 0.099999905, z: -11.459068}
-  m_LocalScale: {x: 2, y: 0.19999999, z: 2}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 26
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1446862677
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22359,7 +22184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 57558500583706474, guid: 46027ff77e8a9c345aecfec1b84e4c24, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 57558500583706474, guid: 46027ff77e8a9c345aecfec1b84e4c24, type: 3}
       propertyPath: m_AnchorMax.x
@@ -22579,98 +22404,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46027ff77e8a9c345aecfec1b84e4c24, type: 3}
---- !u!1001 &1448943574
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501797, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501799, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: pointCheck.z
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501800, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_Name
-      value: Player TPC
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501800, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501800, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501801, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_Height
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501801, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_Radius
-      value: 0.249
-      objectReference: {fileID: 0}
-    - target: {fileID: 2297608904907501801, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-      propertyPath: m_Center.y
-      value: 0.9
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
---- !u!114 &1448943575 stripped
+--- !u!114 &1448943580
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2297608904907501796, guid: 9f07a8d7740eac54cba7a5cca4bf369e, type: 3}
-  m_PrefabInstance: {fileID: 1448943574}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 398065053}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 469b84cdb58f4fadb5c7d825815a015a, type: 3}
+  m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  onDamageReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1126390722}
+        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
+          Playground
+        m_MethodName: SpawnPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1484361547
 GameObject:
   m_ObjectHideFlags: 0
@@ -22702,6 +22465,11 @@ Transform:
   m_Father: {fileID: 1126390721}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1497203814 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2154966857272437924, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
+  m_PrefabInstance: {fileID: 2154966856257331707}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1508115101
 GameObject:
   m_ObjectHideFlags: 0
@@ -23133,6 +22901,7 @@ GameObject:
   - component: {fileID: 1578717800}
   - component: {fileID: 1578717799}
   - component: {fileID: 1578717798}
+  - component: {fileID: 1578717802}
   m_Layer: 0
   m_Name: Cube (49)
   m_TagString: Untagged
@@ -23169,29 +22938,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1578717799
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23255,6 +23010,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1578717796}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1578717802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1578717796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1589710785
 GameObject:
   m_ObjectHideFlags: 0
@@ -23391,27 +23164,36 @@ Transform:
   m_Father: {fileID: 977187223}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1602473312 stripped
-CapsuleCollider:
-  m_CorrespondingSourceObject: {fileID: 8945487971485250970, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
-  m_PrefabInstance: {fileID: 8945487972466931962}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1602473314 stripped
+--- !u!114 &1602473318
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8945487971485250968, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
-  m_PrefabInstance: {fileID: 8945487972466931962}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1497203814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
+  m_Script: {fileID: 11500000, guid: d3603e70d8e8573488f6556b714cc2e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1602473315 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
-  m_PrefabInstance: {fileID: 8945487972466931962}
-  m_PrefabAsset: {fileID: 0}
+  mute: 0
+  manager: {fileID: 0}
+  onDamageReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1126390722}
+        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
+          Playground
+        m_MethodName: SpawnPlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1604801143
 GameObject:
   m_ObjectHideFlags: 0
@@ -23917,6 +23699,7 @@ GameObject:
   - component: {fileID: 1636266113}
   - component: {fileID: 1636266112}
   - component: {fileID: 1636266111}
+  - component: {fileID: 1636266118}
   m_Layer: 0
   m_Name: Cube (22)
   m_TagString: Untagged
@@ -24011,29 +23794,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1636266115
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24097,6 +23866,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1636266109}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1636266118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636266109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1646805331
 GameObject:
   m_ObjectHideFlags: 0
@@ -24304,6 +24091,7 @@ GameObject:
   - component: {fileID: 1662596431}
   - component: {fileID: 1662596430}
   - component: {fileID: 1662596429}
+  - component: {fileID: 1662596433}
   m_Layer: 0
   m_Name: Cube (16)
   m_TagString: Untagged
@@ -24340,29 +24128,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1662596430
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24426,6 +24200,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1662596427}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1662596433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662596427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1672722153
 GameObject:
   m_ObjectHideFlags: 0
@@ -24599,6 +24391,7 @@ GameObject:
   - component: {fileID: 1681953917}
   - component: {fileID: 1681953916}
   - component: {fileID: 1681953922}
+  - component: {fileID: 1681953923}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -24737,29 +24530,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
+--- !u!114 &1681953923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681953915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1693398566
 GameObject:
   m_ObjectHideFlags: 0
@@ -24967,6 +24764,7 @@ GameObject:
   - component: {fileID: 1700607425}
   - component: {fileID: 1700607424}
   - component: {fileID: 1700607423}
+  - component: {fileID: 1700607427}
   m_Layer: 0
   m_Name: Cube (16)
   m_TagString: Untagged
@@ -25003,29 +24801,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1700607424
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25089,6 +24873,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700607421}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1700607427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700607421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1707109606
 GameObject:
   m_ObjectHideFlags: 0
@@ -25202,6 +25004,7 @@ GameObject:
   - component: {fileID: 1708699975}
   - component: {fileID: 1708699974}
   - component: {fileID: 1708699973}
+  - component: {fileID: 1708699980}
   m_Layer: 0
   m_Name: Cube (21)
   m_TagString: Untagged
@@ -25296,29 +25099,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1708699977
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25382,6 +25171,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708699971}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1708699980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708699971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1713901020
 GameObject:
   m_ObjectHideFlags: 0
@@ -25689,6 +25496,7 @@ GameObject:
   - component: {fileID: 1728924284}
   - component: {fileID: 1728924283}
   - component: {fileID: 1728924282}
+  - component: {fileID: 1728924288}
   m_Layer: 0
   m_Name: Cube (43)
   m_TagString: Untagged
@@ -25763,29 +25571,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1728924285
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25849,6 +25643,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728924280}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1728924288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1728924280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1735287225
 GameObject:
   m_ObjectHideFlags: 0
@@ -25955,7 +25767,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: d4e9eba5e7254e04a9a3fe04947de429, type: 3}
       propertyPath: m_RootOrder
-      value: 22
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d4e9eba5e7254e04a9a3fe04947de429, type: 3}
       propertyPath: m_LocalScale.x
@@ -26133,6 +25945,7 @@ GameObject:
   - component: {fileID: 1738118041}
   - component: {fileID: 1738118040}
   - component: {fileID: 1738118039}
+  - component: {fileID: 1738118043}
   m_Layer: 0
   m_Name: Cube (15)
   m_TagString: Untagged
@@ -26169,29 +25982,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1738118040
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26255,6 +26054,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738118037}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1738118043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738118037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1743873427
 GameObject:
   m_ObjectHideFlags: 0
@@ -26401,6 +26218,7 @@ GameObject:
   - component: {fileID: 1755419680}
   - component: {fileID: 1755419679}
   - component: {fileID: 1755419678}
+  - component: {fileID: 1755419685}
   m_Layer: 0
   m_Name: Cube (50)
   m_TagString: Untagged
@@ -26495,29 +26313,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1755419682
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26581,6 +26385,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755419676}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1755419685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755419676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1759687269
 GameObject:
   m_ObjectHideFlags: 0
@@ -26734,6 +26556,7 @@ GameObject:
   - component: {fileID: 1761059650}
   - component: {fileID: 1761059649}
   - component: {fileID: 1761059648}
+  - component: {fileID: 1761059655}
   m_Layer: 0
   m_Name: Cube (61)
   m_TagString: Untagged
@@ -26828,29 +26651,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1761059652
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26914,6 +26723,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761059646}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1761059655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761059646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1762491164
 GameObject:
   m_ObjectHideFlags: 0
@@ -26929,6 +26756,7 @@ GameObject:
   - component: {fileID: 1762491168}
   - component: {fileID: 1762491167}
   - component: {fileID: 1762491166}
+  - component: {fileID: 1762491172}
   m_Layer: 0
   m_Name: Cube (37)
   m_TagString: Untagged
@@ -27003,29 +26831,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1762491169
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27089,6 +26903,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762491164}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1762491172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762491164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1773625929
 GameObject:
   m_ObjectHideFlags: 0
@@ -27105,6 +26937,7 @@ GameObject:
   - component: {fileID: 1773625933}
   - component: {fileID: 1773625932}
   - component: {fileID: 1773625931}
+  - component: {fileID: 1773625938}
   m_Layer: 0
   m_Name: Cube (28)
   m_TagString: Untagged
@@ -27199,29 +27032,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1773625935
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27285,6 +27104,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773625929}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1773625938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773625929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1779358510
 GameObject:
   m_ObjectHideFlags: 0
@@ -27300,6 +27137,7 @@ GameObject:
   - component: {fileID: 1779358514}
   - component: {fileID: 1779358513}
   - component: {fileID: 1779358512}
+  - component: {fileID: 1779358518}
   m_Layer: 0
   m_Name: Cube (33)
   m_TagString: Untagged
@@ -27374,29 +27212,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1779358515
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27460,6 +27284,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1779358510}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1779358518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779358510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1780337630
 GameObject:
   m_ObjectHideFlags: 0
@@ -28398,6 +28240,7 @@ GameObject:
   - component: {fileID: 1817149912}
   - component: {fileID: 1817149911}
   - component: {fileID: 1817149910}
+  - component: {fileID: 1817149917}
   m_Layer: 0
   m_Name: Cube (27)
   m_TagString: Untagged
@@ -28492,29 +28335,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1817149914
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28578,6 +28407,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817149908}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1817149917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817149908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1819443536
 GameObject:
   m_ObjectHideFlags: 0
@@ -28607,7 +28454,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 24
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1822202661
 GameObject:
@@ -28641,7 +28488,7 @@ Transform:
   - {fileID: 1811217568}
   - {fileID: 660240296}
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1841056696
 GameObject:
@@ -29070,6 +28917,7 @@ GameObject:
   - component: {fileID: 1887728394}
   - component: {fileID: 1887728393}
   - component: {fileID: 1887728392}
+  - component: {fileID: 1887728396}
   m_Layer: 0
   m_Name: Cube (13)
   m_TagString: Untagged
@@ -29106,29 +28954,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1887728393
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29192,6 +29026,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887728390}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1887728396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887728390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1903688505
 GameObject:
   m_ObjectHideFlags: 0
@@ -29239,6 +29091,7 @@ GameObject:
   - component: {fileID: 1912098912}
   - component: {fileID: 1912098911}
   - component: {fileID: 1912098910}
+  - component: {fileID: 1912098917}
   m_Layer: 0
   m_Name: Cube (58)
   m_TagString: Untagged
@@ -29333,29 +29186,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1912098914
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29419,6 +29258,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912098908}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1912098917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912098908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1912701425
 GameObject:
   m_ObjectHideFlags: 0
@@ -29516,11 +29373,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912701425}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1924478059 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8945487971165834385, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
-  m_PrefabInstance: {fileID: 8945487972466931962}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1940555108
 GameObject:
   m_ObjectHideFlags: 0
@@ -29634,6 +29486,7 @@ GameObject:
   - component: {fileID: 1942812872}
   - component: {fileID: 1942812871}
   - component: {fileID: 1942812870}
+  - component: {fileID: 1942812877}
   m_Layer: 0
   m_Name: Cube (34)
   m_TagString: Untagged
@@ -29728,29 +29581,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &1942812874
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29814,6 +29653,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942812868}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1942812877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942812868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &1944933812
 GameObject:
   m_ObjectHideFlags: 0
@@ -30038,7 +29895,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1966189495
 GameObject:
@@ -30251,6 +30108,7 @@ GameObject:
   - component: {fileID: 1985523728}
   - component: {fileID: 1985523727}
   - component: {fileID: 1985523732}
+  - component: {fileID: 1985523733}
   m_Layer: 2
   m_Name: Check Point 1
   m_TagString: Untagged
@@ -30276,72 +30134,10 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onColliderChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SetSpawnPoint
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1743873428}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1985523729}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1985523732}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathDrawer, Playground
-        m_MethodName: StopTracking
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1985523732}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathDrawer, Playground
-        m_MethodName: DrawTrack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2094201910}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathTracker, Playground
-        m_MethodName: StartTracking
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
+      m_Calls: []
+  whiteList: []
   debugLog: 1
 --- !u!64 &1985523728
 MeshCollider:
@@ -30439,8 +30235,28 @@ MonoBehaviour:
   trackOnStart: 0
   timeStep: 0.1
   offset: {x: 0, y: 0.1, z: 0}
-  target: {fileID: 1602473315}
+  target: {fileID: 0}
   line: {fileID: 1564046009}
+--- !u!114 &1985523733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985523726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be421e3604f9264b89466b91b2172da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onCheckPointSaved:
+    m_PersistentCalls:
+      m_Calls: []
+  nextCheckPoint: {fileID: 2094201916}
+  trigger: {fileID: 0}
+  path: {fileID: 0}
+  playground: {fileID: 0}
+  spawnPoint: {fileID: 1743873428}
 --- !u!1 &1986813989
 GameObject:
   m_ObjectHideFlags: 0
@@ -30635,143 +30451,6 @@ Transform:
   m_Father: {fileID: 1969804335}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -330, z: 0}
---- !u!1 &2003581111
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2003581117}
-  - component: {fileID: 2003581116}
-  - component: {fileID: 2003581115}
-  - component: {fileID: 2003581114}
-  - component: {fileID: 2003581113}
-  - component: {fileID: 2003581112}
-  m_Layer: 0
-  m_Name: Platform
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2003581112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003581111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e62c89f4004d76540a899162226ca37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeMove: 0
-  timePauseMove: 0
-  blendMove: 0
-  move: 1
-  directionMove: {x: 9, y: 0, z: 0}
-  durationMove: 4
-  durationPauseMove: 2
-  rotate: 0
-  angularVelocity: 30
-  axis: {x: 0, y: 1, z: 0}
---- !u!54 &2003581113
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003581111}
-  serializedVersion: 2
-  m_Mass: 100
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 1
-  m_Constraints: 0
-  m_CollisionDetection: 2
---- !u!65 &2003581114
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003581111}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &2003581115
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003581111}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 4d86a474a2f808245bbda3115832e8cf, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &2003581116
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003581111}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &2003581117
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2003581111}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.627872, y: 0.099999905, z: -7.4590683}
-  m_LocalScale: {x: 2, y: 0.19999999, z: 2}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 25
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2025578792
 GameObject:
   m_ObjectHideFlags: 0
@@ -30788,6 +30467,7 @@ GameObject:
   - component: {fileID: 2025578796}
   - component: {fileID: 2025578795}
   - component: {fileID: 2025578794}
+  - component: {fileID: 2025578801}
   m_Layer: 0
   m_Name: Cube (56)
   m_TagString: Untagged
@@ -30882,29 +30562,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &2025578798
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30968,6 +30634,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2025578792}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2025578801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2025578792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &2037002251
 GameObject:
   m_ObjectHideFlags: 0
@@ -31170,7 +30854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 462819fe058047eeba9ce53cedaa8e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1602473314}
+  playground: {fileID: 1126390722}
 --- !u!1 &2037673723
 GameObject:
   m_ObjectHideFlags: 0
@@ -31284,6 +30968,7 @@ GameObject:
   - component: {fileID: 2058666512}
   - component: {fileID: 2058666511}
   - component: {fileID: 2058666510}
+  - component: {fileID: 2058666517}
   m_Layer: 0
   m_Name: Cube (60)
   m_TagString: Untagged
@@ -31378,29 +31063,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &2058666514
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31464,6 +31135,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058666508}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2058666517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058666508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &2060463605
 GameObject:
   m_ObjectHideFlags: 0
@@ -31627,7 +31316,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2075741098
 GameObject:
@@ -31644,6 +31333,7 @@ GameObject:
   - component: {fileID: 2075741100}
   - component: {fileID: 2075741099}
   - component: {fileID: 2075741105}
+  - component: {fileID: 2075741106}
   m_Layer: 0
   m_Name: Cylinder (7)
   m_TagString: Untagged
@@ -31782,29 +31472,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
+--- !u!114 &2075741106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075741098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &2079225816
 GameObject:
   m_ObjectHideFlags: 0
@@ -31820,6 +31514,7 @@ GameObject:
   - component: {fileID: 2079225820}
   - component: {fileID: 2079225819}
   - component: {fileID: 2079225818}
+  - component: {fileID: 2079225824}
   m_Layer: 0
   m_Name: Cube (38)
   m_TagString: Untagged
@@ -31894,29 +31589,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &2079225821
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31980,6 +31661,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2079225816}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2079225824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079225816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &2081713564
 GameObject:
   m_ObjectHideFlags: 0
@@ -31993,6 +31692,7 @@ GameObject:
   - component: {fileID: 2081713568}
   - component: {fileID: 2081713567}
   - component: {fileID: 2081713566}
+  - component: {fileID: 2081713570}
   m_Layer: 0
   m_Name: Cube (18)
   m_TagString: Untagged
@@ -32029,29 +31729,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &2081713567
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32115,6 +31801,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2081713564}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2081713570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081713564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &2083606991
 GameObject:
   m_ObjectHideFlags: 0
@@ -32226,6 +31930,7 @@ GameObject:
   - component: {fileID: 2094201913}
   - component: {fileID: 2094201912}
   - component: {fileID: 2094201910}
+  - component: {fileID: 2094201916}
   m_Layer: 2
   m_Name: Check Point 2
   m_TagString: Untagged
@@ -32248,7 +31953,7 @@ MonoBehaviour:
   trackOnStart: 0
   timeStep: 0.1
   offset: {x: 0, y: 0.1, z: 0}
-  target: {fileID: 1602473315}
+  target: {fileID: 0}
   line: {fileID: 216021252}
 --- !u!4 &2094201911
 Transform:
@@ -32285,60 +31990,10 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onColliderChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SetSpawnPoint
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1903688506}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Transform, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2094201914}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2094201910}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathDrawer, Playground
-        m_MethodName: StopTracking
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2094201910}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathDrawer, Playground
-        m_MethodName: DrawTrack
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
+      m_Calls: []
+  whiteList: []
   debugLog: 1
 --- !u!64 &2094201913
 MeshCollider:
@@ -32404,6 +32059,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094201909}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2094201916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094201909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be421e3604f9264b89466b91b2172da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onCheckPointSaved:
+    m_PersistentCalls:
+      m_Calls: []
+  nextCheckPoint: {fileID: 0}
+  trigger: {fileID: 0}
+  path: {fileID: 0}
+  playground: {fileID: 0}
+  spawnPoint: {fileID: 1903688506}
 --- !u!1 &2097062815
 GameObject:
   m_ObjectHideFlags: 0
@@ -32853,7 +32528,7 @@ Transform:
   - {fileID: 940587956}
   - {fileID: 931735765}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2122033355
 GameObject:
@@ -33259,6 +32934,7 @@ GameObject:
   - component: {fileID: 2129614492}
   - component: {fileID: 2129614491}
   - component: {fileID: 2129614490}
+  - component: {fileID: 2129614497}
   m_Layer: 0
   m_Name: Cube (25)
   m_TagString: Untagged
@@ -33353,29 +33029,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isEnabled: 1
   invokeOnce: 0
-  mode: 0
+  mode: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 1
-  onChanged:
+  onCollisionChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1126390722}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PlaygroundController,
-          Playground
-        m_MethodName: SpawnPlayer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  whiteList:
-  - {fileID: 1602473312}
-  debugLog: 1
+      m_Calls: []
+  whiteList: []
+  debugLog: 0
 --- !u!65 &2129614494
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -33439,6 +33101,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2129614488}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2129614497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129614488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f94899344656dc34f97c6e150b97f15e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mute: 0
+  manager: {fileID: 0}
+  factory: {fileID: 0}
+  isEnabled: 1
+  damageTimeout: 1
+  collision: {fileID: 0}
 --- !u!1 &2133835829
 GameObject:
   m_ObjectHideFlags: 0
@@ -33949,96 +33629,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2140368867}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1280369203638315565
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1280369202768145846, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: eyes
-      value: 
-      objectReference: {fileID: 1924478059}
-    - target: {fileID: 1280369203054676115, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: playerCamera
-      value: 
-      objectReference: {fileID: 893175639}
-    - target: {fileID: 1280369203092484668, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_Name
-      value: Player Input
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484668, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484670, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: person
-      value: 
-      objectReference: {fileID: 1602473314}
-    - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1602473314}
-    - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: _person
-      value: 
-      objectReference: {fileID: 1602473314}
-    - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: personTyped
-      value: 
-      objectReference: {fileID: 1602473314}
-    - target: {fileID: 1280369203092484671, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-      propertyPath: sensitivity.z
-      value: 0.2
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1280369203054676115, guid: 9853d942fa19126448b18b870c43a980, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: 9853d942fa19126448b18b870c43a980, type: 3}
 --- !u!1001 &1337687515400551612
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34096,80 +33686,133 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07212d58ac6aa324db74427cea23906e, type: 3}
---- !u!1001 &8945487972466931962
+--- !u!1001 &2154966856257331707
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalPosition.z
       value: -10
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250969, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437912, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250974, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
-      propertyPath: pointCheck.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250974, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437919, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: pointCheck.z
       value: -10
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250974, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
-      propertyPath: normalCheck.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250974, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
-      propertyPath: normalCheck.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250981, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437924, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_Name
-      value: Player FPC
+      value: Player - FPC
       objectReference: {fileID: 0}
-    - target: {fileID: 8945487971485250981, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+    - target: {fileID: 2154966857272437924, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3ab607753bd74ab43b81ed044b114af7, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: cb31dd6e507244b439a3c98d0b1ddb82, type: 3}
+--- !u!1001 &6341981301251468437
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5179563175759528868, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: pointCheck.z
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528870, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528875, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_Name
+      value: Player TPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 5179563175759528875, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 08ff7c6bd4ed09946b9a6550bf72f6ea, type: 3}

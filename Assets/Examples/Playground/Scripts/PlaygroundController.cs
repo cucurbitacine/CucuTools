@@ -1,3 +1,4 @@
+using CucuTools.Attributes;
 using CucuTools.PlayerSystem;
 using CucuTools.Scenes;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Examples.Playground.Scripts
         public UnityEvent onPlayerSpawned = new UnityEvent();
 
         [Space]
-        public PersonController person = null;
+        public RigidPersonController player = null;
         public Transform startSpawnPoint = null;
 
         public void StartGame()
@@ -35,12 +36,13 @@ namespace Examples.Playground.Scripts
 
         public void SpawnPlayer(Transform spawnPoint)
         {
-            person.transform.position = spawnPoint.position;
-            person.LookInDirection(spawnPoint.rotation * Vector3.forward);
+            player.transform.position = spawnPoint.position;
+            player.LookInDirection(spawnPoint.rotation * Vector3.forward);
             
             onPlayerSpawned.Invoke();
         }
         
+        [Button()]
         public void SpawnPlayer()
         {
             SpawnPlayer(lastSpawnPoint);
@@ -49,6 +51,13 @@ namespace Examples.Playground.Scripts
         public void SetSpawnPoint(Transform spawnPoint)
         {
             lastSpawnPoint = spawnPoint;
+        }
+
+        protected override void OnAwake()
+        {
+            base.OnAwake();
+
+            player = FindObjectOfType<RigidPersonController>();
         }
 
         private void Start()

@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 8945487971485250971}
   - component: {fileID: 8945487971485250970}
   m_Layer: 0
-  m_Name: Player FPC
+  m_Name: First Person - Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

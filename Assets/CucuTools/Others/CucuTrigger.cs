@@ -11,39 +11,39 @@ namespace CucuTools.Others
         public TriggerMode mode = TriggerMode.Enter;
         public LayerMask layerMask = 1;
         
-        [Space] public UnityEvent<Collider> onChanged = new UnityEvent<Collider>();
+        [Space] public UnityEvent<Collider> onColliderChanged = new UnityEvent<Collider>();
 
         public List<Collider> whiteList = new List<Collider>();
 
         [SerializeField] private bool debugLog = true;
 
-        public void SetEnable(bool value)
+        public void SetEnableTrigger(bool value)
         {
             isEnabled = value;
         }
         
-        public void SwitchEnable()
+        public void SwitchEnableTrigger()
         {
-            SetEnable(!isEnabled);
+            SetEnableTrigger(!isEnabled);
         }
 
-        public void Enable()
+        public void EnableTrigger()
         {
-            SetEnable(true);
+            SetEnableTrigger(true);
         }
         
-        public void Disable()
+        public void DisableTrigger()
         {
-            SetEnable(false);
+            SetEnableTrigger(false);
         }
         
         private void Invoke(Collider other)
         {
             if (debugLog) Debug.Log($"[{name}] On Trigger {mode} with [{other.name}]");
             
-            onChanged.Invoke(other);
+            onColliderChanged.Invoke(other);
 
-            if (invokeOnce) Disable();
+            if (invokeOnce) DisableTrigger();
         }
 
         private void OnTrigger(TriggerMode triggerMode, Collider other)

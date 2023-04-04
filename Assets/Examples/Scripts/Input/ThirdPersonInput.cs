@@ -87,9 +87,14 @@ namespace Examples.Scripts.Input
             return Mathf.Clamp(lfAngle, lfMin, lfMax);
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            _camTargetYaw = cam.transform.rotation.eulerAngles.y;
+            base.Awake();
+            
+            vision.eyes = cam.transform;
+            touch.origin = person.head;
+            
+            _camTargetYaw = vision.eyes.rotation.eulerAngles.y;
         }
         
         private void OnValidate()
