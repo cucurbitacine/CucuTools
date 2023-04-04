@@ -63,7 +63,6 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         private readonly Dictionary<Rigidbody, DraggableBase> _draggableCache = new Dictionary<Rigidbody, DraggableBase>();
         private readonly Dictionary<DraggableBase, Collider[]> _colliderCache = new Dictionary<DraggableBase, Collider[]>();
         private readonly Dictionary<Collider, PhysicMaterial> _physicMaterialCache = new Dictionary<Collider, PhysicMaterial>();
-        private readonly Collider[] _playerColliders = new Collider[32];
         
         public Transform eyes => touch != null ? touch.vision.eyes : transform;
         
@@ -76,8 +75,6 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         }
 
         public Quaternion dragRotation { get; set; }
-
-        public Vector3 handPosition => eyes.position + Vector3.Project(dragPosition - eyes.position, eyes.forward);
 
         public void Pick(DraggableBase draggable)
         {

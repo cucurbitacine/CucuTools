@@ -30,6 +30,8 @@ namespace CucuTools.PlayerSystem
         public float maxAngleSlope = 60f;
 
         [Space]
+        [Range(-0.1f, 0.1f)]
+        public float radiusOffset = -0.01f;
         public bool fastCast = false;
         
         private readonly Dictionary<Rigidbody, GroundPlatform> _platformCache = new Dictionary<Rigidbody, GroundPlatform>();
@@ -64,7 +66,7 @@ namespace CucuTools.PlayerSystem
 
         private float GetRadiusSphereCast()
         {
-            return radiusCheck;
+            return radiusCheck + radiusOffset;
         }
 
         private float GetDistanceSphereCast()

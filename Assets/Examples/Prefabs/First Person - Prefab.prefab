@@ -296,8 +296,8 @@ MonoBehaviour:
     gravityModificator: 1
   _ground: {fileID: 8945487971485250974}
   _head: {fileID: 8945487971165834385}
-  height: 2
-  radius: 0.5
+  heightPerson: 2
+  radiusPerson: 0.5
   speedChangeRate: 24
   rotationChangeRate: 24
   inertionSpeedFade: 0.05
@@ -319,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27df392057fb49fdba37949306eb55f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundGameObject: {fileID: 0}
   grounded: 0
   platform: 0
   wasGrounded: 0
@@ -333,7 +334,8 @@ MonoBehaviour:
   radiusCheck: 0.5
   distanceCheck: 0.1
   maxAngleSlope: 60
-  ground: {fileID: 0}
+  radiusOffset: -0.01
+  fastCast: 0
 --- !u!54 &8945487971485250971
 Rigidbody:
   m_ObjectHideFlags: 0

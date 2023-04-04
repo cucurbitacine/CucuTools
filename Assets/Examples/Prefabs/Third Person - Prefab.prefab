@@ -135,6 +135,7 @@ MonoBehaviour:
   radiusCheck: 0.249
   distanceCheck: 0.1
   maxAngleSlope: 60
+  radiusOffset: -0.01
   fastCast: 0
 --- !u!54 &2297608904907501798
 Rigidbody:
