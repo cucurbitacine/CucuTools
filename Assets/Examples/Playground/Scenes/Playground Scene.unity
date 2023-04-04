@@ -17916,9 +17916,9 @@ MonoBehaviour:
   onGameStarted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1985523732}
-        m_TargetAssemblyTypeName: Examples.Playground.Scripts.PathTracker, Playground
-        m_MethodName: StartTracking
+      - m_Target: {fileID: 1985523733}
+        m_TargetAssemblyTypeName: Examples.Playground.Scripts.CheckPoint, Playground
+        m_MethodName: Next
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

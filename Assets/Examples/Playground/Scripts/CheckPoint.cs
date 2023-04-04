@@ -19,6 +19,12 @@ namespace Examples.Playground.Scripts
         public PlaygroundController playground;
         public Transform spawnPoint;
 
+        public void Next()
+        {
+            path.target = playground.player.transform;
+            path.StartTracking();
+        }
+        
         [Button()]
         public void SaveCheckPoint()
         {
@@ -29,13 +35,13 @@ namespace Examples.Playground.Scripts
             path.StopTracking();
             path.DrawTrack();
 
-            if (nextCheckPoint != null) nextCheckPoint.path.StartTracking();
+            if (nextCheckPoint != null) nextCheckPoint.Next();
             
             onCheckPointSaved.Invoke();
 
             gameObject.GetComponent<MeshRenderer>().enabled = false;
         }
-        
+
         private void CheckPlayer(Collider cld)
         {
             if (playground.player.capsule == cld)
@@ -64,11 +70,6 @@ namespace Examples.Playground.Scripts
             trigger.onColliderChanged.RemoveListener(CheckPlayer);
             
             playground.onPlayerSpawned.RemoveListener(path.ResetTrack);
-        }
-
-        private void Start()
-        {
-            path.target = playground.player.transform;
         }
     }
 }
