@@ -1,9 +1,8 @@
-﻿using CucuTools.PlayerSystem.Impl;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Examples.Scripts.Input
 {
-    public class FirstPersonInput : RigidPersonInput<FirstPersonRigidController>
+    public class FirstPersonInput : RigidPersonInput
     {
         [Header("First Person Settings")]
         [Min(0)]

@@ -2,13 +2,12 @@
 using CucuTools;
 using CucuTools.DamageSystem;
 using CucuTools.PlayerSystem;
-using CucuTools.PlayerSystem.Impl;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Examples.DamageShow.Scripts
 {
-    public class ZombieAI : PersonInput<FirstPersonRigidController>
+    public class ZombieAI : PersonInput<RigidPersonController>
     {
         public float damp = 8f;
         public bool wasHit;

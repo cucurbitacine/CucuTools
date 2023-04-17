@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2297608904162346374}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.65, z: 0}
+  m_LocalPosition: {x: 0, y: 1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40,12 +40,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2297608904907501797}
-  - component: {fileID: 2297608904907501796}
+  - component: {fileID: 5244681353931875103}
   - component: {fileID: 2297608904907501799}
   - component: {fileID: 2297608904907501798}
   - component: {fileID: 2297608904907501801}
   m_Layer: 0
-  m_Name: Third Person - Prefab
+  m_Name: Rigid Person - Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2297608904907501796
+--- !u!114 &5244681353931875103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,7 +77,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2297608904907501800}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 469b84cdb58f4fadb5c7d825815a015a, type: 3}
+  m_Script: {fileID: 11500000, guid: a381cfba5df6475b9471d2f8a7d8b829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _info:
@@ -98,16 +98,18 @@ MonoBehaviour:
     gravityModificator: 1
   _ground: {fileID: 2297608904907501799}
   _head: {fileID: 2297608904162346375}
-  heightPerson: 1.8
-  radiusPerson: 0.249
+  heightBody: 1.8
+  radiusBody: 0.249
+  heightHead: 1.7
   speedChangeRate: 24
-  rotationChangeRate: 8
+  rotationChangeRate: 24
   inertionSpeedFade: 0.05
   fovUpper: 89
   fovBottom: 89
   jumpTimeout: 0.05
-  airMoveControl: 0.9
+  airMoveControl: 1
   velocityAdditional: {x: 0, y: 0, z: 0}
+  useAngularVelocity: 1
 --- !u!114 &2297608904907501799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33bf2f3aa8373c4696c51c5ce93dd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  person: {fileID: 2297608904907501796}
+  person: {fileID: 5244681353931875103}
   animator: {fileID: 1547843507139807294}
   audioSource: {fileID: 6127484198136433425}
   fallTimeout: 0.2

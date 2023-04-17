@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5846369306021091413}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 3.75, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5846369307780618797}
@@ -255,7 +255,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5846369306439786935}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000029653306}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5846369306439786935}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d783ec75d97348c49392f62bb36242a0, type: 3}
+  m_Script: {fileID: 11500000, guid: a381cfba5df6475b9471d2f8a7d8b829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _info:
@@ -289,13 +289,14 @@ MonoBehaviour:
     rotateSpeedMax: 1
     rotateSpeedModificator: 1
     canJump: 1
-    jumpHeight: 1
+    jumpHeight: 1.2
     gravityMax: {x: 0, y: -9.81, z: 0}
     gravityModificator: 1
   _ground: {fileID: 5974280714850852299}
   _head: {fileID: 5846369306021091414}
-  heightPerson: 2
-  radiusPerson: 0.5
+  heightBody: 2
+  radiusBody: 0.5
+  heightHead: 3.75
   speedChangeRate: 24
   rotationChangeRate: 24
   inertionSpeedFade: 0.05
@@ -339,7 +340,7 @@ MonoBehaviour:
   grounded: 0
   platform: 0
   wasGrounded: 0
-  pointCheck: {x: 0, y: 0, z: 10}
+  pointCheck: {x: 0, y: 2.5, z: 0}
   normalCheck: {x: 0, y: 1, z: 0}
   onGroundChanged:
     m_PersistentCalls:
@@ -350,6 +351,7 @@ MonoBehaviour:
   radiusCheck: 0.5
   distanceCheck: 0.01
   maxAngleSlope: 60
+  radiusOffset: -0.01
   fastCast: 0
 --- !u!114 &5846369306439786929
 MonoBehaviour:
@@ -568,8 +570,8 @@ Transform:
   m_GameObject: {fileID: 5846369306923029595}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5846369307786554071}
   - {fileID: 5846369306231502555}

@@ -1,9 +1,8 @@
-﻿using CucuTools.PlayerSystem.Impl;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Examples.Scripts.Input
 {
-    public class ThirdPersonInput : RigidPersonInput<ThirdPersonRigidController>
+    public class ThirdPersonInput : RigidPersonInput
     {
         [Header("Third Person Settings")]
         [Space] public float shoulder = 0.5f;
