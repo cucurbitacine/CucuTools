@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using CucuTools.Others;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -33,8 +33,10 @@ namespace CucuTools.PlayerSystem
         [Range(-0.1f, 0.1f)]
         public float radiusOffset = -0.01f;
         public bool fastCast = false;
+
+        private readonly CachedDictionary<Rigidbody, GroundPlatform> _platformCache =
+            new(r => r.GetComponent<GroundPlatform>(), g => g != null);
         
-        private readonly Dictionary<Rigidbody, GroundPlatform> _platformCache = new Dictionary<Rigidbody, GroundPlatform>();
         private readonly RaycastHit[] _overlap = new RaycastHit[32];
         
         private bool IsPlatform(Rigidbody rigid)
@@ -43,22 +45,11 @@ namespace CucuTools.PlayerSystem
             
             if (rigid.isKinematic) return true;
 
-            if (TryGetGroundPlatform(rigid, out var groundPlatform)) return true;
+            if (_platformCache.TryGetValidValue(rigid, out var groundPlatform)) return true;
 
             return false;
         }
-        
-        private bool TryGetGroundPlatform(Rigidbody rigid, out GroundPlatform platform)
-        {
-            if (!_platformCache.TryGetValue(rigid, out platform))
-            {
-                platform = rigid.GetComponent<GroundPlatform>();
-                _platformCache.Add(rigid, platform);
-            }
 
-            return platform != null;
-        }
-        
         private Ray GetRaySphereCast(Vector3 position, Vector3 normal)
         {
             return new Ray(position + normal * (radiusCheck + distanceCheck), -normal);

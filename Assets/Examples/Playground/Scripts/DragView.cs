@@ -10,7 +10,12 @@ namespace Examples.Playground.Scripts
         [Space] public CanvasGroup image = null;
         
         [Space]
-        public DragController drag = null;
+        public PlaygroundController playground = null;
+
+        private PlayerController player => playground?.player;
+        private DragController drag => player?.drag;
+        
+        
         
         private void Update()
         {
@@ -20,9 +25,10 @@ namespace Examples.Playground.Scripts
 
                 if (drag.isOn && !drag.isDragging && drag.touch.touchSomething)
                 {
-                    if (drag.TryGetDraggable(drag.touch.current.hit.rigidbody, out var draggable))
+                    var rigid = drag.touch.current.hit.rigidbody;
+                    if (rigid != null && drag.TryGetDraggable(rigid, out var current))
                     {
-                        target = draggable.isOn && !draggable.isDragging ? 1 : 0;
+                        target = current.isOn && !current.isDragging ? 1 : 0; 
                     }
                 }
                 

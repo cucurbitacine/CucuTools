@@ -67,6 +67,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7688247602162238830}
   - component: {fileID: 6314985561185188009}
+  - component: {fileID: 7892820367205720783}
   m_Layer: 0
   m_Name: Hover
   m_TagString: Untagged
@@ -102,7 +103,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isOn: 1
+  _mute: 0
   touch: {fileID: 6298158824375672295}
+--- !u!114 &7892820367205720783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2693041854102905496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd70c419c4e04e1e9206786f9b6ab968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hover: {fileID: 6314985561185188009}
+  drag: {fileID: 5478868368282125642}
 --- !u!1 &3392206582996395855
 GameObject:
   m_ObjectHideFlags: 0

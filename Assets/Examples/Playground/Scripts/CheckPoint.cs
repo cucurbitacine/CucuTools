@@ -44,7 +44,7 @@ namespace Examples.Playground.Scripts
 
         private void CheckPlayer(Collider cld)
         {
-            if (playground.player.capsule == cld)
+            if (playground.player.person.capsule == cld)
             {
                 SaveCheckPoint();
             }

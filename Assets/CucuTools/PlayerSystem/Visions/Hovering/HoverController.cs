@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using CucuTools.Others;
 using UnityEngine;
 
 namespace CucuTools.PlayerSystem.Visions.Hovering
@@ -7,11 +7,13 @@ namespace CucuTools.PlayerSystem.Visions.Hovering
     {
         [Space]
         [SerializeField] private bool _isOn = true;
-
+        [SerializeField] private bool _mute = false;
+        
         [Header("References")]
         public TouchController touch = null;
 
-        private readonly Dictionary<Rigidbody, HoverableBase> _hoverCache = new Dictionary<Rigidbody, HoverableBase>();
+        private readonly CachedDictionary<Collider, HoverableBase> _hoverCache =
+            new(c => c.GetComponent<HoverableBase>(), h => h != null);
 
         public bool isOn
         {
@@ -20,13 +22,26 @@ namespace CucuTools.PlayerSystem.Visions.Hovering
             {
                 if (_isOn == value) return;
                 _isOn = value;
-                TouchChange(touch.current);
+                
+                UpdateHover(touch.current);
             }
         }
 
+        public bool mute
+        {
+            get => _mute;
+            set
+            {
+                if (_mute == value) return;
+                _mute = value;
+                
+                UpdateHover(touch.current);
+            }
+        }
+        
         public void Hover(HoverableBase hoverable, bool hovering)
         {
-            if (isOn && hoverable.isOn)
+            if (isOn && !mute && hoverable.isOn)
             {
                 if (hoverable.isHovering != hovering) hoverable.Hover(hovering);
             }
@@ -35,28 +50,10 @@ namespace CucuTools.PlayerSystem.Visions.Hovering
                 if (hoverable.isHovering) hoverable.Hover(false);
             }
         }
-        
-        private bool TryGetHoverable(Rigidbody rgb, out HoverableBase hoverable)
-        {
-            if (rgb == null)
-            {
-                hoverable = null;
-                return false;
-            }
-            
-            if (!_hoverCache.TryGetValue(rgb, out hoverable))
-            {
-                hoverable = rgb.GetComponent<HoverableBase>();
-                    
-                _hoverCache.TryAdd(rgb, hoverable);
-            }
 
-            return hoverable != null;
-        }
-        
-        private void TouchChange(TouchInfo info)
+        private void UpdateHover(TouchInfo info)
         {
-            if (TryGetHoverable(info.hit.rigidbody, out var hoverable))
+            if (_hoverCache.TryGetValidValue(info.hit.collider, out var hoverable))
             {
                 Hover(hoverable, info.inTouch);
             }
@@ -64,12 +61,12 @@ namespace CucuTools.PlayerSystem.Visions.Hovering
 
         private void OnEnable()
         {
-            touch.onTouchChanged.AddListener(TouchChange);
+            touch.onTouchChanged.AddListener(UpdateHover);
         }
 
         private void OnDisable()
         {
-            touch.onTouchChanged.RemoveListener(TouchChange);
+            touch.onTouchChanged.RemoveListener(UpdateHover);
         }
     }
 }

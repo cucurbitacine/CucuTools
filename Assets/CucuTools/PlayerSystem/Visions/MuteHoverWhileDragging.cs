@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace CucuTools.PlayerSystem.Visions
 {
-    public class DragHoverController : MonoBehaviour
+    public class MuteHoverWhileDragging : MonoBehaviour
     {
-        public DragController drag;
-        public HoverController hover;
-
+        public HoverController hover = null;
+        public DragController drag = null;
+        
         private void DragChange(DragInfo info)
         {
-            hover.isOn = !info.dragging;
+            hover.mute = info.dragging;
         }
         
         private void OnEnable()

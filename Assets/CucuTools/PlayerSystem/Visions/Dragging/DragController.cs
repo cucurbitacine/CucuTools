@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using CucuTools.Others;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -60,9 +60,13 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         private bool _nowDragging = false;
         private bool _wasDragging = false;
 
-        private readonly Dictionary<Rigidbody, DraggableBase> _draggableCache = new Dictionary<Rigidbody, DraggableBase>();
-        private readonly Dictionary<DraggableBase, Collider[]> _colliderCache = new Dictionary<DraggableBase, Collider[]>();
-        private readonly Dictionary<Collider, PhysicMaterial> _physicMaterialCache = new Dictionary<Collider, PhysicMaterial>();
+        private readonly CachedDictionary<Rigidbody, DraggableBase> _draggableCache =
+            new(r => r.GetComponent<DraggableBase>(), d => d != null);
+
+        private readonly CachedDictionary<DraggableBase, Collider[]> _colliderCache =
+            new(d => d.GetComponentsInChildren<Collider>(), array => array.Length > 0);
+
+        private readonly CachedDictionary<Collider, PhysicMaterial> _physicMaterialCache = new(c => c.sharedMaterial);
         
         public Transform eyes => touch != null ? touch.vision.eyes : transform;
         
@@ -122,54 +126,20 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
             onDragChanged.Invoke(_dragInfo);
         }
 
-        public bool TryGetDraggable(Rigidbody rgb, out DraggableBase draggable)
+        public bool TryGetDraggable(Rigidbody rigid, out DraggableBase draggable)
         {
-            if (rgb == null)
-            {
-                draggable = null;
-                return false;
-            }
-            
-            if (!_draggableCache.TryGetValue(rgb, out draggable))
-            {
-                draggable = rgb.GetComponent<DraggableBase>();
-                _draggableCache.TryAdd(rgb, draggable);
-            }
-            
-            return draggable != null;
-        }
-        
-        private bool TryGetColliders(DraggableBase draggable, out Collider[] cld)
-        {
-            if (!_colliderCache.TryGetValue(draggable, out cld))
-            {
-                cld = draggable.rigid.GetComponentsInChildren<Collider>();
-                _colliderCache.TryAdd(draggable, cld);
-            }
-            
-            return cld.Length > 0;
-        }
-
-        private PhysicMaterial GetOrAddPhysicMaterial(Collider cld)
-        {
-            if (!_physicMaterialCache.TryGetValue(cld, out var pm))
-            {
-                pm = cld.sharedMaterial;
-                _physicMaterialCache.TryAdd(cld, pm);
-            }
-
-            return pm;
+            return _draggableCache.TryGetValidValue(rigid, out draggable);
         }
         
         private void ChangeDragMaterial(DraggableBase draggable, bool useDragMaterial)
         {
             if (dragPhysicMaterial == null) return;
             
-            if (TryGetColliders(draggable, out var cld))
+            if (_colliderCache.TryGetValidValue(draggable, out var cld))
             {
                 for (var i = 0; i < cld.Length; i++)
                 {
-                    var mat = GetOrAddPhysicMaterial(cld[i]);
+                    _physicMaterialCache.TryGetValidValue(cld[i], out var mat);
                     cld[i].sharedMaterial = useDragMaterial ? dragPhysicMaterial : mat;
                 }
             }
@@ -272,7 +242,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
 
                 if (startDragging && !isDragging && touch.touchSomething)
                 {
-                    if (TryGetDraggable(touch.current.hit.rigidbody, out var drag))
+                    if (_draggableCache.TryGetValidValue(touch.current.hit.rigidbody, out var drag))
                     {
                         if (drag.isOn && !drag.isDragging)
                         {

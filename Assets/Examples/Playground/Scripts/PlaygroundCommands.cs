@@ -1,5 +1,4 @@
 ﻿using CucuTools.PlayerSystem;
-using CucuTools.PlayerSystem.Impl;
 using CucuTools.Terminal;
 
 namespace Examples.Playground.Scripts
@@ -8,7 +7,8 @@ namespace Examples.Playground.Scripts
     {
         public PlaygroundController playground;
 
-        private RigidPersonController player => playground.player;
+        private PlayerController player => playground.player;
+        private RigidPersonController person => player.person;
         
         [TerminalCommand("player.spawn")]
         private void SpawnPlayer()
@@ -19,19 +19,19 @@ namespace Examples.Playground.Scripts
         [TerminalCommand("player.set.speed")]
         private void SetMoveSpeedMax(float speedMax)
         {
-            player.settings.moveSpeedMax = speedMax;
+            person.settings.moveSpeedMax = speedMax;
         }
         
         [TerminalCommand("player.set.jump")]
         private void SetJump(float jumpHeight)
         {
-            player.settings.jumpHeight = jumpHeight;
+            person.settings.jumpHeight = jumpHeight;
         }
         
         [TerminalCommand("player.set.gravity")]
         private void SetGravity(float gravity)
         {
-            player.settings.gravityMax = player.normal * gravity;
+            person.settings.gravityMax = person.normal * gravity;
         }
     }
 }
