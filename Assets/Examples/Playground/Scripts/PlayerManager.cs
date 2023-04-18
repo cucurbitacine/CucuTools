@@ -1,5 +1,4 @@
-﻿using System;
-using CucuTools.PlayerSystem;
+﻿using CucuTools.PlayerSystem;
 using CucuTools.PlayerSystem.Visions;
 using CucuTools.PlayerSystem.Visions.Dragging;
 using CucuTools.PlayerSystem.Visions.Hovering;
@@ -7,10 +6,10 @@ using UnityEngine;
 
 namespace Examples.Playground.Scripts
 {
-    [RequireComponent(typeof(RigidPersonController))]
-    public class PlayerController : MonoBehaviour
+    [RequireComponent(typeof(PlayerController))]
+    public class PlayerManager : MonoBehaviour
     {
-        public RigidPersonController person = null;
+        public PlayerController person = null;
         
         [Space]
         public VisionController vision = null;
@@ -21,7 +20,7 @@ namespace Examples.Playground.Scripts
 
         private void Awake()
         {
-            person = GetComponent<RigidPersonController>();
+            person = GetComponent<PlayerController>();
 
             vision = person.GetComponentInChildren<VisionController>();
             touch = person.GetComponentInChildren<TouchController>();

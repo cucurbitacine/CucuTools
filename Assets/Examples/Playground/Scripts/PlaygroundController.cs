@@ -17,7 +17,7 @@ namespace Examples.Playground.Scripts
         public UnityEvent onPlayerSpawned = new UnityEvent();
 
         [Space]
-        public PlayerController player = null;
+        public PlayerManager player = null;
         
         public void StartGame()
         {
@@ -56,7 +56,7 @@ namespace Examples.Playground.Scripts
         {
             base.OnAwake();
 
-            player = FindObjectOfType<PlayerController>();
+            player = FindObjectOfType<PlayerManager>();
         }
 
         private void Start()

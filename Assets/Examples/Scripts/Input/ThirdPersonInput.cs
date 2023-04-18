@@ -2,7 +2,7 @@
 
 namespace Examples.Scripts.Input
 {
-    public class ThirdPersonInput : RigidPersonInput
+    public class ThirdPersonInput : BasePersonInput
     {
         [Header("Third Person Settings")]
         [Space] public float shoulder = 0.5f;
@@ -18,16 +18,16 @@ namespace Examples.Scripts.Input
         
         protected override void UpdatePerson(float deltaTime)
         {
-            var moveDir = Vector3.ProjectOnPlane(cam.transform.TransformDirection(data.move), personTyped.normal).normalized;
-            person.MoveInDirection(moveDir);
+            var moveDir = Vector3.ProjectOnPlane(cam.transform.TransformDirection(data.move), playerTyped.normal).normalized;
+            player.MoveInDirection(moveDir);
             
-            var lookDir = data.aim || data.dragging ? cam.transform.forward : Vector3.ProjectOnPlane(moveDir, personTyped.normal);
+            var lookDir = data.aim || data.dragging ? cam.transform.forward : Vector3.ProjectOnPlane(moveDir, playerTyped.normal);
             //var lookDir = cam.transform.forward;
-            person.LookInDirection(lookDir);
+            player.LookInDirection(lookDir);
             
-            if (data.jump) person.Jump();
+            if (data.jump) player.Jump();
 
-            person.settings.moveSpeedModificator = data.run ? runScale : 1f;
+            player.settings.moveSpeedModificator = data.run ? runScale : 1f;
 
             if (drag) drag.inputDragging = data.dragging;
         }
@@ -42,16 +42,16 @@ namespace Examples.Scripts.Input
 
         private Vector3 GetCamPosition()
         {
-            var pos = person.position - cam.transform.forward * distance + personTyped.normal * height;
+            var pos = player.position - cam.transform.forward * distance + playerTyped.normal * height;
             
-            var right = -Vector3.Cross(Vector3.ProjectOnPlane(person.position - pos, personTyped.normal),
-                personTyped.normal).normalized;
+            var right = -Vector3.Cross(Vector3.ProjectOnPlane(player.position - pos, playerTyped.normal),
+                playerTyped.normal).normalized;
 
             pos += right * shoulder;
 
-            var headPos = person.head.position;
+            var headPos = player.head.position;
             var direction = pos - headPos;
-            if (Physics.Raycast(headPos, direction, out var hit, direction.magnitude, person.ground.layerGround))
+            if (Physics.Raycast(headPos, direction, out var hit, direction.magnitude, player.ground.layerGround))
             {
                 pos = hit.point + hit.normal * 0.01f;
             }
@@ -74,7 +74,7 @@ namespace Examples.Scripts.Input
             
             var fov = fovIdle;
             if (data.aim) fov += fovAimOffset;
-            if (data.run && person.info.moving) fov += fovRunOffset;
+            if (data.run && player.info.moving) fov += fovRunOffset;
             
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, camRotChangeRate * deltaTime);
         }
@@ -91,7 +91,7 @@ namespace Examples.Scripts.Input
             base.Awake();
             
             vision.eyes = cam.transform;
-            touch.origin = person.head;
+            touch.origin = player.head;
             
             _camTargetYaw = vision.eyes.rotation.eulerAngles.y;
         }
@@ -100,7 +100,7 @@ namespace Examples.Scripts.Input
         {
             if (cam == null) cam = Camera.main;
 
-            if (gameObject.activeInHierarchy && cam != null && person != null && !Application.isPlaying)
+            if (gameObject.activeInHierarchy && cam != null && player != null && !Application.isPlaying)
             {
                 cam.transform.rotation = GetCamRotation();
                 cam.transform.position = GetCamPosition();

@@ -397,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e33bf2f3aa8373c4696c51c5ce93dd97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  person: {fileID: 5244681353931875103}
+  player: {fileID: 5244681353931875103}
   animator: {fileID: 1547843507139807294}
   audioSource: {fileID: 6127484198136433425}
   fallTimeout: 0.2

@@ -25,12 +25,12 @@ namespace Examples.DamageShow.Scripts
             dead = true;
             
             ai.enabled = false;
-            ai.personTyped.Stop();
-            ai.personTyped.capsule.sharedMaterial = null;
-            ai.personTyped.rigid.useGravity = true;
-            ai.personTyped.rigid.constraints = RigidbodyConstraints.None;
+            ai.playerTyped.Stop();
+            ai.playerTyped.capsule.sharedMaterial = null;
+            ai.playerTyped.rigid.useGravity = true;
+            ai.playerTyped.rigid.constraints = RigidbodyConstraints.None;
             
-            Destroy(ai.personTyped);
+            Destroy(ai.playerTyped);
             
             onDie.Invoke(this);
         }
@@ -57,7 +57,7 @@ namespace Examples.DamageShow.Scripts
                 if (e.source is Gun gun)
                 {
                     var force = (e.point - gun.transform.position).normalized * impulseDamageScale;
-                    ai.personTyped.rigid.AddForceAtPosition(force, e.point, ForceMode.Impulse);
+                    ai.playerTyped.rigid.AddForceAtPosition(force, e.point, ForceMode.Impulse);
                 }
             }
         }

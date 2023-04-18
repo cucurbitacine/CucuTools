@@ -6,7 +6,6 @@ namespace CucuTools.PlayerSystem
 {
     public class GroundController : MonoBehaviour
     {
-        public RaycastHit hit = default;
         public GameObject groundGameObject = null;
         
         [Space]
@@ -34,11 +33,15 @@ namespace CucuTools.PlayerSystem
         public float radiusOffset = -0.01f;
         public bool fastCast = false;
 
+        private RaycastHit _hit = default;
+        
         private readonly CachedDictionary<Rigidbody, GroundPlatform> _platformCache =
             new(r => r.GetComponent<GroundPlatform>(), g => g != null);
         
         private readonly RaycastHit[] _overlap = new RaycastHit[32];
-        
+
+        public RaycastHit hit => _hit;
+
         private bool IsPlatform(Rigidbody rigid)
         {
             if (rigid == null) return false;
@@ -120,7 +123,7 @@ namespace CucuTools.PlayerSystem
             wasGrounded = grounded;
 
             // check ground
-            grounded = PhysicsCast(ray, radius, out hit, distance);
+            grounded = PhysicsCast(ray, radius, out _hit, distance);
 
             if (grounded)
             {

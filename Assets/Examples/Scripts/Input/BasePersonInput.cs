@@ -6,8 +6,9 @@ using UnityEngine;
 
 namespace Examples.Scripts.Input
 {
-    public abstract class RigidPersonInput<T> : PersonInput<T> where T : RigidPersonController
+    public abstract class BasePersonInput : PlayerInput<PlayerController>
     {
+        [Space]
         public bool isEnabled = true;
         
         [Header("Camera Settings")]
@@ -53,7 +54,7 @@ namespace Examples.Scripts.Input
             if (UnityEngine.Input.GetKeyDown(KeyCode.P))
             {
                 isEnabled = !isEnabled;
-                if (!isEnabled) person?.Stop();
+                if (!isEnabled) player?.Stop();
 
                 if (isEnabled)
                 {
@@ -123,9 +124,5 @@ namespace Examples.Scripts.Input
             public bool shoot;
             public bool dragging;
         }
-    }
-    
-    public abstract class RigidPersonInput : RigidPersonInput<RigidPersonController>
-    {
     }
 }

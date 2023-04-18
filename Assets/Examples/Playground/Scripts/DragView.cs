@@ -12,7 +12,7 @@ namespace Examples.Playground.Scripts
         [Space]
         public PlaygroundController playground = null;
 
-        private PlayerController player => playground?.player;
+        private PlayerManager player => playground?.player;
         private DragController drag => player?.drag;
         
         

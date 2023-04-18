@@ -1,15 +1,14 @@
-using System;
 using UnityEngine;
 
 namespace CucuTools.PlayerSystem
 {
-    public class RigidPersonController : PersonController
+    public class PlayerController : CucuBehaviour
     {
         #region SerializeField
 
         [Header("Person")]
-        [SerializeField] private PersonInfo _info = new PersonInfo();
-        [SerializeField] private PersonSettings _settings = new PersonSettings();
+        [SerializeField] private PlayerInfo _info = new PlayerInfo();
+        [SerializeField] private PlayerSettings _settings = new PlayerSettings();
         [SerializeField] private GroundController _ground = null;
         [SerializeField] private Transform _head = null;
 
@@ -62,10 +61,15 @@ namespace CucuTools.PlayerSystem
 
         #endregion
 
-        public override PersonInfo info => _info;
-        public override PersonSettings settings => _settings;
-        public override GroundController ground => GetOrAddGroundController();
-        public override Transform head => _head != null ? _head : (_head = rigid.transform);
+        #region Public Properties
+
+        public PlayerInfo info => _info;
+        public PlayerSettings settings => _settings;
+        public GroundController ground => GetOrAddGroundController();
+        public Transform head => _head != null ? _head : (_head = rigid.transform);
+        
+        public Vector3 position => transform.position;
+        public Quaternion rotation => transform.rotation;
         
         public Vector3 velocity => velocitySelf + velocityExternal;
         public Vector3 normal => rigid.transform.up;
@@ -73,7 +77,9 @@ namespace CucuTools.PlayerSystem
         public Rigidbody rigid => GetOrAddRigidbody();
         public CapsuleCollider capsule => GetOrAddCapsule();
 
-        #region PlayerController
+        #endregion
+
+        #region Public API
 
         public Vector3 velocitySelf => _velocityMove +
                                        _velocityJump +
@@ -83,37 +89,40 @@ namespace CucuTools.PlayerSystem
                                            _velocityInertion +
                                            velocityAdditional;
         
-        public override void Move(Vector3 move)
+        public void Move(Vector3 move)
         {
             _moveInput = move;
 
             info.moving = _moveInput != Vector3.zero;
         }
 
-        public override void MoveInDirection(Vector3 direction)
+        public void MoveInDirection(Vector3 direction)
         {
             Move(direction.ToLocalDirection(rigid.transform).normalized);
         }
 
-        public override void MoveAtPoint(Vector3 point)
+        public void MoveAtPoint(Vector3 point)
         {
             MoveInDirection(point - position);
         }
         
-        public override void View(Vector2 view)
+        public void View(Vector2 view)
         {
             _viewInput = view;
             
             info.rotating = _viewInput != Vector2.zero;
         }
 
-        public override void LookInDirection(Vector3 direction)
+        public void LookInDirection(Vector3 direction)
         {
             if (direction.sqrMagnitude == 0) return;
 
             var angX = Vector3.SignedAngle(rigid.transform.forward, Vector3.ProjectOnPlane(direction, normal), normal);
             var angY = Vector3.SignedAngle(head.forward, Quaternion.Euler(0, -angX, 0) * direction, head.right);
 
+            _viewAngle.x += angX;
+            _viewAngle.y += angY;
+            
             if (useAngularVelocity)
             {
                 rigid.MoveRotation(Quaternion.AngleAxis(angX, normal) * rigid.rotation);
@@ -123,16 +132,18 @@ namespace CucuTools.PlayerSystem
                 _personRotation = Quaternion.LookRotation(Vector3.ProjectOnPlane(direction, normal), normal);
             }
             
-            _viewAngle.x += angX;
-            _viewAngle.y += angY;
+            if (head != null)
+            {
+                head.localRotation = Quaternion.Euler(Vector3.right * _viewAngle.y);
+            }
         }
 
-        public override void LookAtPoint(Vector3 point)
+        public void LookAtPoint(Vector3 point)
         {
             LookInDirection(point - head.position);
         }
         
-        public override void Jump()
+        public void Jump()
         {
             if (settings.canJump && _jumpTimeoutDelta < 0)
             {
@@ -142,7 +153,7 @@ namespace CucuTools.PlayerSystem
             }
         }
 
-        public override void Stop()
+        public void Stop()
         {
             Move(Vector3.zero);
             View(Vector2.zero);
@@ -198,7 +209,7 @@ namespace CucuTools.PlayerSystem
             ground.normalCheck = normal;
             ground.radiusCheck = capsule.radius * Mathf.Max(capsule.transform.lossyScale.x, capsule.transform.lossyScale.z);
 
-            head.localPosition = Vector3.up * heightHead;
+            if (head != transform) head.localPosition = Vector3.up * heightHead;
         }
 
         private void UpdateMove(float deltaTime)
@@ -357,10 +368,10 @@ namespace CucuTools.PlayerSystem
 
         private void UpdateBodyRotation(float deltaTime)
         {
+            var dx = settings.rotateSpeed * (settings.canRotate ? _viewInput.x : 0);
+            
             if (useAngularVelocity)
             {
-                var dx = settings.rotateSpeed * (settings.canRotate ? _viewInput.x : 0);
-                
                 var angVel = Vector3.zero;
                 
                 // calculating angular velocity around player normal
@@ -378,6 +389,9 @@ namespace CucuTools.PlayerSystem
             }
             else
             {
+                _personRotation = Quaternion.AngleAxis(dx, normal) * _personRotation;
+                
+                
                 if (ground.platform)
                 {
                     var angVel = ground.hit.rigidbody.angularVelocity.y * Mathf.Rad2Deg;

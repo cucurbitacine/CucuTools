@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029aacfa3ca24fcab09be6bb84a7ff62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  personTyped: {fileID: 7667967325051711492}
+  _player: {fileID: 7667967325051711492}
   isEnabled: 1
   cam: {fileID: 0}
   viewSens: {x: 4, y: 4}

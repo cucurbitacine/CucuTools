@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CucuTools.PlayerSystem
 {
     [Serializable]
-    public class PersonSettings
+    public class PlayerSettings
     {
         [Header("Movement")]
         public bool canMove = true;
@@ -13,7 +13,6 @@ namespace CucuTools.PlayerSystem
         
         [Header("Rotate")]
         public bool canRotate = true;
-
         [Min(0f)] public float rotateSpeedMax = 1f;
         [Min(0f)] public float rotateSpeedModificator = 1f;
 
@@ -45,7 +44,7 @@ namespace CucuTools.PlayerSystem
     }
 
     [Serializable]
-    public class PersonInfo
+    public class PlayerInfo
     {
         public bool moving = false;
         public bool rotating = false;

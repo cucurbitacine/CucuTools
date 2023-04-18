@@ -7,14 +7,14 @@ using UnityEngine.AI;
 
 namespace Examples.DamageShow.Scripts
 {
-    public class ZombieAI : PersonInput<RigidPersonController>
+    public class ZombieAI : PlayerInput<PlayerController>
     {
         public float damp = 8f;
         public bool wasHit;
         public float freezeDurationAfterHit = 0.2f;
         
         [Space]
-        public PersonController target;
+        public PlayerController target;
         public ZombieDamageManager zombie;
         
         private Vector3 _lastMove;
@@ -38,12 +38,12 @@ namespace Examples.DamageShow.Scripts
             {
                 if (wasHit)
                 {
-                    person.Stop();
+                    player.Stop();
                     yield return new WaitForSeconds(freezeDurationAfterHit);
                     wasHit = false;
                 }
 
-                var havePath = NavMesh.CalculatePath(person.position, target.position, NavMesh.AllAreas, _path);
+                var havePath = NavMesh.CalculatePath(player.position, target.position, NavMesh.AllAreas, _path);
 
                 if (havePath)
                 {
@@ -51,22 +51,22 @@ namespace Examples.DamageShow.Scripts
                 }
                 else
                 {
-                    havePath = NavMesh.CalculatePath(person.position, _lastValidPosition, NavMesh.AllAreas, _path);
+                    havePath = NavMesh.CalculatePath(player.position, _lastValidPosition, NavMesh.AllAreas, _path);
                 }
                 
                 if (havePath)
                 {
-                    var move = _path.corners[1] - person.position;
+                    var move = _path.corners[1] - player.position;
 
                     _lastMove = move;
                     _lastLook = Vector3.Lerp(_lastLook, _lastMove, Time.deltaTime * damp);
                     
-                    person.MoveInDirection(_lastMove);
-                    person.LookInDirection(Vector3.ProjectOnPlane(_lastLook, Vector3.up).normalized);
+                    player.MoveInDirection(_lastMove);
+                    player.LookInDirection(Vector3.ProjectOnPlane(_lastLook, Vector3.up).normalized);
                 }
                 else
                 {
-                    person.Stop();
+                    player.Stop();
                 }
 
                 yield return null;

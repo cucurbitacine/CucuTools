@@ -5,7 +5,7 @@ namespace Examples.Playground.Scripts
 {
     public class AnimatorUpdate : MonoBehaviour
     {
-        public RigidPersonController person;
+        public PlayerController player;
         public Animator animator;
         public AudioSource audioSource;
         
@@ -46,7 +46,7 @@ namespace Examples.Playground.Scripts
         
         private void LateUpdate()
         {
-            if (person.info.falling)
+            if (player.info.falling)
             {
                 if (_fallTimeoutDelta > 0)
                 {
@@ -54,19 +54,19 @@ namespace Examples.Playground.Scripts
                 }
                 else
                 {
-                    animator.SetBool(FreeFall, person.info.falling);
+                    animator.SetBool(FreeFall, player.info.falling);
                 }
             }
             else
             {
                 _fallTimeoutDelta = fallTimeout;
-                animator.SetBool(FreeFall, person.info.falling);
+                animator.SetBool(FreeFall, player.info.falling);
             }
             
-            animator.SetBool(Grounded, person.ground.grounded);
-            animator.SetBool(Jump, person.info.jumping);
+            animator.SetBool(Grounded, player.ground.grounded);
+            animator.SetBool(Jump, player.info.jumping);
 
-            var speed = person.info.moving ? (person.settings.moveSpeed > person.settings.moveSpeedMax ? 2 : 1f) : 0f;
+            var speed = player.info.moving ? (player.settings.moveSpeed > player.settings.moveSpeedMax ? 2 : 1f) : 0f;
 
             _speed = Mathf.Lerp(_speed, speed, speedChangeRate * Time.deltaTime);
             

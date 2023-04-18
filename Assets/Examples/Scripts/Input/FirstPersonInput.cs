@@ -2,7 +2,7 @@
 
 namespace Examples.Scripts.Input
 {
-    public class FirstPersonInput : RigidPersonInput
+    public class FirstPersonInput : BasePersonInput
     {
         [Header("First Person Settings")]
         [Min(0)]
@@ -12,23 +12,23 @@ namespace Examples.Scripts.Input
         
         protected override void UpdatePerson(float deltaTime)
         {
-            person.Move(data.move);
+            player.Move(data.move);
 
-            person.View(Vector2.Scale(data.view, viewSens));
+            player.View(Vector2.Scale(data.view, viewSens));
         
-            if (data.jump) person.Jump();
+            if (data.jump) player.Jump();
 
-            person.settings.moveSpeedModificator = data.run ? runScale : 1f;
+            player.settings.moveSpeedModificator = data.run ? runScale : 1f;
         }
 
         protected override void UpdateCamera(float deltaTime)
         {
-            cam.transform.rotation = person.head.rotation;
-            cam.transform.position = person.head.TransformPoint(camOffset);
+            cam.transform.rotation = player.head.rotation;
+            cam.transform.position = player.head.TransformPoint(camOffset);
             
             var fov = fovIdle;
             if (data.aim) fov += fovAimOffset;
-            if (data.run && person.info.moving) fov += fovRunOffset;
+            if (data.run && player.info.moving) fov += fovRunOffset;
             
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, fovChangeRate * deltaTime);
         }
@@ -45,10 +45,10 @@ namespace Examples.Scripts.Input
         {
             if (cam == null) cam = Camera.main;
 
-            if (gameObject.activeInHierarchy && cam != null && person != null)
+            if (gameObject.activeInHierarchy && cam != null && player != null)
             {
-                cam.transform.rotation = person.head.rotation;
-                cam.transform.position = person.head.TransformPoint(camOffset);
+                cam.transform.rotation = player.head.rotation;
+                cam.transform.position = player.head.TransformPoint(camOffset);
             }
         }
     }

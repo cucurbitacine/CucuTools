@@ -7,8 +7,8 @@ namespace Examples.Playground.Scripts
     {
         public PlaygroundController playground;
 
-        private PlayerController player => playground.player;
-        private RigidPersonController person => player.person;
+        private PlayerManager player => playground.player;
+        private PlayerController person => player.person;
         
         [TerminalCommand("player.spawn")]
         private void SpawnPlayer()
