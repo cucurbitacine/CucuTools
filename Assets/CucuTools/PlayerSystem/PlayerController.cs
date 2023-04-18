@@ -52,6 +52,7 @@ namespace CucuTools.PlayerSystem
         private Vector3 _velocityInertion = Vector3.zero;
         
         private float _jumpTimeoutDelta = 0f;
+        private int _jumpDoneAmount = 0;
         
         private Vector3 _angularVelocity = Vector3.zero;
         private Quaternion _personRotation = Quaternion.identity;
@@ -109,8 +110,6 @@ namespace CucuTools.PlayerSystem
         public void View(Vector2 view)
         {
             _viewInput = view;
-            
-            info.rotating = _viewInput != Vector2.zero;
         }
 
         public void LookInDirection(Vector3 direction)
@@ -145,10 +144,14 @@ namespace CucuTools.PlayerSystem
         
         public void Jump()
         {
-            if (settings.canJump && _jumpTimeoutDelta < 0)
+            if (settings.canJump && _jumpTimeoutDelta < 0 && _jumpDoneAmount < settings.jumpMaxAmount)
             {
+                _jumpDoneAmount++;
+                _jumpTimeoutDelta = jumpTimeout;
+                
                 _velocityJump = normal * Mathf.Sqrt(2 * settings.jumpHeight * settings.gravity.magnitude);
-
+                _velocityFall = Vector3.zero;
+                
                 info.jumping = true;
             }
         }
@@ -235,19 +238,21 @@ namespace CucuTools.PlayerSystem
             
             _velocityMove = Vector3.Lerp(_velocityMove, velocityMove, speedChangeRate * deltaTime);
         }
-        
+
         private void UpdateFall(float deltaTime)
         {
+            if (0 <= _jumpTimeoutDelta)
+            {
+                _jumpTimeoutDelta -= deltaTime;
+            }
+            
             if (ground.grounded)
             {
-                if (0 <= _jumpTimeoutDelta)
-                {
-                    _jumpTimeoutDelta -= deltaTime;
-                }
-                
                 // just have landed
                 if (!ground.wasGrounded)
                 {
+                    _jumpDoneAmount = 0;
+                    
                     info.jumping = false;
                     info.falling = false;
                     
@@ -261,7 +266,7 @@ namespace CucuTools.PlayerSystem
                 // update jumping state
                 if (info.jumping)
                 {
-                    info.jumping = velocity.y >= 0;
+                    info.jumping = velocitySelf.y >= 0;
                 }
 
                 // update falling state
@@ -274,7 +279,7 @@ namespace CucuTools.PlayerSystem
                 if (ground.wasGrounded)
                 {
                     // start time out
-                    _jumpTimeoutDelta = jumpTimeout;
+                    //_jumpTimeoutDelta = jumpTimeout;
 
                     // save inertion speed from platform
                     _velocityInertion = _velocityPlatform;

@@ -1,28 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CucuTools.PlayerSystem
+namespace CucuTools.PlayerSystem2D
 {
     [Serializable]
-    public class PlayerSettings
+    public class Player2DSettings
     {
         [Header("Movement")]
         public bool canMove = true;
         [Min(0f)] public float moveSpeedMax = 2f;
         [Min(0f)] public float moveSpeedModificator = 1f;
-        
-        [Header("Rotate")]
-        public bool canRotate = true;
-        [Min(0f)] public float rotateSpeedMax = 1f;
-        [Min(0f)] public float rotateSpeedModificator = 1f;
 
         [Header("Jump")]
         public bool canJump = true;
         [Min(0f)] public float jumpHeight = 1.2f;
-        [Min(0)] public int jumpMaxAmount = 1;
-
+        [Min(0)] public int jumpMaxAmount = 2;
+        
         [Header("Gravity")]
-        public Vector3 gravityMax = Physics.gravity;
+        public Vector2 gravityMax = Vector2.up * -9.81f; 
         public float gravityModificator = 1f;
         
         public float moveSpeed
@@ -30,25 +25,21 @@ namespace CucuTools.PlayerSystem
             get => moveSpeedMax * moveSpeedModificator;
             set => moveSpeedModificator = value / moveSpeedMax;
         }
-        
-        public float rotateSpeed
-        {
-            get => rotateSpeedMax * rotateSpeedModificator;
-            set => rotateSpeedModificator = value / rotateSpeedMax;
-        }
-        
-        public Vector3 gravity
+
+        public Vector2 gravity
         {
             get => gravityMax * gravityModificator;
             set => gravityMax = value / gravityModificator;
         }
     }
-
+    
     [Serializable]
-    public class PlayerInfo
+    public class Player2DInfo
     {
         public bool moving = false;
         public bool jumping = false;
         public bool falling = false;
+
+        public bool inAir => jumping || falling;
     }
 }

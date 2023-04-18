@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Examples.DamageShow.Scripts.Effects
 {
-    [CreateAssetMenu(menuName = "Examples/Damage/Effect/"+ AssetName, fileName = AssetName, order = 0)]
+    [CreateAssetMenu(menuName = "Examples/Damage/Effect/" + ObjectName, fileName = ObjectName, order = 0)]
     public class FireDamageMultiplierEffect : DamageMultiplierEffect
     {
-        public const string AssetName = nameof(FireDamageMultiplierEffect);
+        public const string ObjectName = nameof(FireDamageMultiplierEffect);
         
         public override void HandleDamage(DamageEvent e)
         {
