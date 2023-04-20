@@ -110,6 +110,8 @@ namespace Editor
 
             GUIKeywords();
 
+            GUIAuthor();
+            
             GUISamples();
         }
 
@@ -229,6 +231,16 @@ namespace Editor
             }
             
             GUILayout.EndHorizontal();
+        }
+
+        private void GUIAuthor()
+        {
+            GUILayout.Box($"Author", GUILayout.ExpandWidth(true));
+            
+            foreach (var pair in package.author)
+            {
+                GUILayout.Label($"{pair.Key}: {pair.Value}", GUILayout.ExpandWidth(false));
+            }
         }
         
         private void GUISamples()
