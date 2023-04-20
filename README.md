@@ -1,32 +1,32 @@
 - [CucuTools](#cucutools)
-  - [Install](#install)
+  - [*Install*](#install)
   - [Async](#async)
     - [Enumerator as Task:](#enumerator-as-task)
     - [Coroutine as Task:](#coroutine-as-task)
     - [UnityEvent as Task:](#unityevent-as-task)
     - [UnityEvent as Task:](#unityevent-as-task-1)
   - [Attributes](#attributes)
-    - [*CucuButton*](#cucubutton)
-    - [*CucuLayer*](#cuculayer)
-    - [*CucuReadOnly*](#cucureadonly)
-    - [*CucuScene*](#cucuscene)
-    - [**PlayerRigidController**](#playerrigidcontroller)
-    - [**VisionController \& TouchController**](#visioncontroller--touchcontroller)
-    - [**HoverController \& DragController**](#hovercontroller--dragcontroller)
-    - [***How setup player***](#how-setup-player)
-  - [**Damage System**](#damage-system)
-    - [**Damage**](#damage)
-    - [**DamageEvent**](#damageevent)
-    - [**DamageSource**](#damagesource)
-    - [**DamageReceiver**](#damagereceiver)
-    - [**DamageManager**](#damagemanager)
-    - [**DamageFactory**](#damagefactory)
-    - [***Sequence of methods calls***](#sequence-of-methods-calls)
-    - [**Examples**](#examples)
+    - [DrawButton](#drawbutton)
+    - [LayerSelect](#layerselect)
+    - [ReadOnly](#readonly)
+    - [SceneSelect](#sceneselect)
+  - [PlayerController](#playercontroller)
+    - [VisionController \& TouchController](#visioncontroller--touchcontroller)
+    - [HoverController \& DragController](#hovercontroller--dragcontroller)
+    - [*How setup player*](#how-setup-player)
+  - [Damage System](#damage-system)
+    - [Damage](#damage)
+    - [DamageEvent](#damageevent)
+    - [DamageSource](#damagesource)
+    - [DamageReceiver](#damagereceiver)
+    - [DamageManager](#damagemanager)
+    - [DamageFactory](#damagefactory)
+    - [Sequence of methods calls](#sequence-of-methods-calls)
+    - [*Examples*](#examples)
 
 # CucuTools
 
-## Install
+## *Install*
 
 - ```Window``` > ```Package manager``` > ```Add Package from git URL...``` >
   - ```https://github.com/cucurbitacine/CucuTools.git?path=/Assets/CucuTools#develop```
@@ -101,7 +101,7 @@ public async void CallUnityEventAsTask()
 
 Some useful attributes.
 
-### *CucuButton*
+### DrawButton
 
 It is displaying buttons in inspector which invoke the current method. Working only inside ***CucuBehaviour***.
 
@@ -114,13 +114,13 @@ It is displaying buttons in inspector which invoke the current method. Working o
 ```c#
 public class ExampleAttributes : CucuBehaviour
 {
-    [CucuButton]
+    [DrawButton]
     public void SomeMethod1() { }
     
-    [CucuButton("Some Method 2", 1, "Grouped")]
+    [DrawButton("Some Method 2", 1, "Grouped")]
     public void SomeMethod2() { }
     
-    [CucuButton(name: "Some Method 3", order: 0, group: "Grouped", colorHex: "ff0000")]
+    [DrawButton(name: "Some Method 3", order: 0, group: "Grouped", colorHex: "ff0000")]
     public void SomeMethod3() { }
 }
 ```
@@ -128,7 +128,7 @@ public class ExampleAttributes : CucuBehaviour
 - Inspector:
 ![cucubutton]
 
-### *CucuLayer*
+### LayerSelect
 
 It is enabling pick layer (as integer) into inspector.
 
@@ -141,32 +141,32 @@ public int LayerValue;
 - Inspector:
 ![cuculayer]
 
-### *CucuReadOnly*
+### ReadOnly
 
 It is displaying fields with readonly mode.
 
 - Code:
 ```c#
-[CucuReadOnly]
+[ReadOnly]
 public bool boolValue = true;
-[CucuReadOnly]
+[ReadOnly]
 public int intValue = 42;
-[CucuReadOnly]
+[ReadOnly]
 public float floatValue = 1.618f;
-[CucuReadOnly]
+[ReadOnly]
 public string stringValue = "Hello world";
 ```
 
 - Inspector:
 ![cucureadonly]
 
-### *CucuScene*
+### SceneSelect
 
 It is enabling pick scene (as string) into inspector. Pickable scene must be in build settings.
 
 - Code:
 ```c#
-[CucuScene]
+[SceneSelect]
 public string sceneName;
 ```
 
@@ -175,7 +175,7 @@ public string sceneName;
 
 ---
 
-### **PlayerRigidController**
+## PlayerController
 
 <!-- ![playerrigid] -->
 
@@ -188,7 +188,7 @@ public string sceneName;
 > - platform detecting
 > - allows use it as npc
 
-### **VisionController & TouchController**
+### VisionController & TouchController
 
 [>>> Watch video demonstration of vision and touch <<<][visiontouchvideo]
 
@@ -202,7 +202,7 @@ public string sceneName;
 |:-:|:-:|
 |![vision]|![touch]|
 
-### **HoverController & DragController**
+### HoverController & DragController
 
 <!-- ![hoverdrag] -->
 
@@ -233,12 +233,12 @@ public string sceneName;
 > - ***Drag Physic Material***: if not null - change *Physic Material* during dragging
 > - ***Why Player and Touch?***: it takes a player for ignoring collision colliders during dragging. touch is required for handle available objects
 
-### ***How setup player***
+### *How setup player*
 
 [>>> Watch video how use player system <<<][playersystemvideo]
 
 ---
-## **Damage System**
+## Damage System
 
 - simple
 - intuitive clear
@@ -246,7 +246,7 @@ public string sceneName;
 - extentionable
 
 
-### **Damage**
+### Damage
 
 Base damage class to be passed between objects
 
@@ -258,7 +258,7 @@ public class Damage
 }
 ```
 
-### **DamageEvent**
+### DamageEvent
 
 Damage event represents a event of damage. Who hit, who had damaged, how, where... 
 
@@ -273,7 +273,7 @@ public class DamageEvent
 }
 ```
 
-### **DamageSource**
+### DamageSource
 
 Bad guy, who creates damage and send it to damage receivers.
 
@@ -308,7 +308,7 @@ public abstract class DamageSource : MonoBehaviour
 }
 ```
 
-### **DamageReceiver**
+### DamageReceiver
 
 Poor whipping boy...
 
@@ -336,7 +336,7 @@ public class DamageReceiver : MonoBehaviour
 }
 ```
 
-### **DamageManager**
+### DamageManager
 
 Imagine two seven-headed hydras fighting each other. Each head is a separate source of damage and has different attack bonuses. And each head can also receive damage based on its own defence bonuses. In addition, each hydra has a set of different bonuses that are not associated with specific heads.
 
@@ -415,7 +415,7 @@ public class DamageReceiver : MonoBehaviour
 }
 ```
 
-### **DamageFactory**
+### DamageFactory
 
 *Damage Factory* is *ScriptableObject*. So you can create some factories, and use it. For example, create *Damage Factory* for melee iron sword. Put some knights with this swords in scene. And you will could change damage amount of all of its knights.
 
@@ -437,7 +437,7 @@ public class DamageSourceReference : DamageSource
 }
 ```
 
-### ***Sequence of methods calls***
+### Sequence of methods calls
 
 - *DamageSource*: void SendDamage(DamageReceiver receiver)
   - *DamageSource*: DamageEvent GenerateDamage(DamageReceiver receiver)
@@ -451,7 +451,7 @@ public class DamageSourceReference : DamageSource
   - *DamageManager*: void ReceiveDamage(DamageEvent e)
   - *DamageManager*: onDamageReceived.Invoke(e)
 
-### **Examples**
+### *Examples*
 
 Below is an example where there is
 - gun whose damage depends on its level
