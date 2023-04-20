@@ -22,7 +22,7 @@ namespace Examples.DamageShow.Scripts.Effects
         
         private Coroutine _double = null;
         
-        [Button()]
+        [DrawButton()]
         [TerminalCommand("damage.double")]
         public void Double()
         {

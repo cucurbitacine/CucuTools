@@ -13,7 +13,7 @@ namespace CucuTools.Serialization.Impl
         public string jsonScene;
 
 
-        [Button()]
+        [DrawButton()]
         public void Serialize()
         {
             var gameObjects = FindObjectsOfType<SerializableGameObject>().Select(go => go.Serialize()).ToArray();
@@ -24,7 +24,7 @@ namespace CucuTools.Serialization.Impl
             PlayerPrefs.SetString(playerPrefsKey, jsonScene);
         }
 
-        [Button()]
+        [DrawButton()]
         public void Deserialize()
         {
             if (PlayerPrefs.HasKey(playerPrefsKey))
@@ -44,7 +44,7 @@ namespace CucuTools.Serialization.Impl
             }
         }
         
-        [Button()]
+        [DrawButton()]
         public void ClearPlayerPrefs()
         {
             PlayerPrefs.DeleteKey(playerPrefsKey);

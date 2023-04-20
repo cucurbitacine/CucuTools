@@ -91,7 +91,7 @@ namespace CucuTools.Editor
         {
             return targets.SelectMany(t => t.GetType()
                     .GetMethods(methodsFilter)
-                    .Where(m => m.GetCustomAttribute<ButtonAttribute>(true) != null))
+                    .Where(m => m.GetCustomAttribute<DrawButtonAttribute>(true) != null))
                 .Distinct()
                 .Where(m => m.GetParameters().All(p => p.IsOptional));
         }
@@ -138,14 +138,14 @@ namespace CucuTools.Editor
         
         public class ButtonInfo
         {
-            public ButtonAttribute attribute;
+            public DrawButtonAttribute attribute;
             public MethodInfo method;
 
             public ButtonInfo(MethodInfo method)
             {
                 this.method = method;
 
-                attribute = this.method.GetCustomAttribute<ButtonAttribute>(true);
+                attribute = this.method.GetCustomAttribute<DrawButtonAttribute>(true);
             }
         }
     }

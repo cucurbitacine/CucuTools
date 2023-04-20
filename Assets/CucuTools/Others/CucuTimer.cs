@@ -15,7 +15,7 @@ namespace CucuTools.Others
 
         private Coroutine _ticking = null;
 
-        [Button("Start", group: "Timer")]
+        [DrawButton("Start", group: "Timer")]
         public void StartTimer()
         {
             time = 0f;
@@ -25,7 +25,7 @@ namespace CucuTools.Others
             _ticking = StartCoroutine(_Ticking());
         }
 
-        [Button("Stop", group: "Timer")]
+        [DrawButton("Stop", group: "Timer")]
         public void StopTimer()
         {
             if (_ticking != null) StopCoroutine(_ticking);

@@ -23,7 +23,7 @@ namespace Examples.Playground.Scripts
             isEnabled = true;
         }
 
-        [Button()]
+        [DrawButton()]
         private void Timeout()
         {
             isEnabled = false;

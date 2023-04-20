@@ -8,7 +8,7 @@ namespace CucuTools.Attributes
     /// All scenes must be added to build settings!
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class SceneAttribute : PropertyAttribute
+    public class SceneSelectorAttribute : PropertyAttribute
     {
     }
 }

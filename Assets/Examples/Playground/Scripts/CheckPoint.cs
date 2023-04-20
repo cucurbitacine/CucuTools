@@ -25,7 +25,7 @@ namespace Examples.Playground.Scripts
             path.StartTracking();
         }
         
-        [Button()]
+        [DrawButton()]
         public void SaveCheckPoint()
         {
             trigger.DisableTrigger();

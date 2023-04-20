@@ -41,7 +41,7 @@ namespace Examples.Playground.Scripts
             onPlayerSpawned.Invoke();
         }
         
-        [Button()]
+        [DrawButton()]
         public void SpawnPlayer()
         {
             SpawnPlayer(lastSpawnPoint);

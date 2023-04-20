@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CucuTools.Editor.Attributes
 {
-    [CustomPropertyDrawer(typeof(LayerMaskAttribute))]
+    [CustomPropertyDrawer(typeof(LayerMaskSelectorAttribute))]
     public class CucuLayerDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

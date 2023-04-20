@@ -41,7 +41,7 @@ namespace Examples.Playground.Scripts
         public float StepDepth => Depth / StepsCount;
         public float StepHeight => Height / StepsCount;
 
-        [Button()]
+        [DrawButton()]
         [ContextMenu(nameof(Build))]
         public void Build()
         {

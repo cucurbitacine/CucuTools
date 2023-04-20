@@ -7,7 +7,7 @@ namespace CucuTools.Attributes
     /// Presenting INTEGER field as Layer selector in Inspector 
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class LayerMaskAttribute : PropertyAttribute
+    public class LayerMaskSelectorAttribute : PropertyAttribute
     {
     }
 }

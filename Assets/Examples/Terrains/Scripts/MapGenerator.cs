@@ -28,7 +28,7 @@ namespace Examples.Terrains.Scripts
             return Map.Seed.GetMap(Resolution, Size);
         }
 
-        [Button()]
+        [DrawButton()]
         public void Build()
         {
             var noiseMap = Generate();

@@ -31,19 +31,19 @@ namespace CucuTools.StateMachines
             condition.Value = newValue;
         }
         
-        [Button("True", group:"Condition")]
+        [DrawButton("True", group:"Condition")]
         public void True()
         {
             SetValue(true);
         }
         
-        [Button("False", group:"Condition")]
+        [DrawButton("False", group:"Condition")]
         public void False()
         {
             SetValue(false);
         }
 
-        [Button("Toggle", group:"Condition")]
+        [DrawButton("Toggle", group:"Condition")]
         public void Toggle()
         {
             SetValue(!Value);

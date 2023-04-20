@@ -228,25 +228,25 @@ namespace CucuTools.StateMachines.Impl
 
         #endregion
 
-        [Button("Launch", group:"Control")]
+        [DrawButton("Launch", group:"Control")]
         private void LaunchStateMachine()
         {
             Launch();
         }
         
-        [Button("Stop", group:"Control")]
+        [DrawButton("Stop", group:"Control")]
         private void StopStateMachine()
         {
             Stop();
         }
         
-        [Button("Update Name", group:"State Machine")]
+        [DrawButton("Update Name", group:"State Machine")]
         private void UpdateStateMachineName()
         {
             gameObject.name = $"[ {Key} ]";
         }
         
-        [Button("new State", group:"Create")]
+        [DrawButton("new State", group:"Create")]
         private void AddState()
         {
             var number = GetComponentsInChildren<State>().Length;
@@ -256,7 +256,7 @@ namespace CucuTools.StateMachines.Impl
             state.Validate();
         }
 
-        [Button("new Transition", group:"Create")]
+        [DrawButton("new Transition", group:"Create")]
         private void AddTransition()
         {
             var number = GetComponentsInChildren<Transition>().Length;

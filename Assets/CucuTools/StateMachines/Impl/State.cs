@@ -95,7 +95,7 @@ namespace CucuTools.StateMachines.Impl
 
         #endregion
 
-        [Button("Update Name", group:"State")]
+        [DrawButton("Update Name", group:"State")]
         private void UpdateStateName()
         {
 #if UNITY_EDITOR
@@ -103,7 +103,7 @@ namespace CucuTools.StateMachines.Impl
 #endif
         }
         
-        [Button("new Transition", group:"Create")]
+        [DrawButton("new Transition", group:"Create")]
         private void AddTransition()
         {
             var number = GetComponentsInChildren<Transition>().Length;
