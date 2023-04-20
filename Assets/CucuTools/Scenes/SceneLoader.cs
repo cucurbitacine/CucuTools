@@ -8,7 +8,7 @@ namespace CucuTools.Scenes
     [Serializable]
     public class SceneLoader 
     {
-        [SceneSelector]
+        [SceneSelect]
         public string sceneName = string.Empty;
 
         public readonly List<CucuArg> args = new List<CucuArg>();
