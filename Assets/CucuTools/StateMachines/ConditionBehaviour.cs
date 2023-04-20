@@ -15,9 +15,9 @@ namespace CucuTools.StateMachines
         public bool updateOnStart = true;
         
         [Header("Condition")]
-        [ReadOnly]
+        [ReadOnlyField]
         [SerializeField] private string key;
-        [ReadOnly]
+        [ReadOnlyField]
         [SerializeField] private bool value;
         
         [Space]

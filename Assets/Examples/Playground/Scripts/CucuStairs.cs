@@ -7,7 +7,7 @@ namespace Examples.Playground.Scripts
 {
     public class CucuStairs : CucuBehaviour
     {
-        [ReadOnly]
+        [ReadOnlyField]
         [SerializeField] private Vector2 stepSize;
         
         [Header("Settings")]

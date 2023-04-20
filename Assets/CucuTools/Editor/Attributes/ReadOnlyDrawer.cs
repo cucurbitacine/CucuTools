@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CucuTools.Editor.Attributes
 {
-    [CustomPropertyDrawer(typeof(ReadOnlyAttribute))]
+    [CustomPropertyDrawer(typeof(ReadOnlyFieldAttribute))]
     public class ReadOnlyDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty prop, GUIContent label)

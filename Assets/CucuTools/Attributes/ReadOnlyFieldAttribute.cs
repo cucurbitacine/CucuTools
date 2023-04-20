@@ -7,7 +7,7 @@ namespace CucuTools.Attributes
     /// Make field readonly
     /// </summary>
     [AttributeUsage(AttributeTargets.Field)]
-    public class ReadOnlyAttribute : PropertyAttribute
+    public class ReadOnlyFieldAttribute : PropertyAttribute
     {
     }
 }
