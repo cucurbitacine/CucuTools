@@ -9,13 +9,13 @@ using UnityEngine;
 
 namespace Editor
 {
-    public class VersionEditorWindow : EditorWindow
+    public class PackageEditorWindow : EditorWindow
     {
         [MenuItem("Tools/Package Settings")]
         private static void WindowShow()
         {
-            var window = (VersionEditorWindow)GetWindow(typeof(VersionEditorWindow));
-            window.titleContent = new GUIContent("Version Editor Window");
+            var window = (PackageEditorWindow)GetWindow(typeof(PackageEditorWindow));
+            window.titleContent = new GUIContent("Package Settings");
             window.package = GetPackage();
             window.lastPackage = window.package;
             window.Show();
@@ -109,6 +109,8 @@ namespace Editor
             GUIDependencies();
 
             GUIKeywords();
+
+            GUISamples();
         }
 
         private void GUILoadAndSave()
@@ -229,6 +231,16 @@ namespace Editor
             GUILayout.EndHorizontal();
         }
         
+        private void GUISamples()
+        {
+            GUILayout.Box($"Samples", GUILayout.ExpandWidth(true));
+            
+            foreach (var sample in package.samples)
+            {
+                GUILayout.Label($"{sample.displayName}: {sample.path}", GUILayout.ExpandWidth(false));
+            }
+        }
+        
         [Serializable]
         internal struct PackageData
         {
@@ -240,6 +252,15 @@ namespace Editor
             public Dictionary<string, string> dependencies;
             public string[] keywords;
             public Dictionary<string, string> author;
+            public SampleData[] samples;
+        }
+
+        [Serializable]
+        internal struct SampleData
+        {
+            public string displayName;
+            public string description;
+            public string path;
         }
     }
 }
