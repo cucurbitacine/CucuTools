@@ -70,7 +70,11 @@ namespace CucuTools.PlayerSystem2D
         
         public void Jump()
         {
-            if (settings.canJump && _jumpTimeoutDelta < 0 && _jumpDoneAmount < settings.jumpMaxAmount)
+            var firstJump = _jumpDoneAmount == 0;
+
+            var ableToJump = firstJump && ground.grounded || !firstJump && _jumpDoneAmount < settings.jumpMaxAmount;
+            
+            if (settings.canJump && _jumpTimeoutDelta < 0 && ableToJump)
             {
                 _jumpDoneAmount++;
                 _jumpTimeoutDelta = jumpTimeout;
