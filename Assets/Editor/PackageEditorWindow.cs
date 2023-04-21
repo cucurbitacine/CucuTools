@@ -21,9 +21,9 @@ namespace Editor
             window.Show();
         }
 
-        private static string directoryPath => Path.Combine(Application.dataPath, "CucuTools");
-        private static string fileName => "package.json";
-        private static string packagePath => Path.Combine(directoryPath, fileName);
+        private static string pathPackageDirectory => Path.Combine(Application.dataPath, "CucuTools");
+        private static string packageFileName => "package.json";
+        private static string packagePath => Path.Combine(pathPackageDirectory, packageFileName);
         
         private static bool TryLoadPackage(out PackageData package)
         {
@@ -88,7 +88,6 @@ namespace Editor
         private PackageData lastPackage = default;
         private PackageData package = default;
         private bool packageLoaded = false;
-        private bool packageChanged = false;
         
         private void OnGUI()
         {
@@ -123,31 +122,18 @@ namespace Editor
                 lastPackage = package;
             }
             
-            packageChanged = !package.Equals(lastPackage);
-            
             GUILayout.BeginHorizontal();
             
-            if (packageChanged)
+            if (GUILayout.Button("Reset Package"))
             {
-                if (GUILayout.Button("Reset Package"))
-                {
-                    package = GetPackage();
-                    lastPackage = package;
-                }
-                
-                if (GUILayout.Button("Update Package"))
-                {
-                    SetPackage(package);
-                    lastPackage = package;
-                }
+                package = GetPackage();
+                lastPackage = package;
             }
-            else
+                
+            if (GUILayout.Button("Update Package"))
             {
-                if (GUILayout.Button("Reset Package"))
-                {
-                    package = GetPackage();
-                    lastPackage = package;
-                }
+                SetPackage(package);
+                lastPackage = package;
             }
             
             GUILayout.EndHorizontal();
@@ -160,7 +146,7 @@ namespace Editor
         
         private void GUIVersion()
         {
-            GUILayout.Box($"{package.version}{(packageChanged ? "*" : "")}", GUILayout.ExpandWidth(true));
+            GUILayout.Box($"{package.version}", GUILayout.ExpandWidth(true));
 
             var numbers = package.version.Split(".").Select(int.Parse).ToArray();
 
@@ -242,14 +228,157 @@ namespace Editor
                 GUILayout.Label($"{pair.Key}: {pair.Value}", GUILayout.ExpandWidth(false));
             }
         }
+
+        private string pathSourceSamples => Path.Combine(Application.dataPath, "Samples");
+        private string pathTargetSamples => Path.Combine(pathPackageDirectory, "Samples~");
+
+        private SampleData GUISample(SampleData sample, out bool remove)
+        {
+            remove = false;
+            
+            var sourceDir = Path.Combine(pathSourceSamples, sample.displayName);
+            var targetDir = Path.Combine(pathTargetSamples, sample.displayName);
+
+            var existSource = Directory.Exists(sourceDir) && !string.IsNullOrWhiteSpace(sample.displayName);
+            var existTarget = Directory.Exists(targetDir) && !string.IsNullOrWhiteSpace(sample.displayName);
+                
+            GUILayout.BeginHorizontal();
+                
+            if (existTarget)
+            {
+                if (GUILayout.Button("Delete Sample"))
+                {
+                    DeleteDirectory(targetDir);
+                }
+            }
+            else
+            {
+                if (GUILayout.Button("Remove Sample"))
+                {
+                    remove = true;
+                }
+            }
+                
+            if (existSource)
+            {
+                var buttonName = existTarget ? "Update Sample" : "Copy Sample";
+                if (GUILayout.Button(buttonName))
+                {
+                    CopyDirectory(sourceDir, targetDir);
+                }
+            }
+            else
+            {
+                GUILayout.Box("Copy Sample", GUILayout.ExpandWidth(true));
+            }
+                
+            GUILayout.EndHorizontal();
+                
+            sample.displayName = GUILayout.TextField(sample.displayName);
+            sample.description = GUILayout.TextField(sample.description);
+                
+            sample.path = Path.Combine("Samples~", sample.displayName);
+
+            GUILayout.Label(sample.path);
+
+            return sample;
+        }
         
         private void GUISamples()
         {
-            GUILayout.Box($"Samples", GUILayout.ExpandWidth(true));
-            
-            foreach (var sample in package.samples)
+            if (!Directory.Exists(pathTargetSamples))
             {
-                GUILayout.Label($"{sample.displayName}: {sample.path}", GUILayout.ExpandWidth(false));
+                Directory.CreateDirectory(pathTargetSamples);
+            }
+            
+            GUILayout.Box($"Samples", GUILayout.ExpandWidth(true));
+
+            var targetFolder = new DirectoryInfo(pathTargetSamples);
+            var targets = targetFolder.GetDirectories();
+            var sourceFolder = new DirectoryInfo(pathSourceSamples);
+            var sources = sourceFolder.GetDirectories();
+
+            GUILayout.BeginHorizontal();
+            foreach (var target in targets)
+            {
+                GUILayout.Label(target.Name, GUILayout.ExpandWidth(false));
+            }
+            GUILayout.EndHorizontal();
+
+            var removeList = new List<SampleData>();
+            for (var i = 0; i < package.samples.Count; i++)
+            {
+                if (i > 0) GUILayout.Space(16);
+                package.samples[i] = GUISample(package.samples[i], out var remove);
+                if (remove) removeList.Add(package.samples[i]);
+            }
+            removeList.ForEach(r => package.samples.Remove(r));
+            
+            foreach (var source in sources)
+            {
+                if (package.samples.Any(s => string.Equals(s.displayName, source.Name))) continue;
+
+                if (GUILayout.Button($"+ {source.Name}"))
+                {
+                    package.samples.Add(new SampleData() { displayName = source.Name });
+                }
+            }
+        }
+
+        private static void DeleteDirectory(string sourceDir, bool recursive = true)
+        {
+            // Get information about the source directory
+            var dir = new DirectoryInfo(sourceDir);
+
+            if (dir.Exists)
+            {
+                dir.Delete(recursive);
+                Debug.Log($"Directory \"{dir.FullName}\" was deleted");
+            }
+        }
+        
+        private static void CopyDirectory(string sourceDir, string destinationDir, bool recursive = true)
+        {
+            // Get information about the source directory
+            var dir = new DirectoryInfo(sourceDir);
+
+            // Check if the source directory exists
+            if (!dir.Exists)
+            {
+                Debug.LogError($"Directory \"{dir.FullName}\" does not exist");
+                return;
+            }
+
+            if (Directory.Exists(destinationDir))
+            {
+                Directory.Delete(destinationDir, recursive);
+            }
+            
+            // Create the destination directory
+            Directory.CreateDirectory(destinationDir);
+
+            Debug.Log($"Directory \"{destinationDir}\" was created");
+            
+            // Get the files in the source directory and copy to the destination directory
+            foreach (var file in dir.GetFiles())
+            {
+                var targetFilePath = Path.Combine(destinationDir, file.Name);
+                file.CopyTo(targetFilePath);
+                
+                Debug.Log($"File \"{targetFilePath}\" was copied");
+            }
+
+            // If recursive and copying subdirectories, recursively call this method
+            if (recursive)
+            {
+                // Cache directories before we start copying
+                var dirs = dir.GetDirectories();
+                
+                foreach (var subDir in dirs)
+                {
+                    var newDestinationDir = Path.Combine(destinationDir, subDir.Name);
+                    CopyDirectory(subDir.FullName, newDestinationDir, true);
+                }
             }
         }
         
@@ -264,7 +393,7 @@ namespace Editor
             public Dictionary<string, string> dependencies;
             public string[] keywords;
             public Dictionary<string, string> author;
-            public SampleData[] samples;
+            public List<SampleData> samples;
         }
 
         [Serializable]
