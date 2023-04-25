@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Examples.Playground.Scripts
 {
-    public class DamagingObject : DamageSourceReference
+    public class DamagingObject : DamageSourceFactory
     {
         [Space]
         public bool isEnabled = true;

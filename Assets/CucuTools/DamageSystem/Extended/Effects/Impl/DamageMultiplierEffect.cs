@@ -8,12 +8,17 @@ namespace CucuTools.DamageSystem.Extended.Effects.Impl
     {
         public const string AssetName = nameof(DamageMultiplierEffect);
 
-        [Min(0f)] public float factor = 1f;
+        [Min(0f)]
+        public float factor = 1f;
+        
+        [Space]
         public RoundMode roundMode = RoundMode.Ceil;
+        public bool canBeZero = true;
         
         public override void HandleDamage(DamageEvent e)
         {
              var amount = e.damage.amount * factor;
+             
              switch (roundMode)
              {
                  case RoundMode.Ceil:
@@ -25,6 +30,8 @@ namespace CucuTools.DamageSystem.Extended.Effects.Impl
                  default:
                      throw new ArgumentOutOfRangeException();
              }
+
+             e.damage.amount = Mathf.Max(e.damage.amount, canBeZero ? 0 : 1);
         }
         
         public enum RoundMode

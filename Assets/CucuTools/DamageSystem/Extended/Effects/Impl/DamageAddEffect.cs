@@ -9,9 +9,14 @@ namespace CucuTools.DamageSystem.Extended.Effects.Impl
 
         public int addition = 0;
         
+        [Space]
+        public bool canBeZero = true;
+        
         public override void HandleDamage(DamageEvent e)
         {
             e.damage.amount += addition;
+            
+            e.damage.amount = Mathf.Max(e.damage.amount, canBeZero ? 0 : 1);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace CucuTools.DamageSystem
 {
-    public class DamageSourceReference : DamageSource
+    public class DamageSourceFactory : DamageSource
     {
         [Space]
         public DamageFactory factory;

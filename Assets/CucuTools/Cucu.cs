@@ -142,7 +142,12 @@ namespace CucuTools
 
         public static bool Contains(this LayerMask layerMask, int layerNumber)
         {
-            return Cucu.ContainsLayer(layerMask, layerNumber);
+            return ContainsLayer(layerMask, layerNumber);
+        }
+        
+        public static bool Contains(this int layerNumber, LayerMask layerMask)
+        {
+            return ContainsLayer(layerMask, layerNumber);
         }
         
         public static Vector3 Scale(this Vector3 vector3, float x, float y, float z)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CucuTools.Others
 {
@@ -21,6 +22,10 @@ namespace CucuTools.Others
         }
 
         public CachedDictionary(Func<TKey, TValue> factory) : this(factory, value => true)
+        {
+        }
+
+        protected CachedDictionary()
         {
         }
         
@@ -71,6 +76,23 @@ namespace CucuTools.Others
         public void Clear()
         {
             _cache.Clear();
+        }
+    }
+    
+    public class CachedComponent<TKey, TValue> : CachedDictionary<TKey, TValue>
+        where TKey : Component
+        where TValue : Component
+    {
+        public CachedComponent() : this(key => key.GetComponent<TValue>(), value => value != null)
+        {
+        }
+        
+        private CachedComponent(Func<TKey, TValue> factory, Func<TValue, bool> validation) : base(factory, validation)
+        {
+        }
+
+        private CachedComponent(Func<TKey, TValue> factory) : base(factory)
+        {
         }
     }
 }

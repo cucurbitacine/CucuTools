@@ -9,6 +9,8 @@ namespace CucuTools.DamageSystem
     {
         public int amount;
         public bool critical;
+
+        public readonly Guid guid = Guid.NewGuid();
     }
 
     public class DamageEvent
