@@ -4,7 +4,7 @@ namespace CucuTools.DamageSystem.Extended.Impl
 {
     public class DamageSourceFactoryExtended : DamageSourceExtended
     {
-        [Space]
+        [Header("Factory Settings")]
         public DamageFactory factory;
         
         public override Damage CreateDamage()

@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace CucuTools.DamageSystem.Extended.Effects
 {
-    [Serializable]
-    public class ListDamageEffect
+    public class DamageEffectManager : MonoBehaviour
     {
-        [Space] [SerializeField] private List<DamageEffect> list = new List<DamageEffect>();
+        [SerializeField] private List<DamageEffect> list = new List<DamageEffect>();
 
-        public ListEvents events = new ListEvents();
-
+        public int Count => list.Count;
+        
         public int GetEffectsNonAlloc(DamageEffect[] effects)
         {
             var count = 0;
@@ -29,22 +26,17 @@ namespace CucuTools.DamageSystem.Extended.Effects
 
         public void AddEffect(DamageEffect effect)
         {
-            if (list.Contains(effect)) return;
-
             list.Add(effect);
-
-            events.onAdded.Invoke(effect);
         }
 
         public void RemoveEffect(DamageEffect effect)
         {
-            if (!list.Contains(effect)) return;
-
-            list[list.IndexOf(effect)] = null;
-
-            events.onRemoved.Invoke(effect);
+            if (list.Contains(effect))
+            {
+                list[list.IndexOf(effect)] = null;
+            }
         }
-
+        
         public void HandleDamage(DamageEvent e)
         {
             var index = 0;
@@ -60,13 +52,6 @@ namespace CucuTools.DamageSystem.Extended.Effects
                     list.RemoveAt(index);
                 }
             }
-        }
-
-        [Serializable]
-        public class ListEvents
-        {
-            public UnityEvent<DamageEffect> onAdded = new UnityEvent<DamageEffect>();
-            public UnityEvent<DamageEffect> onRemoved = new UnityEvent<DamageEffect>();
         }
     }
 }

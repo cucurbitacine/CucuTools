@@ -6,11 +6,11 @@ namespace CucuTools.DamageSystem.Extended
     public abstract class DamageSourceExtended : DamageSource
     {
         [Header("Effects")]
-        public ListDamageEffect effects = new ListDamageEffect();
+        public DamageEffectManager effectManager = null;
         
         protected override void HandleDamage(DamageEvent e)
         {
-            effects.HandleDamage(e);
+            effectManager?.HandleDamage(e);
         }
     }
 }

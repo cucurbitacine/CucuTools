@@ -6,17 +6,17 @@ namespace CucuTools.DamageSystem.Extended
     public class DamageManagerExtended : DamageManager
     {
         [Header("Effects")]
-        public ListDamageEffect sourceEffects = new ListDamageEffect();
-        public ListDamageEffect receiverEffects = new ListDamageEffect();
-
+        public DamageEffectManager sourceEffectManager = null;
+        public DamageEffectManager receiverEffectManager = null;
+        
         public override void HandleDamageAsSource(DamageEvent e)
         {
-            sourceEffects.HandleDamage(e);
+            sourceEffectManager?.HandleDamage(e);
         }
 
         public override void HandleDamageAsReceiver(DamageEvent e)
         {
-            receiverEffects.HandleDamage(e);
+            receiverEffectManager?.HandleDamage(e);
         }
     }
 }
