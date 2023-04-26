@@ -4,7 +4,8 @@ namespace CucuTools.DamageSystem.Impl
 {
     public class SimpleDamageSource : DamageSource
     {
-        [Space] public DamageTemplate template = new DamageTemplate();
+        [Header("Template Settings")]
+        public DamageTemplate template = new DamageTemplate();
         
         public override Damage CreateDamage()
         {

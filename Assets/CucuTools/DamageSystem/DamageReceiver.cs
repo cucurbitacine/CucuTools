@@ -25,6 +25,11 @@ namespace CucuTools.DamageSystem
             }
             
             onDamageReceived.Invoke(e);
+            
+            if (manager != null)
+            {
+                manager.ReceiveDamage(e);
+            }
         }
         
         protected virtual void HandleDamage(DamageEvent e)

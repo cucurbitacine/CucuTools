@@ -5,7 +5,7 @@ namespace CucuTools.DamageSystem.Extended
 {
     public class DamageReceiverExtended : DamageReceiver
     {
-        [Space]
+        [Header("Effects")]
         public ListDamageEffect effects = new ListDamageEffect();
 
         protected override void HandleDamage(DamageEvent e)

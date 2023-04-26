@@ -8,6 +8,7 @@ namespace CucuTools.DamageSystem
         [Space] public bool mute = false;
 
         public DamageManager manager = null;
+        
         [Space]
         public UnityEvent<DamageEvent> onDamageSent = new UnityEvent<DamageEvent>();
         
@@ -17,14 +18,19 @@ namespace CucuTools.DamageSystem
         {
             if (mute) return;
 
-            var damage = GenerateDamage(receiver);
+            var e = GenerateDamageEvent(receiver);
             
-            onDamageSent.Invoke(damage);
+            onDamageSent.Invoke(e);
             
-            receiver.ReceiveDamage(damage);
+            if (manager != null)
+            {
+                manager.SendDamage(e);
+            }
+            
+            receiver.ReceiveDamage(e);
         }
 
-        private DamageEvent GenerateDamage(DamageReceiver receiver)
+        private DamageEvent GenerateDamageEvent(DamageReceiver receiver)
         {
             var e = new DamageEvent(CreateDamage(), this, receiver);
 

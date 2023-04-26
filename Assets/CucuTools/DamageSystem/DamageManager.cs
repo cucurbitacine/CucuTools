@@ -1,22 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace CucuTools.DamageSystem
 {
+    [DisallowMultipleComponent]
     public class DamageManager : CucuBehaviour
     {
-        [Space]
+        [Header("Events")]
+        public UnityEvent<DamageEvent> onDamageSent = new UnityEvent<DamageEvent>();
         public UnityEvent<DamageEvent> onDamageReceived = new UnityEvent<DamageEvent>();
-        
-        [Space]
-        public List<DamageSource> sources = new List<DamageSource>(); 
-        public List<DamageReceiver> receivers = new List<DamageReceiver>(); 
 
-        public void ReceiveDamage(DamageEvent e)
-        {
-            onDamageReceived.Invoke(e);
-        }
+        [Header("Sources Settings")]
+        public bool getChildrenSources = true;
+        public DamageSource[] sources = Array.Empty<DamageSource>();
+        
+        [Header("Receivers Settings")]
+        public bool getChildrenReceivers = true;
+        public DamageReceiver[] receivers = Array.Empty<DamageReceiver>();
         
         public virtual void HandleDamageAsSource(DamageEvent e)
         {
@@ -25,27 +26,83 @@ namespace CucuTools.DamageSystem
         public virtual void HandleDamageAsReceiver(DamageEvent e)
         {
         }
+
+        public void Link(DamageSource source)
+        {
+            source.manager = this;
+        }
+
+        public void Unlink(DamageSource source)
+        {
+            source.manager = null;
+        }
+
+        public void Link(DamageReceiver receiver)
+        {
+            receiver.manager = this;
+        }
+
+        public void Unlink(DamageReceiver receiver)
+        {
+            receiver.manager = null;
+        }
+
+        public void Link(params DamageSource[] sources)
+        {
+            foreach (var source in sources)
+            {
+                if (source != null) Link(source);
+            }
+        }
+        
+        public void Link(params DamageReceiver[] receivers)
+        {
+            foreach (var receiver in receivers)
+            {
+                if (receiver != null) Link(receiver);
+            }
+        }
+        
+        public void Unlink(params DamageSource[] sources)
+        {
+            foreach (var source in sources)
+            {
+                if (source != null) Unlink(source);
+            }
+        }
+        
+        public void Unlink(params DamageReceiver[] receivers)
+        {
+            foreach (var receiver in receivers)
+            {
+                if (receiver != null) Unlink(receiver);
+            }
+        }
+        
+        public void SendDamage(DamageEvent e)
+        {
+            onDamageSent.Invoke(e);
+        }
+        
+        public void ReceiveDamage(DamageEvent e)
+        {
+            onDamageReceived.Invoke(e);
+        }
         
         protected virtual void Awake()
         {
-            sources.ForEach(s => s.manager = this);
-            receivers.ForEach(r => r.manager = this);
-        }
+            if (getChildrenSources)
+            {
+                sources = GetComponentsInChildren<DamageSource>();
+            }
 
-        protected virtual void OnEnable()
-        {
-            foreach (var receiver in receivers)
+            if (getChildrenReceivers)
             {
-                receiver.onDamageReceived.AddListener(ReceiveDamage);
+                receivers = GetComponentsInChildren<DamageReceiver>();
             }
-        }
-        
-        protected virtual void OnDisable()
-        {
-            foreach (var receiver in receivers)
-            {
-                receiver.onDamageReceived.RemoveListener(ReceiveDamage);
-            }
+            
+            Link(sources);
+            Link(receivers);
         }
     }
     
