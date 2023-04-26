@@ -1,5 +1,243 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2469936494891286578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6275702057390705714}
+  - component: {fileID: 8355396706744196629}
+  m_Layer: 0
+  m_Name: Effect Manager - Receive
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6275702057390705714
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469936494891286578}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6424381036055783707}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8355396706744196629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2469936494891286578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b7387258244cc5a61caa5d845bd9c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  list: []
+--- !u!1 &2885552684522336796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5647281235091733245}
+  - component: {fileID: 2916070985433464860}
+  m_Layer: 0
+  m_Name: Health
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5647281235091733245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2885552684522336796}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6424381036055783707}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2916070985433464860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2885552684522336796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56566faf009b4f9c815fd23f18543232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 100
+  healthMax: 100
+  events:
+    onHealthChanged:
+      m_PersistentCalls:
+        m_Calls: []
+    onHealed:
+      m_PersistentCalls:
+        m_Calls: []
+    onDamaged:
+      m_PersistentCalls:
+        m_Calls: []
+    onDied:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7677542908190225241}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!1 &4201844678357880584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4310261985761810261}
+  - component: {fileID: 3684576544008699131}
+  m_Layer: 0
+  m_Name: Effect Manager - Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4310261985761810261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201844678357880584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6424381036055783707}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3684576544008699131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4201844678357880584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3b7387258244cc5a61caa5d845bd9c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  list: []
+--- !u!1 &5557229592306154834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9181353440514347678}
+  - component: {fileID: 2303082047013750442}
+  m_Layer: 0
+  m_Name: Damage Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9181353440514347678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5557229592306154834}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6424381036055783707}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2303082047013750442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5557229592306154834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4929c8516ffc45ff8ff7708a02e9de43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalSelf: 0
+  onHealed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2916070985433464860}
+        m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.HealthController,
+          CucuTools.Samples.DamageSystem
+        m_MethodName: Heal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onDamaged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2916070985433464860}
+        m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.HealthController,
+          CucuTools.Samples.DamageSystem
+        m_MethodName: Damage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7677542908190225241
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,8 +251,9 @@ GameObject:
   - component: {fileID: 6556029522511105256}
   - component: {fileID: 5014495816481950377}
   - component: {fileID: 755173503909785383}
+  - component: {fileID: 3127187354167391719}
   - component: {fileID: 123142949655395521}
-  - component: {fileID: 7473751474091749337}
+  - component: {fileID: 2400346756870952075}
   m_Layer: 0
   m_Name: Enemy Prefab
   m_TagString: Untagged
@@ -33,7 +272,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5647281235091733245}
+  - {fileID: 9181353440514347678}
+  - {fileID: 4310261985761810261}
+  - {fileID: 6275702057390705714}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,6 +359,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3127187354167391719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7677542908190225241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a765cacc14a4daa91d0ac5a77dc3f4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalSelf: 0
+  damageReceiver: {fileID: 2400346756870952075}
+  damageHandler: {fileID: 2303082047013750442}
+  health: {fileID: 2916070985433464860}
 --- !u!114 &123142949655395521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +392,7 @@ MonoBehaviour:
   onDamageSent:
     m_PersistentCalls:
       m_Calls: []
+  effectManager: {fileID: 3684576544008699131}
   template:
     damageAmount: 1
     criticalRate: 0.2
@@ -141,7 +401,7 @@ MonoBehaviour:
   layerTargets:
     serializedVersion: 2
     m_Bits: 1
---- !u!114 &7473751474091749337
+--- !u!114 &2400346756870952075
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,21 +410,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 7677542908190225241}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 596a7e42271b4069b2197ce427548ca1, type: 3}
+  m_Script: {fileID: 11500000, guid: 4a1d82a1ebd64bf090575d3ef6cc80e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mute: 0
   manager: {fileID: 0}
   onDamageReceived:
     m_PersistentCalls:
-      m_Calls: []
-  effects:
-    list: []
-    events:
-      onAdded:
-        m_PersistentCalls:
-          m_Calls: []
-      onRemoved:
-        m_PersistentCalls:
-          m_Calls: []
-  health: 100
+      m_Calls:
+      - m_Target: {fileID: 2303082047013750442}
+        m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.ElementalDamageHandler,
+          CucuTools.Samples.DamageSystem
+        m_MethodName: DamageReceive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  effectManager: {fileID: 8355396706744196629}

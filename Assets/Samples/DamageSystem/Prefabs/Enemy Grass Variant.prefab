@@ -11,6 +11,22 @@ PrefabInstance:
       propertyPath: elemental
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: effects.list.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: effects.list.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 45f166451b99edd44b12ffc598264fd9, type: 2}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: effects.list.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: e53197872585d5e4baeab5b5a30cffe1, type: 2}
+    - target: {fileID: 3127187354167391719, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: elementalSelf
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6424381036055783707, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -61,7 +77,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 7c7b909e149244848ae7fe998b999e6e, type: 2}
     - target: {fileID: 7677542908190225241, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: m_Name
-      value: Enemy Grass
+      value: Enemy Grass Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}

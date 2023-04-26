@@ -3,10 +3,11 @@ using CucuTools.DamageSystem;
 using CucuTools.Others;
 using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.DamageSystem.Scripts.Player
 {
     public class PlayerDamageSource : ElementalDamageSource
     {
+        [Header("Player Settings")]
         public LayerMask layerTargets = 1;
 
         private readonly CachedComponent<Collider, DamageReceiver> receivers =

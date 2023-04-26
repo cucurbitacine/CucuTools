@@ -1,3 +1,4 @@
+using Samples.DamageSystem.Scripts.Player;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

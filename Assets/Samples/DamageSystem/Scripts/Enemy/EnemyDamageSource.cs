@@ -3,17 +3,16 @@ using CucuTools.DamageSystem;
 using CucuTools.Others;
 using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.DamageSystem.Scripts.Enemy
 {
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Rigidbody))]
     public class EnemyDamageSource : ElementalDamageSource
     {
+        [Header("Enemy Settings")]
         public LayerMask layerTargets = 1;
 
-        private readonly CachedDictionary<Collider, DamageReceiver> receivers =
-            new(cld => cld.GetComponent<DamageReceiver>(),
-                dr => dr != null);
+        private readonly CachedComponent<Collider, DamageReceiver> receivers = new();
 
         private Collider _cld = null;
         private Rigidbody _rigid = null;
