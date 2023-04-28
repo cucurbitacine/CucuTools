@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace CucuTools.DamageSystem
@@ -13,12 +14,14 @@ namespace CucuTools.DamageSystem
         public UnityEvent<DamageEvent> onDamageSent = new UnityEvent<DamageEvent>();
         
         public abstract Damage CreateDamage();
-
-        public void SendDamage(DamageReceiver receiver)
+        
+        public void SendDamage(DamageReceiver receiver, Action<DamageEvent> onSent, Action<DamageEvent> onReceived)
         {
             if (mute) return;
 
             var e = GenerateDamageEvent(receiver);
+            
+            onSent?.Invoke(e);
             
             onDamageSent.Invoke(e);
             
@@ -28,6 +31,13 @@ namespace CucuTools.DamageSystem
             }
             
             receiver.ReceiveDamage(e);
+            
+            onReceived?.Invoke(e);
+        }
+        
+        public void SendDamage(DamageReceiver receiver)
+        {
+            SendDamage(receiver, null, null);
         }
 
         private DamageEvent GenerateDamageEvent(DamageReceiver receiver)
