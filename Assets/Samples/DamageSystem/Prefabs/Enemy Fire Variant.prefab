@@ -8,6 +8,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: effectManagerFactory
+      value: 
+      objectReference: {fileID: 11400000, guid: 91a3e1f12c4e1ef478d5e1dc4213ebdc, type: 2}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: _effectManagerFactory
+      value: 
+      objectReference: {fileID: 11400000, guid: 91a3e1f12c4e1ef478d5e1dc4213ebdc, type: 2}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: effects.list.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -19,6 +27,18 @@ PrefabInstance:
       propertyPath: effects.list.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 450959389c67a9d4f9fd11581461e8a3, type: 2}
+    - target: {fileID: 2885574476845857708, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: factories.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885574476845857708, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: factories.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 450959389c67a9d4f9fd11581461e8a3, type: 2}
+    - target: {fileID: 2885574476845857708, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: factories.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: c1a0957fa346ed540a39defa961e420a, type: 2}
     - target: {fileID: 6424381036055783707, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: m_RootOrder
       value: 0

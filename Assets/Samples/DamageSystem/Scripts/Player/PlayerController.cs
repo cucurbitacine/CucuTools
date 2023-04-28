@@ -1,5 +1,4 @@
-﻿using System;
-using CucuTools.DamageSystem.Extended;
+﻿using CucuTools.DamageSystem.Extended;
 using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts.Player
@@ -15,6 +14,11 @@ namespace Samples.DamageSystem.Scripts.Player
         public DamageManagerExtended damageManager = null;
         public ElementalDamageHandler damageHandler = null;
         public HealthController health = null;
+
+        private void Start()
+        {
+            damageManager.receiverEffectManager?.AddEffect(new PlayerElementalEffect(this, 2));
+        }
 
         private void Update()
         {

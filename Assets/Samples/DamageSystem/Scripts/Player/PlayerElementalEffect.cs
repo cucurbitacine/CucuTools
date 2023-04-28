@@ -1,47 +1,44 @@
-﻿using UnityEngine;
+﻿using System;
+using CucuTools.DamageSystem;
+using CucuTools.DamageSystem.Extended.Effects;
+using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts.Player
 {
-    public class PlayerElementalEffect : MonoBehaviour
+    [Serializable]
+    public class PlayerElementalEffect : DamageEffect
     {
         public PlayerController player = null;
+        [Min(0f)] public float factor = 1f;
         
-        [Space]
-        [Min(0)] public float factor = 2;
-        
-        private ElementalDamageEffect advantageEffect = null;
-        private ElementalDamageEffect disadvantageEffect = null;
-
-        private void Awake()
+        public PlayerElementalEffect(PlayerController player) : base()
         {
-            advantageEffect = ScriptableObject.CreateInstance<ElementalDamageEffect>();
-            disadvantageEffect = ScriptableObject.CreateInstance<ElementalDamageEffect>();
-
-            advantageEffect.name = nameof(advantageEffect);
-            disadvantageEffect.name = nameof(disadvantageEffect);
+            this.player = player;
         }
         
-        private void OnEnable()
+        public PlayerElementalEffect(PlayerController player, float factor) : this(player)
         {
-            player.damageManager.receiverEffectManager.AddEffect(advantageEffect);
-            player.damageManager.receiverEffectManager.AddEffect(disadvantageEffect);
+            this.factor = factor;
         }
-
-        private void Update()
+        
+        public override void HandleDamage(DamageEvent e)
         {
-            var elemental = player.elementalSelf;
-            
-            advantageEffect.elemental = ElementalDamage.GetAdvantage(elemental);
-            advantageEffect.factor = 1 / factor;
-            
-            disadvantageEffect.elemental = ElementalDamage.GetDisadvantage(elemental);
-            disadvantageEffect.factor = factor;
-        }
+            if (e.damage is ElementalDamage damage)
+            {
+                Debug.Log($"Player {player.name} received [{damage.elemental.ToString()}] damage");
+                
+                var advantageElement = ElementalDamage.GetAdvantage(player.elementalSelf);
+                var disadvantageElement = ElementalDamage.GetDisadvantage(player.elementalSelf);
 
-        private void OnDisable()
-        {
-            player.damageManager.receiverEffectManager.RemoveEffect(advantageEffect);
-            player.damageManager.receiverEffectManager.RemoveEffect(disadvantageEffect);
+                if (damage.elemental == advantageElement)
+                {
+                    damage.amount = (int)(damage.amount / factor);
+                }
+                else if (damage.elemental == disadvantageElement)
+                {
+                    damage.amount = (int)(damage.amount * factor);
+                }
+            }
         }
     }
 }

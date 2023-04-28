@@ -17,6 +17,16 @@ namespace Samples.DamageSystem.Scripts.Enemy
         private Collider _cld = null;
         private Rigidbody _rigid = null;
         
+        private void MessageSent(DamageEvent e)
+        {
+            Debug.Log($"{e.source.name} sent [{e.damage.amount}] damage to {e.receiver.name}");
+        }
+        
+        private void MessageReceived(DamageEvent e)
+        {
+            Debug.Log($"{e.receiver.name} received [{e.damage.amount}] damage from {e.source.name}");
+        }
+        
         private void Awake()
         {
             _cld = GetComponent<Collider>();
@@ -33,7 +43,7 @@ namespace Samples.DamageSystem.Scripts.Enemy
             {
                 if (receivers.TryGetValidValue(other, out var receiver))
                 {
-                    SendDamage(receiver);
+                    SendDamage(receiver, MessageSent, MessageReceived);
                 }
             }
         }

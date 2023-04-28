@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d19b4bb8cbd4afd8419572b5c83044c, type: 3}
-  m_Name: Weakness to Grass
+  m_Name: Protection from Fire
   m_EditorClassIdentifier: 
   createInstance: 1
   effectSeed:
-    factor: 2
-    roundMode: 0
-    canBeZero: 1
-    elementalReceived: 1
+    factor: 0.5
+    roundMode: 1
+    canBeZero: 0
+    elementalReceived: 0
   damageInput: 1
-  damageOutput: 2
+  damageOutput: 1

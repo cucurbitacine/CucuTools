@@ -12,6 +12,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: effectManagerFactory
+      value: 
+      objectReference: {fileID: 11400000, guid: 836870535b7178c4c952a77f71fe19f8, type: 2}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: _effectManagerFactory
+      value: 
+      objectReference: {fileID: 11400000, guid: 836870535b7178c4c952a77f71fe19f8, type: 2}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: effects.list.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -23,6 +31,18 @@ PrefabInstance:
       propertyPath: effects.list.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: e53197872585d5e4baeab5b5a30cffe1, type: 2}
+    - target: {fileID: 2885574476845857708, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: factories.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885574476845857708, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: factories.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: e53197872585d5e4baeab5b5a30cffe1, type: 2}
+    - target: {fileID: 2885574476845857708, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: factories.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 45f166451b99edd44b12ffc598264fd9, type: 2}
     - target: {fileID: 3127187354167391719, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: elementalSelf
       value: 1

@@ -367,111 +367,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
---- !u!1 &818750458
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 818750460}
-  - component: {fileID: 818750459}
-  m_Layer: 0
-  m_Name: Effect Manager - Receive
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &818750459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 818750458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3b7387258244cc5a61caa5d845bd9c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  list: []
---- !u!4 &818750460
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 818750458}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1115241527}
-  m_Father: {fileID: 1638550267}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &971116295
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 971116297}
-  - component: {fileID: 971116296}
-  m_Layer: 0
-  m_Name: Health
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &971116296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971116295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56566faf009b4f9c815fd23f18543232, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _health: 100
-  healthMax: 100
-  events:
-    onHealthChanged:
-      m_PersistentCalls:
-        m_Calls: []
-    onHealed:
-      m_PersistentCalls:
-        m_Calls: []
-    onDamaged:
-      m_PersistentCalls:
-        m_Calls: []
-    onDied:
-      m_PersistentCalls:
-        m_Calls: []
---- !u!4 &971116297
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971116295}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2106504027}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1005664017
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +416,7 @@ MonoBehaviour:
   onDamageSent:
     m_PersistentCalls:
       m_Calls: []
-  effectManager: {fileID: 0}
+  _effectManagerFactory: {fileID: 0}
   template:
     damageAmount: 1
     criticalRate: 0.2
@@ -530,129 +425,6 @@ MonoBehaviour:
   layerTargets:
     serializedVersion: 2
     m_Bits: 1
---- !u!1 &1115241526
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1115241527}
-  - component: {fileID: 1115241528}
-  m_Layer: 0
-  m_Name: Elemental Effect
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1115241527
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1115241526}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 818750460}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1115241528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1115241526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9507305431f443b9a47ccbb33844688, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 2106504028}
-  factor: 2
---- !u!1 &1328887329
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1328887331}
-  - component: {fileID: 1328887330}
-  m_Layer: 0
-  m_Name: Damage Handler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1328887330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328887329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4929c8516ffc45ff8ff7708a02e9de43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  elementalSelf: 0
-  onHealed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 971116296}
-        m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.HealthController,
-          CucuTools.Samples.DamageSystem
-        m_MethodName: Heal
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onDamaged:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 971116296}
-        m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.HealthController,
-          CucuTools.Samples.DamageSystem
-        m_MethodName: Damage
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!4 &1328887331
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328887329}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2106504027}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1349509265
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,6 +532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1638550267}
   - component: {fileID: 1638550266}
+  - component: {fileID: 1638550268}
   m_Layer: 0
   m_Name: Damage Manager
   m_TagString: Untagged
@@ -785,7 +558,7 @@ MonoBehaviour:
   onDamageReceived:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1328887330}
+      - m_Target: {fileID: 1638550268}
         m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.ElementalDamageHandler,
           CucuTools.Samples.DamageSystem
         m_MethodName: DamageReceive
@@ -802,8 +575,8 @@ MonoBehaviour:
   sources: []
   getChildrenReceivers: 1
   receivers: []
-  sourceEffectManager: {fileID: 0}
-  receiverEffectManager: {fileID: 818750459}
+  _sourceEffectManagerFactory: {fileID: 0}
+  _receiverEffectManagerFactory: {fileID: 0}
 --- !u!4 &1638550267
 Transform:
   m_ObjectHideFlags: 0
@@ -818,10 +591,54 @@ Transform:
   m_Children:
   - {fileID: 1005664018}
   - {fileID: 114135995}
-  - {fileID: 818750460}
   m_Father: {fileID: 2106504027}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1638550268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638550265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4929c8516ffc45ff8ff7708a02e9de43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elementalSelf: 0
+  onHealed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2106504029}
+        m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.HealthController,
+          CucuTools.Samples.DamageSystem
+        m_MethodName: Heal
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onDamaged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2106504029}
+        m_TargetAssemblyTypeName: Samples.DamageSystem.Scripts.HealthController,
+          CucuTools.Samples.DamageSystem
+        m_MethodName: Damage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2058977211
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,6 +743,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2106504027}
   - component: {fileID: 2106504028}
+  - component: {fileID: 2106504029}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -945,8 +763,6 @@ Transform:
   m_LocalScale: {x: 5, y: 4, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 971116297}
-  - {fileID: 1328887331}
   - {fileID: 1638550267}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -966,8 +782,35 @@ MonoBehaviour:
   elementalSelf: 0
   level: 1
   damageManager: {fileID: 1638550266}
-  damageHandler: {fileID: 1328887330}
-  health: {fileID: 971116296}
+  damageHandler: {fileID: 1638550268}
+  health: {fileID: 2106504029}
+--- !u!114 &2106504029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106504025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56566faf009b4f9c815fd23f18543232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 100
+  healthMax: 100
+  events:
+    onHealthChanged:
+      m_PersistentCalls:
+        m_Calls: []
+    onHealed:
+      m_PersistentCalls:
+        m_Calls: []
+    onDamaged:
+      m_PersistentCalls:
+        m_Calls: []
+    onDied:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1001 &686679283702605599
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1023,6 +866,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Grass
       objectReference: {fileID: 0}
+    - target: {fileID: 7443487088000930651, guid: 1d1b29d23d609a94cbde8558c5999597, type: 3}
+      propertyPath: effectManagerFactory
+      value: 
+      objectReference: {fileID: 11400000, guid: 836870535b7178c4c952a77f71fe19f8, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d1b29d23d609a94cbde8558c5999597, type: 3}
 --- !u!1001 &4465492119900764163
@@ -1032,6 +879,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 90163504150374299, guid: 5c1e19e8f38fd5642a70638cb9f9af5a, type: 3}
+      propertyPath: effectManagerFactory
+      value: 
+      objectReference: {fileID: 11400000, guid: 91a3e1f12c4e1ef478d5e1dc4213ebdc, type: 2}
     - target: {fileID: 5369400206811250761, guid: 5c1e19e8f38fd5642a70638cb9f9af5a, type: 3}
       propertyPath: m_Name
       value: Enemy Fire
@@ -1090,6 +941,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2097482772636781522, guid: ad48c1e2584d02d4e9da049ee47fa2ee, type: 3}
+      propertyPath: effectManagerFactory
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a65130e329813c47b3440b7fcdb9452, type: 2}
     - target: {fileID: 6257860845719972864, guid: ad48c1e2584d02d4e9da049ee47fa2ee, type: 3}
       propertyPath: m_Name
       value: Enemy Water

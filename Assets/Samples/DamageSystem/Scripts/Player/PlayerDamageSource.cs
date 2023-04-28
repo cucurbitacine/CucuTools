@@ -26,11 +26,19 @@ namespace Samples.DamageSystem.Scripts.Player
 
                 if (CheckHit(hit, out var receiver))
                 {
-                    Debug.Log($"Send Damage");
-
-                    SendDamage(receiver);
+                    SendDamage(receiver, MessageSent, MessageReceived);
                 }
             }
+        }
+
+        private void MessageSent(DamageEvent e)
+        {
+            Debug.Log($"{e.source.name} sent [{e.damage.amount}] damage to {e.receiver.name}");
+        }
+        
+        private void MessageReceived(DamageEvent e)
+        {
+            Debug.Log($"{e.receiver.name} received [{e.damage.amount}] damage from {e.source.name}");
         }
         
         private bool CheckLayer(int value)
