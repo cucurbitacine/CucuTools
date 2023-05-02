@@ -1,22 +1,22 @@
 ﻿using System;
 using CucuTools.Attributes;
 using CucuTools.DamageSystem;
-using CucuTools.DamageSystem.Extended.Effects;
-using CucuTools.DamageSystem.Extended.Effects.Impl;
+using CucuTools.DamageSystem.Buffs;
+using CucuTools.DamageSystem.Buffs.Impl;
 using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts
 {
     [CreateAssetMenu(menuName = "Create ElementalDamageEffectFactory", fileName = "ElementalDamageEffectFactory",
         order = 0)]
-    public class ElementalDamageEffectFactory : DamageEffectFactory<ElementalDamageEffect>
+    public class ElementalDamageBuffFactory : DamageBuffFactory
     {
         public bool createInstance = true;
-        public ElementalDamageEffect effectSeed = new ElementalDamageEffect();
+        public ElementalDamageBuff buffSeed = new ElementalDamageBuff();
 
-        public override ElementalDamageEffect CreateEffect()
+        public override DamageBuff CreateBuff()
         {
-            return createInstance ? new ElementalDamageEffect(effectSeed) : effectSeed;
+            return createInstance ? new ElementalDamageBuff(buffSeed) : buffSeed;
         }
 
 #if UNITY_EDITOR
@@ -26,29 +26,29 @@ namespace Samples.DamageSystem.Scripts
 
         private void OnValidate()
         {
-            damageOutput = effectSeed.Multiply(damageInput);
+            damageOutput = buffSeed.Multiply(damageInput);
         }
 #endif
     }
 
     [Serializable]
-    public class ElementalDamageEffect : DamageMultiplierEffect
+    public class ElementalDamageBuff : DamageMultiplierBuff
     {
         [Header("Elemental")]
         public Elemental elementalReceived = Elemental.Fire;
 
-        public ElementalDamageEffect()
+        public ElementalDamageBuff()
         {
         }
 
-        public ElementalDamageEffect(Elemental elementalReceived, float factor = 1f)
+        public ElementalDamageBuff(Elemental elementalReceived, float factor = 1f)
         {
             this.elementalReceived = elementalReceived;
             this.factor = factor;
         }
 
-        public ElementalDamageEffect(ElementalDamageEffect elementalEffect) :
-            this(elementalEffect.elementalReceived, elementalEffect.factor)
+        public ElementalDamageBuff(ElementalDamageBuff elementalBuff) :
+            this(elementalBuff.elementalReceived, elementalBuff.factor)
         {
         }
 

@@ -2,19 +2,19 @@
 using CucuTools.Attributes;
 using UnityEngine;
 
-namespace CucuTools.DamageSystem.Extended.Effects.Impl
+namespace CucuTools.DamageSystem.Buffs.Impl
 {
     [CreateAssetMenu(menuName = CreateEffectMenu + AssetName, fileName = AssetName, order = 0)]
-    public class DamageAddEffectFactory : DamageEffectFactory<DamageAddEffect>
+    public class DamageAddBuffFactory : DamageBuffFactory
     {
-        public const string AssetName = nameof(DamageAddEffectFactory);
+        public const string AssetName = nameof(DamageAddBuffFactory);
 
         public bool createInstance = true;
-        public DamageAddEffect effectSeed = new DamageAddEffect();
+        public DamageAddBuff buffSeed = new DamageAddBuff();
         
-        public override DamageAddEffect CreateEffect()
+        public override DamageBuff CreateBuff()
         {
-            return createInstance ? new DamageAddEffect(effectSeed) : effectSeed;
+            return createInstance ? new DamageAddBuff(buffSeed) : buffSeed;
         }
         
 #if UNITY_EDITOR
@@ -24,27 +24,27 @@ namespace CucuTools.DamageSystem.Extended.Effects.Impl
 
         private void OnValidate()
         {
-            damageOutput = effectSeed.Add(damageInput);
+            damageOutput = buffSeed.Add(damageInput);
         }
 #endif
     }
 
     [Serializable]
-    public class DamageAddEffect : DamageEffect
+    public class DamageAddBuff : DamageBuff
     {
         public int addition = 0;
         
         [Space]
         public bool canBeZero = true;
 
-        public DamageAddEffect()
+        public DamageAddBuff()
         {
         }
         
-        public DamageAddEffect(DamageAddEffect addEffect)
+        public DamageAddBuff(DamageAddBuff addBuff)
         {
-            addition = addEffect.addition;
-            canBeZero = addEffect.canBeZero;
+            addition = addBuff.addition;
+            canBeZero = addBuff.canBeZero;
         }
 
         public int Add(int value)

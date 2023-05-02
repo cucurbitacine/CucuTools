@@ -1,22 +1,22 @@
 ﻿using System;
 using CucuTools.DamageSystem;
-using CucuTools.DamageSystem.Extended.Effects;
+using CucuTools.DamageSystem.Buffs;
 using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts.Player
 {
     [Serializable]
-    public class PlayerElementalEffect : DamageEffect
+    public class PlayerElementalBuff : DamageBuff
     {
         public PlayerController player = null;
         [Min(0f)] public float factor = 1f;
         
-        public PlayerElementalEffect(PlayerController player) : base()
+        public PlayerElementalBuff(PlayerController player) : base()
         {
             this.player = player;
         }
         
-        public PlayerElementalEffect(PlayerController player, float factor) : this(player)
+        public PlayerElementalBuff(PlayerController player, float factor) : this(player)
         {
             this.factor = factor;
         }

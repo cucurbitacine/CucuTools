@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CucuTools.DamageSystem.Extended.Impl
+namespace CucuTools.DamageSystem.Impl
 {
     public class SimpleDamageSourceExtended : DamageSourceExtended
     {

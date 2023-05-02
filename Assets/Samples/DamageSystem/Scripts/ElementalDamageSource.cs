@@ -1,6 +1,6 @@
 ﻿
 using CucuTools.DamageSystem;
-using CucuTools.DamageSystem.Extended.Impl;
+using CucuTools.DamageSystem.Impl;
 using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts

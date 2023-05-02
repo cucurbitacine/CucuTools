@@ -1,4 +1,4 @@
-﻿using CucuTools.DamageSystem.Extended;
+﻿using CucuTools.DamageSystem.Impl;
 using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts.Player
@@ -17,7 +17,7 @@ namespace Samples.DamageSystem.Scripts.Player
 
         private void Start()
         {
-            damageManager.receiverEffectManager?.AddEffect(new PlayerElementalEffect(this, 2));
+            damageManager.ReceiverBuffsManager.AddBuff(new PlayerElementalBuff(this, 2));
         }
 
         private void Update()

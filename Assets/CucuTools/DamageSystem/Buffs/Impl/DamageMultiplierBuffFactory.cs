@@ -2,19 +2,19 @@
 using CucuTools.Attributes;
 using UnityEngine;
 
-namespace CucuTools.DamageSystem.Extended.Effects.Impl
+namespace CucuTools.DamageSystem.Buffs.Impl
 {
     [CreateAssetMenu(menuName = CreateEffectMenu + AssetName, fileName = AssetName, order = 0)]
-    public sealed class DamageMultiplierEffectFactory : DamageEffectFactory<DamageMultiplierEffect>
+    public sealed class DamageMultiplierBuffFactory : DamageBuffFactory
     {
-        public const string AssetName = nameof(DamageMultiplierEffectFactory);
+        public const string AssetName = nameof(DamageMultiplierBuffFactory);
 
         public bool createInstance = true;
-        public DamageMultiplierEffect effectSeed = new DamageMultiplierEffect();
+        public DamageMultiplierBuff buffSeed = new DamageMultiplierBuff();
 
-        public override DamageMultiplierEffect CreateEffect()
+        public override DamageBuff CreateBuff()
         {
-            return createInstance ? new DamageMultiplierEffect(effectSeed) : effectSeed;
+            return createInstance ? new DamageMultiplierBuff(buffSeed) : buffSeed;
         }
         
 #if UNITY_EDITOR
@@ -24,13 +24,13 @@ namespace CucuTools.DamageSystem.Extended.Effects.Impl
 
         private void OnValidate()
         {
-            damageOutput = effectSeed.Multiply(damageInput);
+            damageOutput = buffSeed.Multiply(damageInput);
         }
 #endif
     }
 
     [Serializable]
-    public class DamageMultiplierEffect : DamageEffect
+    public class DamageMultiplierBuff : DamageBuff
     {
         [Min(0f)] public float factor = 1f;
 
@@ -38,19 +38,21 @@ namespace CucuTools.DamageSystem.Extended.Effects.Impl
         public RoundMode roundMode = RoundMode.Upper;
         public bool canBeZero = true;
 
-        public DamageMultiplierEffect()
+        public DamageMultiplierBuff()
         {
         }
 
-        public DamageMultiplierEffect(DamageMultiplierEffect multiplierEffect)
+        public DamageMultiplierBuff(DamageMultiplierBuff multiplierBuff)
         {
-            factor = multiplierEffect.factor;
-            roundMode = multiplierEffect.roundMode;
-            canBeZero = multiplierEffect.canBeZero;
+            factor = multiplierBuff.factor;
+            roundMode = multiplierBuff.roundMode;
+            canBeZero = multiplierBuff.canBeZero;
         }
 
         public int Multiply(int value)
         {
+            if (value == 0) return 0;
+            
             var amount = value * factor;
             var result = (int)amount;
 
