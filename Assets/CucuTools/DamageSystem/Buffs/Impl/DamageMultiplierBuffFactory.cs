@@ -35,18 +35,22 @@ namespace CucuTools.DamageSystem.Buffs.Impl
         [Min(0f)] public float factor = 1f;
 
         [Space]
-        public RoundMode roundMode = RoundMode.Upper;
         public bool canBeZero = true;
+        public RoundMode roundMode = RoundMode.Upper;
 
         public DamageMultiplierBuff()
         {
         }
 
-        public DamageMultiplierBuff(DamageMultiplierBuff multiplierBuff)
+        public DamageMultiplierBuff(float factor, bool canBeZero = true, RoundMode roundMode = RoundMode.Upper)
         {
-            factor = multiplierBuff.factor;
-            roundMode = multiplierBuff.roundMode;
-            canBeZero = multiplierBuff.canBeZero;
+            this.factor = factor;
+            this.canBeZero = canBeZero;
+            this.roundMode = roundMode;
+        }
+
+        public DamageMultiplierBuff(DamageMultiplierBuff buff) : this(buff.factor, buff.canBeZero, buff.roundMode)
+        {
         }
 
         public int Multiply(int value)

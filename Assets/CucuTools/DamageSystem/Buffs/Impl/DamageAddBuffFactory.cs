@@ -41,10 +41,14 @@ namespace CucuTools.DamageSystem.Buffs.Impl
         {
         }
         
-        public DamageAddBuff(DamageAddBuff addBuff)
+        public DamageAddBuff(int addition = 0, bool canBeZero = true) : this()
         {
-            addition = addBuff.addition;
-            canBeZero = addBuff.canBeZero;
+            this.addition = addition;
+            this.canBeZero = canBeZero;
+        }
+        
+        public DamageAddBuff(DamageAddBuff buff) : this(buff.addition, buff.canBeZero)
+        {
         }
 
         public int Add(int value)

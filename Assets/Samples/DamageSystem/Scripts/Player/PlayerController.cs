@@ -1,4 +1,5 @@
-﻿using CucuTools.DamageSystem.Impl;
+﻿using CucuTools.DamageSystem.Buffs.Impl;
+using CucuTools.DamageSystem.Impl;
 using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts.Player
@@ -17,7 +18,14 @@ namespace Samples.DamageSystem.Scripts.Player
 
         private void Start()
         {
+            damageManager.ReceiverBuffsManager.onAddedBuff += buff => Debug.Log($"Added {buff.GetType().Name}");
+            damageManager.ReceiverBuffsManager.onRemovedBuff += buff => Debug.Log($"Removed {buff.GetType().Name}");
+            
             damageManager.ReceiverBuffsManager.AddBuff(new PlayerElementalBuff(this, 2));
+
+            var addBuff = new DamageAddBuff(1);
+            var tempBuff = new DamageBuffTimer(addBuff, 3f);
+            damageManager.ReceiverBuffsManager.AddBuff(tempBuff);
         }
 
         private void Update()

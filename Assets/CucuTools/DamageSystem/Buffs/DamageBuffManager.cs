@@ -36,8 +36,8 @@ namespace CucuTools.DamageSystem.Buffs
             if (buffs.Contains(buff)) throw new ArgumentException();
             
             buffs.Add(buff);
-            buff.Start();
-            
+            buff.Start(this);
+
             onAddedBuff?.Invoke(buff);
         }
 
@@ -48,8 +48,8 @@ namespace CucuTools.DamageSystem.Buffs
             if (buffs.Contains(buff))
             {
                 buffs[buffs.IndexOf(buff)] = null;
-                buff.Stop();
-                
+                buff.Stop(this);
+
                 onRemovedBuff?.Invoke(buff);
             }
         }

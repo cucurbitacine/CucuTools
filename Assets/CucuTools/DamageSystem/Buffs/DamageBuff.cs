@@ -4,11 +4,11 @@
     {
         public abstract void HandleDamage(DamageEvent e);
 
-        public virtual void Start()
+        public virtual void Start(DamageBuffManager buffManager)
         {
         }
 
-        public virtual void Stop()
+        public virtual void Stop(DamageBuffManager buffManager)
         {
         }
     }
