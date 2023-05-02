@@ -12,6 +12,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: buffsProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 5a65130e329813c47b3440b7fcdb9452, type: 2}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: effectManagerFactory
       value: 
       objectReference: {fileID: 11400000, guid: 5a65130e329813c47b3440b7fcdb9452, type: 2}

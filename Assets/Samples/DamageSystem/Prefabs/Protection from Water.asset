@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Protection from Water
   m_EditorClassIdentifier: 
   createInstance: 1
-  effectSeed:
+  buffSeed:
     factor: 0.5
-    roundMode: 1
+    roundMode: 0
     canBeZero: 0
     elementalReceived: 2
-  damageInput: 1
-  damageOutput: 1
+  damageInput: 0
+  damageOutput: 0

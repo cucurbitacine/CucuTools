@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Weakness to Fire
   m_EditorClassIdentifier: 
   createInstance: 1
-  effectSeed:
+  buffSeed:
     factor: 2
     roundMode: 0
     canBeZero: 1

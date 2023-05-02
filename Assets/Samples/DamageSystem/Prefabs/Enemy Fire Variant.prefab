@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
+      propertyPath: buffsProfile
+      value: 
+      objectReference: {fileID: 11400000, guid: 91a3e1f12c4e1ef478d5e1dc4213ebdc, type: 2}
+    - target: {fileID: 2400346756870952075, guid: 488c629d075715a40aaf26294ba6c9f8, type: 3}
       propertyPath: effectManagerFactory
       value: 
       objectReference: {fileID: 11400000, guid: 91a3e1f12c4e1ef478d5e1dc4213ebdc, type: 2}

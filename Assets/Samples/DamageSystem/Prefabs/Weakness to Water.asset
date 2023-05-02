@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Weakness to Water
   m_EditorClassIdentifier: 
   createInstance: 1
-  effectSeed:
+  buffSeed:
     factor: 2
     roundMode: 0
     canBeZero: 1
     elementalReceived: 2
-  damageInput: 1
-  damageOutput: 2
+  damageInput: 0
+  damageOutput: 0
