@@ -1,331 +1,376 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace CucuTools.PlayerSystem2D
 {
     public class PlayerPlatformController : Player2DController
     {
+        public enum BodyType
+        {
+            Box,
+            Capsule,
+        }
+
         #region SerializeField
 
-        [SerializeField] private Player2DInfo _info = new Player2DInfo();
-        [SerializeField] private Player2DSettings _settings = new Player2DSettings();
-        [SerializeField] private Ground2DController _ground = null;
+        public bool grounded = false;
+        public bool isOnSlope = false;
+        public bool jumping = false;
+        public bool freeze = false;
+        [HideInInspector]
+        public bool wasGround = false;
+
+        [Header("Settings")]
+        [Min(0)] public float speedMax = 10f;
+        [Min(0)] public float jumpHeight = 2;
+        [Min(0)] public int jumpsInAir = 1;
+        [Min(0)] public float gravityScale = 5f;
+        
+        [Header("Ground")]
+        public LayerMask groundLayer = 1;
+        [Min(0)]
+        public float groundCheckDistance = 0.2f;
+        [Range(0, 90)] [Tooltip("Degrees")]
+        public float maxAngleSlope = 50f;
+        [Range(0, 1)] [Tooltip("Seconds")]
+        public float durationIgnorePlatform = 0.1f;
         
         [Header("Body")]
-        [Min(0f)] public float heightBody = 2f;
-        [Min(0f)] public float radiusBody = 0.5f;
+        public BodyType bodyType = BodyType.Box;
+        [Min(0)] public float playerWidth = 1f;
+        [Min(0)] public float playerHeight = 2f;
 
-        [Space]
-        [Min(0f)] public float jumpTimeout = 0.05f;
-        [Min(0f)]
-        public float inertionSpeedFade = 0.05f;
-        [Range(0f, 1f)] public float airMoveControl = 0.9f;
-        [Min(0f)] public float maxFallSpeed = 32f;
-        
-        [Header("Snapping")]
-        public bool snap = true;
-        [Min(0f)]
-        public float snapChangeRate = 8f;
-        [Min(0f)]
-        public float snapMaxDistance = 0.01f;
-        
-        [Space]
-        public Vector2 velocityAdditional = Vector2.zero;
-        
         #endregion
-        
-        private CapsuleCollider2D _capsule = null;
-        
-        private Vector2 _moveInput = Vector2.zero;
-        private Vector2 _velocityMove = Vector2.zero;
-        private Vector2 _velocityFall = Vector2.zero;
-        private Vector2 _velocityPlatform = Vector2.zero;
-        private Vector2 _velocityInertion = Vector2.zero;
-        
-        private float _jumpTimeoutDelta = 0f;
-        private int _jumpDoneAmount = 0;
-        
-        private readonly RaycastHit2D[] _overlap = new RaycastHit2D[32];
-        
-        public Player2DInfo info => _info;
-        public Player2DSettings settings => _settings;
-        public Ground2DController ground => GetOrAddGroundController();
-        public CapsuleCollider2D capsule => GetOrAddCapsule();
-        public Vector2 normal => rigid.transform.up;
-        
-        public Vector2 velocitySelf => _velocityMove +
-                                       _velocityFall;
 
-        public Vector2 velocityExternal => _velocityPlatform +
-                                           _velocityInertion +
-                                           velocityAdditional;
+        #region Private Fields
 
-        public Vector2 position => transform.position;
+        private Collider2D _collider = null;
+        
+        private float _direction = 0f;
+        private int _jumpsInAir = 0;
 
-        public void Move(Vector2 moveInput)
+        #endregion
+
+        #region Private Properties
+        
+        private Vector2 boxCastPoint => playerPoint + playerNormal * boxCastDistance * 0.5f;
+        private Vector2 boxCastSize => new Vector2(collider2d.bounds.size.x, boxCastDistance);
+        private float boxCastAngle => rigid.rotation + 180f;
+        private Vector2 boxCastDirection => -playerNormal;
+        private float boxCastDistance => groundCheckDistance;
+        
+        private Vector2 circleCastPoint => playerPoint + playerNormal * circleCastRadius;
+        private Vector2 circleCastDirection => -playerNormal;
+        private float circleCastRadius => collider2d.bounds.size.x * 0.5f - 0.001f;
+        private float circleCastDistance => groundCheckDistance;
+
+        #endregion
+
+        #region Public Properties
+
+        public RaycastHit2D ground { get; private set; }
+        
+        public Collider2D collider2d => GetOrAddCollider();
+        public Vector2 moveVelocity { get; private set; }
+
+        public Vector2 playerPoint => transform.position;
+        public Vector2 playerNormal => transform.up;
+        public Vector2 playerRight => -Vector2.Perpendicular(playerNormal);
+
+        public Vector2 groundRight => -Vector2.Perpendicular(ground.normal);
+        
+        public float slopeAngle => Vector2.Angle(-gravityDirection, ground.normal);
+        
+        public Vector2 gravity => Physics2D.gravity * gravityScale;
+        public Vector2 gravityDirection => gravity.normalized;
+        public float gravityPower => gravity.magnitude;
+
+        #endregion
+
+        #region Public API
+
+        public void Move(float direction)
         {
-            _moveInput = moveInput;
-
-            info.moving = _moveInput != Vector2.zero;
+            _direction = direction;
         }
-        
-        public void Jump()
-        {
-            var firstJump = _jumpDoneAmount == 0;
 
-            var ableToJump = firstJump && ground.grounded || !firstJump && _jumpDoneAmount < settings.jumpMaxAmount;
-            
-            if (settings.canJump && _jumpTimeoutDelta < 0 && ableToJump)
-            {
-                _jumpDoneAmount++;
-                _jumpTimeoutDelta = jumpTimeout;
-                
-                _velocityFall = -settings.gravity.normalized * Mathf.Sqrt(2 * settings.jumpHeight * settings.gravity.magnitude);
-
-                info.jumping = true;
-            }
-        }
-        
         public void Stop()
         {
-            Move(Vector2.zero);
-        }
-        
-        private Ground2DController GetOrAddGroundController()
-        {
-            if (_ground != null) return _ground;
-            _ground = GetComponent<Ground2DController>();
-            if (_ground != null) return _ground;
-            _ground = gameObject.AddComponent<Ground2DController>();
-            return _ground;
-        }
-        
-        private CapsuleCollider2D GetOrAddCapsule()
-        {
-            if (_capsule != null) return _capsule;
-            _capsule = GetComponent<CapsuleCollider2D>();
-            if (_capsule != null) return _capsule;
-            _capsule = gameObject.AddComponent<CapsuleCollider2D>();
-            return _capsule;
+            Move(0f);
         }
 
-        private void SetupRigid()
+        public void Jump()
         {
-            rigid.isKinematic = false;
-            rigid.gravityScale = 0f;
-            rigid.freezeRotation = true;
-            rigid.interpolation = RigidbodyInterpolation2D.Interpolate;
-            rigid.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        }
-        
-        private void UpdateBody()
-        {
-            capsule.size = new Vector2(2 * radiusBody, heightBody);
-            capsule.offset = Vector2.up * (heightBody * 0.5f);
+            var canJump = grounded || _jumpsInAir < jumpsInAir;
             
-            ground.pointCheck = position;
-            ground.normalCheck = normal;
-            ground.gravity = settings.gravity;
-            ground.radiusCheck = radiusBody * Mathf.Max(capsule.transform.lossyScale.x, capsule.transform.lossyScale.z);
-        }
-
-        private void UpdateMove(float deltaTime)
-        {
-            // calculating world move direction
-            var inputDir = (Vector2)rigid.transform.TransformDirection(Vector2.right * _moveInput.x);
-            var moveDir = settings.canMove ? inputDir : Vector2.zero;
-            
-            // correcting move direction relative of ground normal
-            if (ground.grounded)
+            if (canJump)
             {
-                moveDir = Vector3.ProjectOnPlane(moveDir, ground.hit.normal).normalized;
+                jumping = true;
+                
+                if (!grounded) _jumpsInAir++;
+                
+                var jumpDirection = playerNormal;
+                var jumpSpeed = Mathf.Sqrt(2 * gravityPower * jumpHeight);
+                var jumpVelocity = jumpSpeed * jumpDirection;
+                var jumpImpulse = jumpVelocity * rigid.mass;
+                
+                rigid.velocity = Vector2.zero;
+                rigid.AddForce(jumpImpulse, ForceMode2D.Impulse);
             }
-            
-            // calculating velocity movement
-            var velocityMove = moveDir *  settings.moveSpeed;
-
-            // correcting velocity movement if in air  moveSpeed
-            if (!ground.grounded)
-            {
-                velocityMove = Vector3.Lerp(_velocityMove, velocityMove, airMoveControl);
-            }
-            
-            _velocityMove = velocityMove;
         }
 
-        private void UpdateFall(float deltaTime)
+        public void Down()
         {
-            if (0 <= _jumpTimeoutDelta)
+            if (grounded && !jumping)
             {
-                _jumpTimeoutDelta -= deltaTime;
-            }
-
-            if (ground.grounded)
-            {
-                // just have landed
-                if (!ground.wasGrounded)
+                if (ground.collider.usedByEffector)
                 {
-                    _jumpDoneAmount = 0;
-                    
-                    info.jumping = false;
-                    info.falling = false;
-                    
-                    _velocityFall = Vector3.zero;
-                    _velocityInertion = Vector3.zero;
+                    Ignore(ground.collider, durationIgnorePlatform);
+                }
+            }
+        }
+        
+        #endregion
+
+        private void Jumped()
+        {
+            Debug.Log("Jumped");
+        }
+
+        private void Landed()
+        {
+            _jumpsInAir = 0;
+            jumping = false;
+            
+            Debug.Log("Landed");
+        }
+
+        
+        private void Ignore(Collider2D target, float duration)
+        {
+            StartCoroutine(_Ignoring(target, duration));
+        }
+
+        private IEnumerator _Ignoring(Collider2D target, float duration)
+        {
+            Physics2D.IgnoreCollision(collider2d, target, true);
+
+            yield return new WaitForSeconds(duration);
+
+            while (collider2d.bounds.Intersects(target.bounds))
+            {
+                yield return new WaitForFixedUpdate();
+            }
+            
+            Physics2D.IgnoreCollision(collider2d, target, false);
+        }
+        
+        private RaycastHit2D CircleCast()
+        {
+            return Physics2D.CircleCast(circleCastPoint, circleCastRadius, circleCastDirection, circleCastDistance, groundLayer);
+        }
+        
+        private RaycastHit2D BoxCast()
+        {
+            return Physics2D.BoxCast(boxCastPoint, boxCastSize, boxCastAngle, boxCastDirection, boxCastDistance, groundLayer);
+        }
+
+        private void UpdateGround()
+        {
+            wasGround = grounded;
+            grounded = ground = bodyType == BodyType.Box ? BoxCast() : CircleCast();
+            
+            if (grounded)
+            {
+                grounded = slopeAngle < maxAngleSlope;
+            }
+            
+            if (grounded && !wasGround)
+            {
+                Landed();
+            }
+            else if (!grounded && wasGround)
+            {
+                Jumped();
+            }
+        }
+
+        private void UpdateSlope()
+        {
+            isOnSlope = grounded && slopeAngle > 0.001;
+        }
+
+        private void UpdateVelocity()
+        {
+            var moveRight = playerRight;
+
+            if (grounded)
+            {
+                moveRight = groundRight;
+            }
+
+            moveVelocity = moveRight * (_direction * speedMax);
+        }
+
+        private void UpdateRigidbody()
+        {
+            rigid.gravityScale = gravityScale;
+
+            rigid.bodyType = freeze ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+
+            if (freeze) return;
+            
+            if (grounded)
+            {
+                if (isOnSlope)
+                {
+                    if (jumping)
+                    {
+                        rigid.velocity = new Vector2(moveVelocity.x, rigid.velocity.y);
+                    }
+                    else
+                    {
+                        rigid.gravityScale = moveVelocity == Vector2.zero ? 0f : gravityScale;
+                        rigid.velocity = moveVelocity;
+                    }
+                }
+                else
+                {
+                    rigid.velocity = new Vector2(moveVelocity.x, rigid.velocity.y);
                 }
             }
             else
             {
-                // update jumping state
-                if (info.jumping)
-                {
-                    info.jumping = velocitySelf.y >= 0;
-                }
-
-                // update falling state
-                if (!info.falling)
-                {
-                    info.falling = velocitySelf.y < 0;
-                }
-                
-                // just have left ground
-                if (ground.wasGrounded)
-                {
-                    // save inertion speed from platform
-                    _velocityInertion = _velocityPlatform;
-                }
-
-                // woow! watch out! it is graavity!
-                _velocityFall += settings.gravity * deltaTime;
+                rigid.velocity = new Vector2(moveVelocity.x, rigid.velocity.y);
             }
-
-            _velocityFall = Vector2.ClampMagnitude(_velocityFall, maxFallSpeed);
         }
 
-        private void UpdateInertion(float deltaTime)
+        private void UpdateCollider()
         {
-            _velocityInertion = Vector3.Lerp(_velocityInertion, Vector3.zero, inertionSpeedFade * deltaTime);
-        }
-
-        private void UpdatePlatform(float deltaTime)
-        {
-            _velocityPlatform = Vector2.zero;
+            playerHeight = Mathf.Max(playerWidth, playerHeight);
             
-            if (ground.platform)
+            if (bodyType == BodyType.Box && _collider is BoxCollider2D box)
             {
-                // calculate velocity platform relative of player's position  
-                _velocityPlatform = ground.hit.rigidbody.GetPointVelocity(position);
+                box.size = new Vector2(playerWidth, playerHeight);
+                box.offset = new Vector2(0f, playerHeight * 0.5f);
+            }
+                
+            if (bodyType == BodyType.Capsule && _collider is CapsuleCollider2D capsule)
+            {
+                capsule.size = new Vector2(playerWidth, playerHeight);
+                capsule.offset = new Vector2(0f, playerHeight * 0.5f);
             }
         }
-
-        private void CheckHeadHit()
+        
+        private Collider2D GetOrAddCollider()
         {
-            // check head hit with objects when are moving up (f*ck gravity) 
-            if (velocitySelf.y > 0) 
+            if (_collider != null)
             {
-                var offset = 0.01f;
-                var radius = radiusBody;
-                var origin = position + normal * (heightBody - radius - offset);
-                var direction = normal;
-                var distance = 2 * offset;
-
-                var count = Physics2D.CircleCastNonAlloc(origin, radius, direction, _overlap, distance, ground.layerGround);
-
-                for (var i = 0; i < count; i++)
+                if (bodyType == BodyType.Box)
                 {
-                    var hit = _overlap[i];
-                    
-                    if (hit.collider == capsule) continue;
+                    if (_collider is BoxCollider2D) return _collider;
+                }
+                
+                if (bodyType == BodyType.Capsule)
+                {
+                    if (_collider is CapsuleCollider2D) return _collider;
+                }
 
-                    var hitRigid = hit.rigidbody;
-
-                    if (hit.transform.gameObject.isStatic)
-                    {
-                        _velocityFall = Vector3.zero;
-                        break;
-                    }
-
-                    if (hit.collider.usedByEffector) continue;
-                    
-                    if (hitRigid == null) continue;
-
-                    var bodyType = hitRigid.bodyType;
-                    
-                    var isKinematicRigidbody = bodyType == RigidbodyType2D.Kinematic;
-                    var isStaticRigidbody = bodyType == RigidbodyType2D.Static;
-                    
-                    if (isKinematicRigidbody || isStaticRigidbody)
-                    {
-                        _velocityFall = Vector3.zero;
-                        break;
-                    }
+                if (Application.isPlaying)
+                {
+                    Destroy(_collider);
+                }
+                else
+                {
+                    DestroyImmediate(_collider);
                 }
             }
-        }
-        
-        private void UpdateRigidbody(float deltaTime)
-        {
-            rigid.velocity = velocitySelf + velocityExternal;
-        }
-
-        private void UpdateRotation(float deltaTime)
-        {
-            rigid.SetRotation(Quaternion.LookRotation(Vector3.forward, -settings.gravity.normalized));
-        }
-        
-        private void UpdateSnap(float deltaTime)
-        {
-            if (snap && ground.grounded && !info.inAir && _moveInput == Vector2.zero)
+            
+            if (bodyType == BodyType.Box)
             {
-                var center = position + normal * radiusBody;
-                
-                var point = ground.hit.point;
-
-                var touch = center + (point - center).normalized * radiusBody;
-
-                var snapOffset = point - touch;
-
-                snapOffset = Vector3.Project(snapOffset, normal);
-                
-                if (snapOffset.magnitude > snapMaxDistance)
-                {
-                    var snapPoint = rigid.position + snapOffset;
-
-                    rigid.MovePosition(Vector2.Lerp(rigid.position, snapPoint, snapChangeRate * deltaTime));
-                }
+                _collider = GetComponent<BoxCollider2D>();
             }
+                
+            if (bodyType == BodyType.Capsule)
+            {
+                _collider = GetComponent<CapsuleCollider2D>();
+            }
+            
+            if (_collider != null)
+            {
+                return _collider;
+            }
+            
+            if (bodyType == BodyType.Box)
+            {
+                _collider = gameObject.AddComponent<BoxCollider2D>();
+            }
+                
+            if (bodyType == BodyType.Capsule)
+            {
+                _collider = gameObject.AddComponent<CapsuleCollider2D>();
+            }
+            
+            UpdateCollider();
+            
+            return _collider;
         }
-        
-        private void Awake()
-        {
-            SetupRigid();
-        }
+
+        #region MonoBehaviour
 
         private void Update()
         {
-            UpdateBody();
-
-            UpdateMove(Time.deltaTime);
-            UpdateFall(Time.deltaTime);
-            UpdateInertion(Time.deltaTime);
-            UpdatePlatform(Time.deltaTime);
-
-            CheckHeadHit();
+            UpdateCollider();
             
-            UpdateRigidbody(Time.deltaTime);
+            UpdateGround();
+            
+            UpdateSlope();
+            
+            UpdateVelocity();
         }
 
         private void FixedUpdate()
         {
-            UpdateRotation(Time.fixedDeltaTime);
-            
-            UpdateSnap(Time.fixedDeltaTime);
+            UpdateRigidbody();
         }
+
+        #endregion
+
+        #region Editor Only
 
         private void OnValidate()
         {
-            SetupRigid();
-            
-            UpdateBody();
+            UpdateCollider();
         }
+
+        private void OnDrawGizmos()
+        {
+            if (bodyType == BodyType.Box)
+            {
+                Gizmos.color = Color.gray;
+                CucuGizmos.DrawWireCube(boxCastPoint + boxCastDirection * boxCastDistance * 0.5f, Vector2.Scale(boxCastSize, new Vector2(1, 2)), Quaternion.Euler(0, 0, boxCastAngle));
+            }
+            else
+            {
+                Gizmos.color = Color.gray;
+                Gizmos.DrawWireSphere(circleCastPoint, circleCastRadius);
+                Gizmos.DrawWireSphere(circleCastPoint + circleCastDirection * circleCastDistance, circleCastRadius);
+            }
+            
+            if (grounded)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawWireSphere(ground.point, groundCheckDistance * 0.5f);
+                Gizmos.DrawLine(ground.point, ground.point + ground.normal);
+            }
+            
+            if (grounded)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawRay(ground.point, moveVelocity.normalized);
+            }
+        }
+
+        #endregion
     }
 }
