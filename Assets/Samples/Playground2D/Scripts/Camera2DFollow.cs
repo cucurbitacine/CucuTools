@@ -1,5 +1,3 @@
-using System;
-using CucuTools.PlayerSystem2D;
 using UnityEngine;
 
 namespace Samples.Playground2D.Scripts
@@ -7,7 +5,7 @@ namespace Samples.Playground2D.Scripts
     [RequireComponent(typeof(Camera))]
     public class Camera2DFollow : MonoBehaviour
     {
-        public PlayerPlatformController player;
+        public Transform target;
         public float depth = 10f;
         public Vector2 offset;
 
@@ -28,15 +26,15 @@ namespace Samples.Playground2D.Scripts
 
         private void UpdateCamara(bool force = false)
         {
-            if (player)
+            if (target)
             {
                 if (force)
                 {
-                    position = player.playerPoint + offset;
+                    position = (Vector2)target.transform.position + offset;
                 }
                 else
                 {
-                    position = Vector2.Lerp(position, player.playerPoint + offset, positionChangeRate * Time.deltaTime);
+                    position = Vector2.Lerp(position, (Vector2)target.transform.position + offset, positionChangeRate * Time.deltaTime);
                 }
             }
         }

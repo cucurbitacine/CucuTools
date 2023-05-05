@@ -2,18 +2,21 @@
 
 namespace CucuTools.PlayerSystem2D
 {
-    public class PlayerInput2D : Player2DInput<PlayerPlatformController>
+    public class PlayerInput2D : CucuBehaviour
     {
         public bool active = true;
-        public float horizontal = 0f;
+        public float move = 0f;
 
+        [Space]
+        public PlayerController2D player;
+        
         private void Update()
         {
             if (!active) return;
             
-            horizontal = Input.GetAxisRaw("Horizontal");
+            move = Input.GetAxisRaw("Horizontal");
             
-            player.Move(horizontal);
+            player.Move(move);
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
