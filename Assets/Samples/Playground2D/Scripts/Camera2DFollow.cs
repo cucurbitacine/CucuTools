@@ -14,27 +14,34 @@ namespace Samples.Playground2D.Scripts
 
         public Vector2 position
         {
-            get
-            {
-                return _cam.transform.position;
-            }
-            set
-            {
-                _cam.transform.position = new Vector3(value.x, value.y, -depth);
-            }
+            get => _cam.transform.position;
+            set => _cam.transform.position = new Vector3(value.x, value.y, -depth);
+        }
+
+        public Quaternion rotation
+        {
+            get => _cam.transform.rotation;
+            set => _cam.transform.rotation = value;
         }
 
         private void UpdateCamara(bool force = false)
         {
             if (target)
             {
+                var realOffset = (Vector2)target.TransformVector(offset);
+                
+                var targetPosition = (Vector2)target.transform.position + realOffset;
+                var targetRotation = Quaternion.LookRotation(Vector3.forward, target.up);
+                
                 if (force)
                 {
-                    position = (Vector2)target.transform.position + offset;
+                    rotation = targetRotation;
+                    position = targetPosition;
                 }
                 else
                 {
-                    position = Vector2.Lerp(position, (Vector2)target.transform.position + offset, positionChangeRate * Time.deltaTime);
+                    rotation = Quaternion.Lerp(rotation, targetRotation, positionChangeRate * Time.deltaTime);
+                    position = Vector2.Lerp(position, targetPosition, positionChangeRate * Time.deltaTime);
                 }
             }
         }

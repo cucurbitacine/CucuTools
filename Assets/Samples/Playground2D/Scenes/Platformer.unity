@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 77362558}
   - component: {fileID: 77362557}
   - component: {fileID: 77362556}
-  m_Layer: 4
+  m_Layer: 1
   m_Name: Platform (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 362826667}
   - component: {fileID: 362826666}
   - component: {fileID: 362826665}
-  m_Layer: 4
+  m_Layer: 1
   m_Name: Platform (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -588,7 +588,7 @@ GameObject:
   - component: {fileID: 433702440}
   - component: {fileID: 433702439}
   - component: {fileID: 433702438}
-  m_Layer: 4
+  m_Layer: 1
   m_Name: Platform (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -763,7 +763,7 @@ GameObject:
   - component: {fileID: 815111923}
   - component: {fileID: 815111922}
   - component: {fileID: 815111921}
-  m_Layer: 4
+  m_Layer: 1
   m_Name: Platform (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1044,7 +1044,7 @@ GameObject:
   - component: {fileID: 1457334918}
   - component: {fileID: 1457334917}
   - component: {fileID: 1457334916}
-  m_Layer: 4
+  m_Layer: 1
   m_Name: Platform (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1219,7 +1219,7 @@ GameObject:
   - component: {fileID: 1460296679}
   - component: {fileID: 1460296678}
   - component: {fileID: 1460296677}
-  m_Layer: 4
+  m_Layer: 1
   m_Name: Platform (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1245,7 +1245,7 @@ MonoBehaviour:
   movementDuration: 2
   pauseDuration: 0.5
   smoothMovement: 1
-  rotate: 0
+  rotate: 1
   rotatingSpeed: 10
 --- !u!50 &1460296678
 Rigidbody2D:
@@ -1267,7 +1267,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!251 &1460296679
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -1281,7 +1281,7 @@ PlatformEffector2D:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RotationalOffset: 0
-  m_UseOneWay: 1
+  m_UseOneWay: 0
   m_UseOneWayGrouping: 0
   m_SurfaceArc: 160
   m_UseSideFriction: 0
@@ -4109,6 +4109,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1721769048}
   - component: {fileID: 1721769049}
+  - component: {fileID: 1721769050}
+  - component: {fileID: 1721769051}
   m_Layer: 0
   m_Name: Player Input
   m_TagString: Untagged
@@ -4145,7 +4147,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   move: 0
+  changeGravity: 0
+  autoChangeGravity: 0
+  gravityChangeSpeed: 10
+  gravityAngle: 0
   player: {fileID: 1210430900}
+  jumpController: {fileID: 1721769050}
+--- !u!114 &1721769050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721769046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4b10e642357455690df7c84735cae71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpWall: {fileID: 0}
+  castRadius: 0.25
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 16
+  player2d: {fileID: 1210430900}
+--- !u!114 &1721769051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721769046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b51e7205427427682859576fe2b391d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slideWall: {fileID: 0}
+  slideWeight: 1
+  castRadius: 0.15
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 16
+  player2d: {fileID: 1210430900}
 --- !u!1 &2023617951
 GameObject:
   m_ObjectHideFlags: 0
@@ -4160,7 +4204,7 @@ GameObject:
   - component: {fileID: 2023617954}
   - component: {fileID: 2023617953}
   - component: {fileID: 2023617952}
-  m_Layer: 4
+  m_Layer: 1
   m_Name: Platform (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4372,9 +4416,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7426971851454628113, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7426971851454628113, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7426971851454628113, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
+      propertyPath: m_Offset.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7426971851454628123, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
       propertyPath: m_Name
       value: Player 2D
+      objectReference: {fileID: 0}
+    - target: {fileID: 7426971851454628124, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7426971851454628124, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
+      propertyPath: updateNormalByGravity
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7426971852447690692, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
       propertyPath: m_LocalScale.y

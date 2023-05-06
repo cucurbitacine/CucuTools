@@ -227,10 +227,11 @@ MonoBehaviour:
   jumpsInAir: 1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 0
   groundDistanceCheck: 0.2
   angleMaxSlope: 50
-  skipInertion: 1
+  playerWidth: 1
+  playerHeight: 2
   idleFriction: 16
   moveFriction: 0
 --- !u!50 &7426971851454628125

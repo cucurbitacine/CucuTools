@@ -20,7 +20,7 @@ namespace Samples.Playground2D.Scripts
     
         private void Update()
         {
-            if (player && player.isMoving)
+            if (player && player.moving)
             {
                 if (player.move > 0 && !lookingAtRight)
                 {
