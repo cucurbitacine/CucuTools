@@ -4061,7 +4061,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
+  m_Color: {r: 0.8117647, g: 0.78039217, b: 0.23529412, a: 1}
   m_Origin: {x: -30, y: -6, z: 0}
   m_Size: {x: 47, y: 20, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
@@ -4110,7 +4110,10 @@ GameObject:
   - component: {fileID: 1721769048}
   - component: {fileID: 1721769049}
   - component: {fileID: 1721769050}
+  - component: {fileID: 1721769053}
   - component: {fileID: 1721769051}
+  - component: {fileID: 1721769052}
+  - component: {fileID: 1721769054}
   m_Layer: 0
   m_Name: Player Input
   m_TagString: Untagged
@@ -4147,12 +4150,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   move: 0
-  changeGravity: 0
-  autoChangeGravity: 0
-  gravityChangeSpeed: 10
-  gravityAngle: 0
+  run: 0
+  sneak: 0
+  jump: 0
+  down: 0
+  dodgeLeft: 0
+  dodgeRight: 0
+  freeze: 0
   player: {fileID: 1210430900}
+  speedController: {fileID: 1721769053}
   jumpController: {fileID: 1721769050}
+  dodgeController: {fileID: 1721769054}
 --- !u!114 &1721769050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4165,11 +4173,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4b10e642357455690df7c84735cae71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpWall: {fileID: 0}
-  castRadius: 0.25
+  lastWall: {fileID: 0}
+  jumpDistance: 3
+  jumpAngle: 60
   wallLayer:
     serializedVersion: 2
     m_Bits: 16
+  castRadius: 0.25
   player2d: {fileID: 1210430900}
 --- !u!114 &1721769051
 MonoBehaviour:
@@ -4183,12 +4193,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b51e7205427427682859576fe2b391d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slideWall: {fileID: 0}
+  lastWall: {fileID: 0}
   slideWeight: 1
-  castRadius: 0.15
   wallLayer:
     serializedVersion: 2
     m_Bits: 16
+  castRadius: 0.25
+  player2d: {fileID: 1210430900}
+--- !u!114 &1721769052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721769046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b9d2a1c599944cd9a32fe6e8bd867b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoChangeGravity: 0
+  gravityChangeSpeed: 10
+  gravityAngle: 0
+  normalChangeRate: 4
+  player2d: {fileID: 1210430900}
+--- !u!114 &1721769053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721769046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dc4b30b42684f2eae565c3cd0b9e5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  running: 0
+  sneaking: 0
+  moveSpeed: 5
+  runSpeed: 10
+  sneakSpeed: 2
+  player2d: {fileID: 1210430900}
+--- !u!114 &1721769054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721769046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ba54fa8c8c34831b79c119d1840ffef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dodging: 0
+  dodgeSpeed: 20
+  dodgeDuration: 0.1
   player2d: {fileID: 1210430900}
 --- !u!1 &2023617951
 GameObject:
@@ -4416,18 +4477,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7426971851454628113, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
-      propertyPath: m_Size.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7426971851454628113, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
-      propertyPath: m_Size.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7426971851454628113, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
-      propertyPath: m_Offset.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7426971851454628123, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
       propertyPath: m_Name
       value: Player 2D
@@ -4438,10 +4487,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7426971851454628124, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
       propertyPath: updateNormalByGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7426971852447690692, guid: 60f0ee415cd1add49b9f7f787410c51c, type: 3}
-      propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

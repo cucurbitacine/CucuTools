@@ -5,42 +5,68 @@ namespace CucuTools.PlayerSystem2D
     public class PlayerInput2D : CucuBehaviour
     {
         public bool active = true;
-        public float move = 0f;
-
-        [Header("Gravity")]
-        public bool changeGravity = false;
-        public bool autoChangeGravity = false;
-        public float gravityChangeSpeed = 10;
-        [Range(-180, 180)]
-        public float gravityAngle = 0;
         
         [Space]
+        public float move = 0f;
+        public bool run = false;
+        public bool sneak = false;
+        public bool jump = false;
+        public bool down = false;
+        public bool dodgeLeft = false;
+        public bool dodgeRight = false;
+        public bool freeze = false;
+  
+        [Space]
         public PlayerController2D player;
-        public JumpController2D jumpController;
         
-        private void Update()
+        [Space]
+        public SpeedController2D speedController;
+        public JumpController2D jumpController;
+        public DodgeController2D dodgeController;
+
+        private void UpdateInput()
         {
-            if (changeGravity)
+            move = Input.GetAxisRaw("Horizontal");
+            run = Input.GetKey(KeyCode.LeftShift);
+            
+            jump = Input.GetKeyDown(KeyCode.Space);
+            down = Input.GetKeyDown(KeyCode.S);
+            
+            freeze = Input.GetKeyDown(KeyCode.F);
+
+            dodgeLeft = Input.GetKeyDown(KeyCode.Q);
+            dodgeRight = Input.GetKeyDown(KeyCode.E);
+
+            sneak = Input.GetKeyDown(KeyCode.C) ? !sneak : sneak;
+
+            if (run || jump || down || dodgeLeft || dodgeRight)
             {
-                if (autoChangeGravity)
+                sneak = false;
+            }
+        }
+
+        private void UpdatePlayer()
+        {
+            player.sleep = dodgeController && dodgeController.dodging;
+
+            if (speedController)
+            {
+                if (!player.grounded)
                 {
-                    gravityAngle = Mathf.Repeat(gravityAngle + gravityChangeSpeed * Time.deltaTime + 180f, 360) - 180f;
+                    sneak = false;
                 }
-                
-                Physics2D.gravity = Quaternion.Euler(0, 0, gravityAngle) * Vector2.down * Physics2D.gravity.magnitude;
+            
+                speedController.running = run;
+                speedController.sneaking = sneak;
+            
+                speedController.Move(move);
+            }
+            else
+            {
+                player.Move(move);
             }
             
-            if (!active) return;
-
-            if (!player) return;
-
-            player.autoUpdateNormal = changeGravity;
-            
-            move = Input.GetAxisRaw("Horizontal");
-            
-            player.Move(move);
-            
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (jump)
             {
                 if (jumpController)
                 {
@@ -52,15 +78,37 @@ namespace CucuTools.PlayerSystem2D
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (down)
             {
                 player.Down();
             }
+
+            if (dodgeLeft)
+            {
+                if (dodgeController)
+                {
+                    dodgeController.Dodge(-player.playerRight);
+                }
+            }
+            else if (dodgeRight)
+            {
+                if (dodgeController)
+                {
+                    dodgeController.Dodge(player.playerRight);
+                }
+            }
             
-            if (Input.GetKeyDown(KeyCode.F))
+            if (freeze)
             {
                 player.freeze = !player.freeze;
             } 
+        }
+        
+        private void Update()
+        {
+            UpdateInput();
+
+            if (active && player) UpdatePlayer();
         }
     }
 }

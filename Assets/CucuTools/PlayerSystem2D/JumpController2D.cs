@@ -4,12 +4,15 @@ namespace CucuTools.PlayerSystem2D
 {
     public class JumpController2D : CucuBehaviour
     {
-        public Collider2D jumpWall = default;
+        public Collider2D lastWall = default;
         
         [Space]
-        [Min(0)]
-        public float castRadius = 0.25f;
+        [Min(0)] public float jumpDistance = 3;
+        [Range(0, 90)] public float jumpAngle = 60;
+        
+        [Space]
         public LayerMask wallLayer = default;
+        [Min(0)] public float castRadius = 0.25f;
         
         [Space]
         public PlayerController2D player2d = default;
@@ -21,11 +24,13 @@ namespace CucuTools.PlayerSystem2D
         
         public void Jump()
         {
-            if (IsWall())
+            lastWall = GetWall();
+            
+            if (lastWall)
             {
-                WallJump();
-                
                 player2d.ResetAirJump();
+                
+                WallJump();
             }
             else
             {
@@ -33,18 +38,18 @@ namespace CucuTools.PlayerSystem2D
             }
         }
 
+        private Quaternion jumpDirectionRotator => Quaternion.Euler(0, 0, Mathf.Sign(player2d.move) * jumpAngle);
+        private Vector2 moveDirection => (player2d.move * player2d.playerRight).normalized;
+        private Vector2 jumpDirection => (jumpDirectionRotator * moveDirection).normalized;
+        
         public void WallJump()
         {
-            // TODO change angle of jumping. now it is 45 degree 
-            
-            var moveDirection = (player2d.move * player2d.playerRight).normalized;
-            var jumpDirection = (moveDirection + player2d.playerNormal).normalized;
-            var jumpSpeed = 2 * Mathf.Sqrt(player2d.jumpHeight * player2d.gravityPower);
+            var jumpSpeed = Mathf.Sqrt(2 * jumpDistance * player2d.gravityPower);
             var jumpVelocity = jumpSpeed * jumpDirection;
 
-            if (jumpWall && jumpWall.attachedRigidbody)
+            if (lastWall && lastWall.attachedRigidbody)
             {
-                jumpVelocity += jumpWall.attachedRigidbody.velocity;
+                jumpVelocity += lastWall.attachedRigidbody.velocity;
             }
             
             var jumpImpulse = jumpVelocity * player2d.rigidbody2d.mass;
@@ -60,19 +65,21 @@ namespace CucuTools.PlayerSystem2D
             player2d.Jump();
         }
 
-        private bool IsWall()
+        private Collider2D GetWall()
         {
-            if (player2d.grounded) return false;
+            if (player2d.grounded) return null;
 
-            if (!player2d.moving) return false;
+            if (!player2d.moving) return null;
 
-            return jumpWall = Physics2D.OverlapCircle(castPoint, castRadius, wallLayer);
+            return Physics2D.OverlapCircle(castPoint, castRadius, wallLayer);
         }
 
         private void OnDrawGizmos()
         {
             if (player2d)
             {
+                Gizmos.DrawLine(castPoint, castPoint + jumpDirection);
+                
                 var isWall = Physics2D.OverlapCircle(castPoint, castRadius, wallLayer);
 
                 var color = isWall ? Color.green : Color.red;

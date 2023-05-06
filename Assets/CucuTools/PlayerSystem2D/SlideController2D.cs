@@ -4,14 +4,17 @@ namespace CucuTools.PlayerSystem2D
 {
     public class SlideController2D : CucuBehaviour
     {
-        public Collider2D slideWall = default;
+        public Collider2D lastWall = default;
         
         [Space]
         [Range(0, 1)]
         public float slideWeight = 1f;
-        [Min(0)]
-        public float castRadius = 0.1f;
+        
+        [Space]
         public LayerMask wallLayer = default;
+        [Min(0)]
+        public float castRadius = 0.25f;
+        
         
         [Space]
         public PlayerController2D player2d = default;
@@ -21,30 +24,40 @@ namespace CucuTools.PlayerSystem2D
                                      player2d.playerNormal * (player2d.playerHeight * 0.5f) +
                                      castDirection * (player2d.playerWidth * 0.5f);
 
-        private bool IsWall()
+        private Collider2D GetWall()
         {
-            if (player2d.grounded) return false;
+            if (player2d.grounded) return null;
 
-            if (!player2d.moving) return false;
+            if (!player2d.moving) return null;
 
-            return slideWall = Physics2D.OverlapCircle(castPoint, castRadius, wallLayer);
+            return Physics2D.OverlapCircle(castPoint, castRadius, wallLayer);
         }
 
+        private void Slide()
+        {
+            var projectVelocity = (Vector2)Vector3.Project(player2d.rigidbody2d.velocity, player2d.gravityDirection);
+            var slideVelocity = -projectVelocity;
+
+            if (lastWall.attachedRigidbody)
+            {
+                slideVelocity += lastWall.attachedRigidbody.velocity;
+            }
+                
+            var slideImpulse = slideVelocity * player2d.rigidbody2d.mass;
+                
+            player2d.rigidbody2d.AddForce(slideWeight * slideImpulse, ForceMode2D.Impulse);
+        }
+        
         private void FixedUpdate()
         {
-            if (IsWall() && player2d.falling)
+            if (player2d.falling)
             {
-                var projectVelocity = (Vector2)Vector3.Project(player2d.rigidbody2d.velocity, player2d.gravityDirection);
-                var slideVelocity = -projectVelocity;
-
-                if (slideWall.attachedRigidbody)
+                lastWall = GetWall();
+                
+                if (lastWall)
                 {
-                    slideVelocity += slideWall.attachedRigidbody.velocity;
+                    Slide();
                 }
-                
-                var slideImpulse = slideVelocity * player2d.rigidbody2d.mass;
-                
-                player2d.rigidbody2d.AddForce(slideWeight * slideImpulse, ForceMode2D.Impulse);
             }
         }
 

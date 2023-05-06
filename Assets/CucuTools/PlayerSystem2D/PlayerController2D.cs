@@ -10,14 +10,16 @@ namespace CucuTools.PlayerSystem2D
         public bool moving = false;
         public bool jumping = false;
         public bool falling = false;
+        public bool sleep = false;
         public bool freeze = false;
-        [Range(-1, 1)]
-        public float move = 0f;
-        public Vector2 velocity = default;
+
+        [Header("Body")]
+        [Min(0)] public float playerWidth = 1;
+        [Min(0)] public float playerHeight = 2;
         
         [Header("Movement")]
-        [Min(0)] public float speedMax = 8;
-        [Min(0)] public float accelerationMax = 64;
+        [Min(0)] public float speedMax = 5;
+        [Min(0)] public float accelerationMax = 50;
 
         [Header("Jump")]
         [Min(0)] public float jumpHeight = 2f;
@@ -27,29 +29,33 @@ namespace CucuTools.PlayerSystem2D
         [Header("Ground")]
         public LayerMask groundLayer = default;
         [Min(0)] public float groundDistanceCheck = 0.2f;
-        [Range(0, 90)] public float angleMaxSlope = 50f;
-        public bool autoUpdateNormal = false;
+        [Range(0, 90)] public float angleMaxSlope = 50;
         
         [Header("Friction")]
-        [Min(0)] public float idleFriction = 16;
-        [Min(0)] public float moveFriction = 0;
-        
-        [Header("Body")]
-        [Min(0)] public float playerWidth = 1f;
-        [Min(0)] public float playerHeight = 2f;
+        public PhysicsMaterial2D idleMat = default;
+        public PhysicsMaterial2D moveMat = default;
 
+        public const float MoveTolerance = 0.001f;
+        public const float TimeIgnoring = 0.1f;
+        
+        public const float IdleFrictionDefault = 10f;
+        public const float IdleBouncinessDefault = 0f;
+        
+        public const float MoveFrictionDefault = 0f;
+        public const float MoveBouncinessDefault = 0f;
+        
         private bool _wasGrounded = false;
         private int _jumpsInAir = 0;
         private float _jumpTimeoutDelta = 0f;
-        
-        private PhysicsMaterial2D _idleMat = default;
-        private PhysicsMaterial2D _moveMat = default;
 
         private Vector2 castPoint => playerPoint - castDirection * castRadius;
         private Vector2 castDirection => -playerNormal;
         private float castRadius => (capsule2d ? capsule2d.size.x * 0.5f : 0.5f) - 0.001f;
         private float castDistance => groundDistanceCheck;
 
+        public float move { get; private set; }
+        public Vector2 velocity { get; private set; }
+        
         public Vector2 gravity => Physics2D.gravity * (rigidbody2d ? rigidbody2d.gravityScale : 1f);
         public Vector2 gravityDirection => Physics2D.gravity.normalized;
         public float gravityPower => gravity.magnitude;
@@ -61,12 +67,23 @@ namespace CucuTools.PlayerSystem2D
         public RaycastHit2D groundHit2d { get; private set; }
         public Rigidbody2D rigidbody2d { get; private set; }
         public CapsuleCollider2D capsule2d { get; private set; }
-        
+
+        #region Public API
+
         public void Move(float move)
         {
-            this.move = move;
-            
-            moving = Mathf.Abs(this.move) > 0.001f;
+            if (Mathf.Abs(move) > MoveTolerance)
+            {
+                this.move = move;
+                
+                moving = true;
+            }
+            else
+            {
+                this.move = 0f;
+                
+                moving = false;
+            }
         }
 
         public void Stop()
@@ -76,7 +93,7 @@ namespace CucuTools.PlayerSystem2D
         
         public void Jump()
         {
-            var canJump = !freeze && (0 <= _jumpTimeoutDelta || _jumpsInAir < jumpsInAir);
+            var canJump = !freeze && !sleep && (0 <= _jumpTimeoutDelta || _jumpsInAir < jumpsInAir);
 
             if (canJump)
             {
@@ -97,9 +114,9 @@ namespace CucuTools.PlayerSystem2D
 
         public void Down()
         {
-            if (grounded && groundHit2d.collider.usedByEffector)
+            if (!sleep && grounded && groundHit2d.collider.usedByEffector)
             {
-                Ignore(groundHit2d.collider, 0.1f);
+                Ignore(groundHit2d.collider, TimeIgnoring);
             }
         }
 
@@ -107,6 +124,8 @@ namespace CucuTools.PlayerSystem2D
         {
             _jumpsInAir = 0;
         }
+
+        #endregion
 
         private void UpdateCollider()
         {
@@ -179,12 +198,7 @@ namespace CucuTools.PlayerSystem2D
             
             if (freeze) return;
 
-            if (autoUpdateNormal)
-            {
-                rigidbody2d.rotation = Vector2.SignedAngle(Vector2.down, gravityDirection);
-            }
-            
-            if (moving)
+            if (moving && !sleep)
             {
                 var prevVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, velocity);
 
@@ -194,16 +208,17 @@ namespace CucuTools.PlayerSystem2D
                 rigidbody2d.AddForce(rigidbody2d.mass * acceleration);
             }
 
-            _idleMat.friction = idleFriction;
-            _moveMat.friction = moveFriction;
-                
-            if (grounded && !moving)
+            if (sleep)
             {
-                rigidbody2d.sharedMaterial = _idleMat;
+                rigidbody2d.sharedMaterial = idleMat;
+            }
+            else if (grounded && !moving)
+            {
+                rigidbody2d.sharedMaterial = idleMat;
             }
             else
             {
-                rigidbody2d.sharedMaterial = _moveMat;
+                rigidbody2d.sharedMaterial = moveMat;
             }
         }
         
@@ -258,19 +273,24 @@ namespace CucuTools.PlayerSystem2D
             
             UpdateCollider();
         }
-        
+
         private void SetupMaterial()
         {
-            _idleMat = new PhysicsMaterial2D();
-            _moveMat = new PhysicsMaterial2D();
+            if (idleMat == null)
+            {
+                idleMat = new PhysicsMaterial2D();
+                idleMat.name = "idle";
+                idleMat.friction = IdleFrictionDefault;
+                idleMat.bounciness = IdleBouncinessDefault;
+            }
 
-            _idleMat.name = "idle";
-            _idleMat.friction = idleFriction;
-            _idleMat.bounciness = 0f;
-            
-            _moveMat.name = "moving";
-            _moveMat.friction = moveFriction;
-            _moveMat.bounciness = 0f;
+            if (moveMat == null)
+            {
+                moveMat = new PhysicsMaterial2D();
+                moveMat.name = "moving";
+                moveMat.friction = MoveFrictionDefault;
+                moveMat.bounciness = MoveBouncinessDefault;
+            }
         }
         
         private void Awake()
@@ -313,6 +333,38 @@ namespace CucuTools.PlayerSystem2D
             var point = grounded ? groundHit2d.point : (Vector2)transform.position;
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(point, point + velocity / speedMax);
+        }
+    }
+
+    public static class PlayerController2DExtensions
+    {
+        public static void SetNormal(this PlayerController2D player, Vector2 normal)
+        {
+            player.rigidbody2d.rotation = Vector2.SignedAngle(Vector2.up, normal);
+        }
+        
+        public static void SetNormal(this PlayerController2D player, Vector2 normal, float angleTolerance)
+        {
+            if (Vector2.Angle(player.playerNormal, normal) >= angleTolerance)
+            {
+                player.SetNormal(normal);
+            }
+        }
+        
+        public static void SetNormalByGravity(this PlayerController2D player)
+        {
+            player.SetNormal(-player.gravityDirection);
+        }
+        
+        public static void SetNormalByGravity(this PlayerController2D player, float angleTolerance)
+        {
+            player.SetNormal(-player.gravityDirection, angleTolerance);
+        }
+
+        public static void Move(this PlayerController2D player, float move, float speed)
+        {
+            player.speedMax = speed;
+            player.Move(move);
         }
     }
 }
