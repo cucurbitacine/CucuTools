@@ -20,12 +20,16 @@ namespace CucuTools.PlayerSystem2D
         
         [Header("Rotating")]
         public bool rotate = false;
+        public float rotatePhase = 0f;
         public float rotatingSpeed = 10f;
         
         private Rigidbody2D _rigid = null;
+        
         private float _lastBlendMove = 0f;
         private float _timeMove = 0f;
         private float _timePauseMove = 0f;
+        
+        private float _timeRotate = 0f;
         
         public Rigidbody2D rigid => _rigid != null ? _rigid : (_rigid = GetComponent<Rigidbody2D>());
         
@@ -94,7 +98,17 @@ namespace CucuTools.PlayerSystem2D
 
         private void UpdateRotating(float deltaTime)
         {
-            rotation += rotatingSpeed * deltaTime;
+            var fullPeriod = 360 / Mathf.Abs(rotatingSpeed);
+            if (float.IsNaN(fullPeriod) || float.IsInfinity(fullPeriod)) return;
+            
+            _timeRotate += deltaTime;
+            _timeRotate = Mathf.Repeat(_timeRotate, fullPeriod);
+            
+            var angle = rotatePhase + rotatingSpeed * _timeRotate;
+            while (angle < 0) angle += 360;
+            angle = Mathf.Repeat(angle, 360);
+            
+            rotation = angle;
         }
         
         private void Awake()
@@ -144,7 +158,8 @@ namespace CucuTools.PlayerSystem2D
                     Gizmos.color = Color.Lerp(Color.white, Color.yellow, 0.5f);
                     Gizmos.DrawLine(startPosition, targetPosition);
                 }
-            }else if (CanRotate())
+            }
+            else if (CanRotate())
             {
                 var bounds = Cucu.GetBounds(gameObject);
 
