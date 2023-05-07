@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
   m_Color: {r: 0.76, g: 0.65700936, b: 0.47943926, a: 1}
   m_FlipX: 0
@@ -219,6 +219,7 @@ MonoBehaviour:
   moving: 0
   jumping: 0
   falling: 0
+  sleep: 0
   freeze: 0
   playerWidth: 1
   playerHeight: 2
@@ -415,8 +416,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acfd461dbf0a1a43ba2ab3930e2bff1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 7426971851454628124}
   lookingAtRight: 1
+  player: {fileID: 7426971851454628124}
+  animator: {fileID: 4670620060679010582}
 --- !u!95 &4670620060679010582
 Animator:
   serializedVersion: 5

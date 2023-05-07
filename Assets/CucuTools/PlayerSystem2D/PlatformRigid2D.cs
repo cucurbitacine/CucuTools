@@ -92,10 +92,10 @@ namespace CucuTools.PlayerSystem2D
                     _timePauseMove = pauseDuration;
                 }
             }
-                
+
             position = GetPosition(blendMove);
         }
-
+        
         private void UpdateRotating(float deltaTime)
         {
             var fullPeriod = 360 / Mathf.Abs(rotatingSpeed);

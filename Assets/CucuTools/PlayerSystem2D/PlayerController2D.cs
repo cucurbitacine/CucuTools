@@ -30,15 +30,15 @@ namespace CucuTools.PlayerSystem2D
         public LayerMask groundLayer = default;
         [Min(0)] public float groundDistanceCheck = 0.2f;
         [Range(0, 90)] public float angleMaxSlope = 50;
+        [Min(0)] public float groundIgnoreDuration = 0.2f;
         
         [Header("Friction")]
         public PhysicsMaterial2D idleMat = default;
         public PhysicsMaterial2D moveMat = default;
 
         public const float MoveTolerance = 0.001f;
-        public const float TimeIgnoring = 0.1f;
-        
-        public const float IdleFrictionDefault = 10f;
+
+        public const float IdleFrictionDefault = 100f;
         public const float IdleBouncinessDefault = 0f;
         
         public const float MoveFrictionDefault = 0f;
@@ -103,6 +103,7 @@ namespace CucuTools.PlayerSystem2D
                 var jumpDirection = playerNormal;
                 var jumpSpeed = Mathf.Sqrt(2 * gravityPower * jumpHeight);
                 var jumpVelocity = jumpSpeed * jumpDirection;
+
                 var jumpImpulse = jumpVelocity * rigidbody2d.mass;
 
                 var fallingVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, gravityDirection);
@@ -116,7 +117,7 @@ namespace CucuTools.PlayerSystem2D
         {
             if (!sleep && grounded && groundHit2d.collider.usedByEffector)
             {
-                Ignore(groundHit2d.collider, TimeIgnoring);
+                Ignore(groundHit2d.collider, groundIgnoreDuration);
             }
         }
 
@@ -202,6 +203,11 @@ namespace CucuTools.PlayerSystem2D
             {
                 var prevVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, velocity);
 
+                if (grounded && !jumping && groundHit2d.collider.attachedRigidbody)
+                {
+                    velocity += groundHit2d.collider.attachedRigidbody.GetPointVelocity(groundHit2d.point);
+                }
+                
                 var acceleration = (velocity - prevVelocity) / deltaTime;
                 acceleration = Vector2.ClampMagnitude(acceleration, accelerationMax);
                 
