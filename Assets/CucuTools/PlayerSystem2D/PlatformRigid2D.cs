@@ -6,122 +6,89 @@ namespace CucuTools.PlayerSystem2D
     public class PlatformRigid2D : MonoBehaviour
     {
         public bool active = true;
-        [Range(0f, 1f)]
-        public float blendMove = 0f;
 
         [Header("Movement")]
         public bool move = true;
-        public Vector2 movementDirection = Vector2.right;
+        public Vector2 directionMovement = Vector2.right;
         [Min(0.001f)]
-        public float movementDuration = 4f;
-        [Min(0f)]
-        public float pauseDuration = 1f;
+        public float durationMovement = 4f;
         public bool smoothMovement = true;
         
         [Header("Rotating")]
         public bool rotate = false;
-        public float rotatePhase = 0f;
-        public float rotatingSpeed = 10f;
+        public float phaseRotation = 0f;
+        public float speedRotation = 10f;
         
         private Rigidbody2D _rigid = null;
         
-        private float _lastBlendMove = 0f;
-        private float _timeMove = 0f;
-        private float _timePauseMove = 0f;
+        private float _timeMoving = 0f;
+        private float _timeRotating = 0f;
         
-        private float _timeRotate = 0f;
+        public Rigidbody2D rigidbody2d => _rigid != null ? _rigid : (_rigid = GetComponent<Rigidbody2D>());
+
+        public Vector2 startMovement { get; private set; }
         
-        public Rigidbody2D rigid => _rigid != null ? _rigid : (_rigid = GetComponent<Rigidbody2D>());
-        
-        public Vector2 position
+        public Vector2 endMovement
         {
-            get => rigid.position;
-            private set => rigid.MovePosition(value);
+            get => startMovement + directionMovement;
+            set => directionMovement = value - startMovement;
         }
 
-        public float rotation
-        {
-            get => rigid.rotation;
-            private set => rigid.MoveRotation(value);
-        }
+        public float distanceMovement => Vector2.Distance(startMovement, endMovement);
+        public float speedMovement => distanceMovement / durationMovement;
         
-        public Vector2 startPosition { get; private set; }
-        public Vector2 targetPosition => startPosition + movementDirection;
-        
-        private Vector2 GetPosition(float blend)
-        {
-            var t = Mathf.Clamp(blend * 2 - 1, -1f, 1f);
-            t = Mathf.Abs(t);
-            if (smoothMovement) t = Mathf.SmoothStep(0f, 1f, t);
-            return Vector2.Lerp(targetPosition, startPosition, t);
-        }
-
         private bool CanMove() => active && move;
         private bool CanRotate() => active && rotate;
 
-        private void UpdateConstraints()
+        private void UpdateRigidbody()
         {
             var moveConstraints = CanMove() ? RigidbodyConstraints2D.None : RigidbodyConstraints2D.FreezePosition; 
             var rotateConstraints = CanRotate() ? RigidbodyConstraints2D.None : RigidbodyConstraints2D.FreezeRotation;
 
-            rigid.constraints = moveConstraints | rotateConstraints;
+            rigidbody2d.bodyType = RigidbodyType2D.Kinematic;
+            rigidbody2d.constraints = moveConstraints | rotateConstraints;
         }
         
         private void UpdateMovement(float deltaTime)
         {
-            _lastBlendMove = blendMove;
-            blendMove = Mathf.Repeat(Mathf.Clamp01(_timeMove / (movementDuration * 2f)), 1f);
+            var lerp = Mathf.PingPong(_timeMoving / durationMovement, 1f);
 
-            if (_lastBlendMove < 0.5f && 0.5f <= blendMove)
+            if (smoothMovement)
             {
-                _timePauseMove = pauseDuration;
+                lerp = Mathf.SmoothStep(0f, 1f, lerp);
             }
+
+            var position = Vector2.Lerp(startMovement, endMovement, lerp);
+
+            rigidbody2d.velocity = (position - rigidbody2d.position) / deltaTime;
             
-            if (_timePauseMove > 0)
-            {
-                _timePauseMove -= deltaTime;
-                if (_timePauseMove < 0) _timePauseMove = 0f;
-            }
-            else
-            {
-                _timeMove += deltaTime;
-                if (_timeMove >= movementDuration * 2f)
-                {
-                    _timeMove = 0f;
-                    
-                    _timePauseMove = pauseDuration;
-                }
-            }
-
-            position = GetPosition(blendMove);
+            _timeMoving += Time.fixedDeltaTime;
+            _timeMoving = Mathf.Repeat(_timeMoving, 2 * durationMovement);
         }
         
         private void UpdateRotating(float deltaTime)
         {
-            var fullPeriod = 360 / Mathf.Abs(rotatingSpeed);
+            var fullPeriod = 360 / Mathf.Abs(speedRotation);
             if (float.IsNaN(fullPeriod) || float.IsInfinity(fullPeriod)) return;
             
-            _timeRotate += deltaTime;
-            _timeRotate = Mathf.Repeat(_timeRotate, fullPeriod);
+            _timeRotating += deltaTime;
+            _timeRotating = Mathf.Repeat(_timeRotating, fullPeriod);
             
-            var angle = rotatePhase + rotatingSpeed * _timeRotate;
-            while (angle < 0) angle += 360;
-            angle = Mathf.Repeat(angle, 360);
+            var rotation = phaseRotation + speedRotation * _timeRotating;
+            while (rotation < 0) rotation += 360;
+            rotation = Mathf.Repeat(rotation, 360);
             
-            rotation = angle;
+            rigidbody2d.rotation = rotation;
         }
         
         private void Awake()
         {
-            startPosition = position;
-
-            _timeMove = Mathf.Lerp(0f, movementDuration * 2f, blendMove);
-            _timePauseMove = pauseDuration;
+            startMovement = rigidbody2d.position;
         }
 
         private void FixedUpdate()
         {
-            UpdateConstraints();
+            UpdateRigidbody();
 
             if (CanMove()) UpdateMovement(Time.fixedDeltaTime);
 
@@ -130,40 +97,49 @@ namespace CucuTools.PlayerSystem2D
 
         private void OnValidate()
         {
-            UpdateConstraints();
+            UpdateRigidbody();
         }
 
         private void OnDrawGizmos()
         {
             if (CanMove())
             {
-                if (!Application.isPlaying)
+                var bounds = Cucu.GetBounds(gameObject);
+                var rotation = transform.rotation;
+
+                if (CanRotate())
                 {
-                    startPosition = position;
+                    rotation = Quaternion.Euler(0, 0, phaseRotation);
+                }
+                
+                var start = (Vector2)bounds.center;
+                var end = start + directionMovement;
+                
+                if (Application.isPlaying)
+                {
+                    start = startMovement;
+                    end = endMovement;
+                }
 
-                    var bounds = Cucu.GetBounds(gameObject);
+                CucuGizmos.DrawWireCube(start, bounds.size, rotation);
+                Gizmos.DrawLine(start, end);
+                CucuGizmos.DrawWireCube(end, bounds.size, rotation);
+                
+                Gizmos.color = Color.yellow;
+                CucuGizmos.DrawWireCube(bounds.center, bounds.size, rotation);
 
-                    Gizmos.color = Color.white;
-                    CucuGizmos.DrawWireCube(bounds.center, bounds.size, transform.rotation);
-                    CucuGizmos.DrawWireCube(bounds.center + (Vector3)movementDirection, bounds.size, transform.rotation);
-                    if (CanRotate())
-                    {
-                        Gizmos.DrawWireSphere(bounds.center, Mathf.Max(bounds.size.x, bounds.size.y) * 0.5f);
-                        Gizmos.DrawWireSphere(bounds.center + (Vector3)movementDirection, Mathf.Max(bounds.size.x, bounds.size.y) * 0.5f);
-                    }
-                    
-                    Gizmos.color = Color.yellow;
-                    CucuGizmos.DrawWireCube(GetPosition(blendMove), bounds.size, transform.rotation);
-                    
-                    Gizmos.color = Color.Lerp(Color.white, Color.yellow, 0.5f);
-                    Gizmos.DrawLine(startPosition, targetPosition);
+                if (CanRotate())
+                {
+                    Gizmos.DrawWireSphere(bounds.center, Mathf.Max(bounds.size.x, bounds.size.y) * 0.5f);
                 }
             }
             else if (CanRotate())
             {
                 var bounds = Cucu.GetBounds(gameObject);
 
-                Gizmos.DrawWireSphere(rigid.position, Mathf.Max(bounds.size.x, bounds.size.y) * 0.5f);
+                Gizmos.color = Color.yellow;
+                CucuGizmos.DrawWireCube(bounds.center, bounds.size, Quaternion.Euler(0, 0, phaseRotation));
+                Gizmos.DrawWireSphere(bounds.center, Mathf.Max(bounds.size.x, bounds.size.y) * 0.5f);
             }
         }
     }

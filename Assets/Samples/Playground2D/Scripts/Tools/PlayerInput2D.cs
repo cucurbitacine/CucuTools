@@ -1,24 +1,22 @@
-﻿using UnityEngine;
+﻿using CucuTools.PlayerSystem2D;
+using UnityEngine;
 
-namespace CucuTools.PlayerSystem2D
+namespace Samples.Playground2D.Scripts.Tools
 {
-    public class PlayerInput2D : CucuBehaviour
+    public class PlayerInput2D : ToolController2D
     {
+        [Header("Input")]
         public bool active = true;
         
         [Space]
         public float move = 0f;
         public bool run = false;
-        public bool sneak = false;
         public bool jump = false;
         public bool down = false;
         public bool dodgeLeft = false;
         public bool dodgeRight = false;
         public bool freeze = false;
-  
-        [Space]
-        public PlayerController2D player;
-        
+
         [Space]
         public SpeedController2D speedController;
         public JumpController2D jumpController;
@@ -36,34 +34,19 @@ namespace CucuTools.PlayerSystem2D
 
             dodgeLeft = Input.GetKeyDown(KeyCode.Q);
             dodgeRight = Input.GetKeyDown(KeyCode.E);
-
-            sneak = Input.GetKeyDown(KeyCode.C) ? !sneak : sneak;
-
-            if (run || jump || down || dodgeLeft || dodgeRight)
-            {
-                sneak = false;
-            }
         }
 
         private void UpdatePlayer()
         {
-            player.sleep = dodgeController && dodgeController.dodging;
-
             if (speedController)
             {
-                if (!player.grounded)
-                {
-                    sneak = false;
-                }
-            
                 speedController.running = run;
-                speedController.sneaking = sneak;
             
                 speedController.Move(move);
             }
             else
             {
-                player.Move(move);
+                player2d.Move(move);
             }
             
             if (jump)
@@ -74,41 +57,49 @@ namespace CucuTools.PlayerSystem2D
                 }
                 else
                 {
-                    player.Jump();    
+                    player2d.Jump();    
                 }
             }
 
             if (down)
             {
-                player.Down();
+                player2d.Down();
             }
 
             if (dodgeLeft)
             {
                 if (dodgeController)
                 {
-                    dodgeController.Dodge(-player.playerRight);
+                    dodgeController.Dodge(-player2d.playerRight);
                 }
             }
             else if (dodgeRight)
             {
                 if (dodgeController)
                 {
-                    dodgeController.Dodge(player.playerRight);
+                    dodgeController.Dodge(player2d.playerRight);
                 }
             }
             
             if (freeze)
             {
-                player.freeze = !player.freeze;
+                player2d.ChangeFreeze();
             } 
         }
-        
+
+        private void Start()
+        {
+            foreach (var tool in GetComponents<ToolController2D>())
+            {
+                if (tool != this) tool.player2d = player2d;
+            }
+        }
+
         private void Update()
         {
             UpdateInput();
 
-            if (active && player) UpdatePlayer();
+            if (active && player2d) UpdatePlayer();
         }
     }
 }

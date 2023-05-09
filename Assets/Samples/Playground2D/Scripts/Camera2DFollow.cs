@@ -10,6 +10,7 @@ namespace Samples.Playground2D.Scripts
         public Vector2 offset;
 
         [Space] public float positionChangeRate = 16;
+        [Space] public float rotationChangeRate = 16;
         private Camera _cam;
 
         public Vector2 position
@@ -40,7 +41,7 @@ namespace Samples.Playground2D.Scripts
                 }
                 else
                 {
-                    rotation = Quaternion.Lerp(rotation, targetRotation, positionChangeRate * Time.deltaTime);
+                    rotation = Quaternion.Lerp(rotation, targetRotation, rotationChangeRate * Time.deltaTime);
                     position = Vector2.Lerp(position, targetPosition, positionChangeRate * Time.deltaTime);
                 }
             }

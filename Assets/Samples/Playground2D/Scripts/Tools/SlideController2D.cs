@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 
-namespace CucuTools.PlayerSystem2D
+namespace Samples.Playground2D.Scripts.Tools
 {
-    public class SlideController2D : CucuBehaviour
+    public class SlideController2D : ToolController2D
     {
+        [Header("Slide")]
         public Collider2D lastWall = default;
         
         [Space]
@@ -15,10 +16,6 @@ namespace CucuTools.PlayerSystem2D
         [Min(0)]
         public float castRadius = 0.25f;
         
-        
-        [Space]
-        public PlayerController2D player2d = default;
-
         private Vector2 castDirection => player2d.move * player2d.playerRight;
         private Vector2 castPoint => player2d.playerPoint +
                                      player2d.playerNormal * (player2d.playerHeight * 0.5f) +

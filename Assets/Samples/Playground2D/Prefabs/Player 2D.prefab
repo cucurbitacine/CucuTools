@@ -219,20 +219,21 @@ MonoBehaviour:
   moving: 0
   jumping: 0
   falling: 0
-  sleep: 0
-  freeze: 0
   playerWidth: 1
   playerHeight: 2
   speedMax: 5
-  accelerationMax: 50
+  accelerationMax: 100
   jumpHeight: 2
   jumpsInAir: 1
   jumpTimeout: 0.2
+  gravity: {x: 0, y: -9.81}
+  gravityScale: 5
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
   groundDistanceCheck: 0.2
   angleMaxSlope: 50
+  groundIgnoreDuration: 0.2
   idleMat: {fileID: 0}
   moveMat: {fileID: 0}
 --- !u!50 &7426971851454628125
@@ -250,7 +251,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 5
+  m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: c68b6a338c6e1cd46b27a15a826ec635, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1

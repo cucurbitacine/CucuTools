@@ -10,8 +10,6 @@ namespace CucuTools.PlayerSystem2D
         public bool moving = false;
         public bool jumping = false;
         public bool falling = false;
-        public bool sleep = false;
-        public bool freeze = false;
 
         [Header("Body")]
         [Min(0)] public float playerWidth = 1;
@@ -19,12 +17,16 @@ namespace CucuTools.PlayerSystem2D
         
         [Header("Movement")]
         [Min(0)] public float speedMax = 5;
-        [Min(0)] public float accelerationMax = 50;
+        [Min(0)] public float accelerationMax = 100;
 
         [Header("Jump")]
         [Min(0)] public float jumpHeight = 2f;
         [Min(0)] public int jumpsInAir = 1;
         [Min(0)] public float jumpTimeout = 0.2f;
+        
+        [Header("Gravity")]
+        public Vector2 gravity = Vector2.down * 9.81f;
+        public float gravityScale = 5f;
         
         [Header("Ground")]
         public LayerMask groundLayer = default;
@@ -38,7 +40,7 @@ namespace CucuTools.PlayerSystem2D
 
         public const float MoveTolerance = 0.001f;
 
-        public const float IdleFrictionDefault = 100f;
+        public const float IdleFrictionDefault = 1000f;
         public const float IdleBouncinessDefault = 0f;
         
         public const float MoveFrictionDefault = 0f;
@@ -55,14 +57,16 @@ namespace CucuTools.PlayerSystem2D
 
         public float move { get; private set; }
         public Vector2 velocity { get; private set; }
-        
-        public Vector2 gravity => Physics2D.gravity * (rigidbody2d ? rigidbody2d.gravityScale : 1f);
-        public Vector2 gravityDirection => Physics2D.gravity.normalized;
-        public float gravityPower => gravity.magnitude;
+        public Vector2 groundVelocity { get; private set; }
         
         public Vector2 playerPoint => transform.position;
         public Vector2 playerNormal => transform.up;
         public Vector2 playerRight => -Vector2.Perpendicular(playerNormal);
+        
+        public Vector2 playerGravity => gravity * gravityScale;
+        
+        public Vector2 gravityDirection => gravity.normalized;
+        public float gravityPower => playerGravity.magnitude;
         
         public RaycastHit2D groundHit2d { get; private set; }
         public Rigidbody2D rigidbody2d { get; private set; }
@@ -93,7 +97,8 @@ namespace CucuTools.PlayerSystem2D
         
         public void Jump()
         {
-            var canJump = !freeze && !sleep && (0 <= _jumpTimeoutDelta || _jumpsInAir < jumpsInAir);
+            var canJump = rigidbody2d.bodyType == RigidbodyType2D.Dynamic &&
+                0 <= _jumpTimeoutDelta || _jumpsInAir < jumpsInAir;
 
             if (canJump)
             {
@@ -104,6 +109,11 @@ namespace CucuTools.PlayerSystem2D
                 var jumpSpeed = Mathf.Sqrt(2 * gravityPower * jumpHeight);
                 var jumpVelocity = jumpSpeed * jumpDirection;
 
+                if (grounded)
+                {
+                    jumpVelocity += (Vector2)Vector3.Project(groundVelocity, jumpDirection);
+                }
+                
                 var jumpImpulse = jumpVelocity * rigidbody2d.mass;
 
                 var fallingVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, gravityDirection);
@@ -115,7 +125,7 @@ namespace CucuTools.PlayerSystem2D
 
         public void Down()
         {
-            if (!sleep && grounded && groundHit2d.collider.usedByEffector)
+            if (grounded && groundHit2d.collider.usedByEffector)
             {
                 Ignore(groundHit2d.collider, groundIgnoreDuration);
             }
@@ -158,6 +168,18 @@ namespace CucuTools.PlayerSystem2D
             {
                 Jumped();
             }
+
+            if (grounded)
+            {
+                if (groundHit2d.collider.attachedRigidbody)
+                {
+                    groundVelocity = groundHit2d.collider.attachedRigidbody.GetPointVelocity(groundHit2d.point);
+                }
+                else
+                {
+                    groundVelocity = Vector2.zero;
+                }
+            }
         }
 
         private void UpdateJumping()
@@ -190,41 +212,44 @@ namespace CucuTools.PlayerSystem2D
                 velocity = Vector2.zero;
             }
 
+            if (grounded)
+            {
+                velocity += groundVelocity;
+            }
+            else
+            {
+                velocity += (Vector2)Vector3.Project(groundVelocity, velocity.normalized);
+            }
+
             falling = !grounded && Vector2.Dot(Vector3.Project(rigidbody2d.velocity, gravityDirection), gravityDirection) > 0;
         }
 
-        private void UpdateRigidbody(float deltaTime)
+        private void UpdateRigidbody()
         {
-            rigidbody2d.bodyType = freeze ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
-            
-            if (freeze) return;
-
-            if (moving && !sleep)
-            {
-                var prevVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, velocity);
-
-                if (grounded && !jumping && groundHit2d.collider.attachedRigidbody)
-                {
-                    velocity += groundHit2d.collider.attachedRigidbody.GetPointVelocity(groundHit2d.point);
-                }
-                
-                var acceleration = (velocity - prevVelocity) / deltaTime;
-                acceleration = Vector2.ClampMagnitude(acceleration, accelerationMax);
-                
-                rigidbody2d.AddForce(rigidbody2d.mass * acceleration);
-            }
-
-            if (sleep)
-            {
-                rigidbody2d.sharedMaterial = idleMat;
-            }
-            else if (grounded && !moving)
+            if (grounded && !moving)
             {
                 rigidbody2d.sharedMaterial = idleMat;
             }
             else
             {
                 rigidbody2d.sharedMaterial = moveMat;
+            }
+        }
+
+        private void UpdateForcing(float deltaTime)
+        {
+            if (rigidbody2d.bodyType != RigidbodyType2D.Dynamic) return;
+            
+            rigidbody2d.AddForce(playerGravity * rigidbody2d.mass);
+            
+            if (moving)
+            {
+                var prevVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, velocity);
+                
+                var acceleration = (velocity - prevVelocity) / deltaTime;
+                acceleration = Vector2.ClampMagnitude(acceleration, accelerationMax);
+                
+                rigidbody2d.AddForce(rigidbody2d.mass * acceleration);
             }
         }
         
@@ -266,6 +291,8 @@ namespace CucuTools.PlayerSystem2D
             {
                 rigidbody2d = gameObject.AddComponent<Rigidbody2D>();
             }
+            
+            rigidbody2d.gravityScale = 0f;
         }
         
         private void SetupCollider()
@@ -321,7 +348,9 @@ namespace CucuTools.PlayerSystem2D
 
         private void FixedUpdate()
         {
-            UpdateRigidbody(Time.fixedDeltaTime);
+            UpdateRigidbody();
+            
+            UpdateForcing(Time.fixedDeltaTime);
         }
 
         private void OnValidate()
@@ -344,33 +373,48 @@ namespace CucuTools.PlayerSystem2D
 
     public static class PlayerController2DExtensions
     {
-        public static void SetNormal(this PlayerController2D player, Vector2 normal)
+        public static void SetNormal(this PlayerController2D player2d, Vector2 normal)
         {
-            player.rigidbody2d.rotation = Vector2.SignedAngle(Vector2.up, normal);
+            player2d.rigidbody2d.rotation = Vector2.SignedAngle(Vector2.up, normal);
         }
         
-        public static void SetNormal(this PlayerController2D player, Vector2 normal, float angleTolerance)
+        public static void SetNormal(this PlayerController2D player2d, Vector2 normal, float angleTolerance)
         {
-            if (Vector2.Angle(player.playerNormal, normal) >= angleTolerance)
+            if (Vector2.Angle(player2d.playerNormal, normal) >= angleTolerance)
             {
-                player.SetNormal(normal);
+                player2d.SetNormal(normal);
             }
         }
-        
-        public static void SetNormalByGravity(this PlayerController2D player)
+
+        public static void NormalByGravity(this PlayerController2D player2d)
         {
-            player.SetNormal(-player.gravityDirection);
+            player2d.SetNormal(-player2d.gravityDirection);
         }
         
-        public static void SetNormalByGravity(this PlayerController2D player, float angleTolerance)
+        public static void NormalByGravity(this PlayerController2D player2d, float angleTolerance)
         {
-            player.SetNormal(-player.gravityDirection, angleTolerance);
+            player2d.SetNormal(-player2d.gravityDirection, angleTolerance);
         }
 
-        public static void Move(this PlayerController2D player, float move, float speed)
+        public static void Move(this PlayerController2D player2d, float move, float speed)
         {
-            player.speedMax = speed;
-            player.Move(move);
+            player2d.speedMax = speed;
+            player2d.Move(move);
+        }
+        
+        public static bool IsStatic(this PlayerController2D player2d)
+        {
+            return player2d.rigidbody2d.bodyType == RigidbodyType2D.Static;
+        }
+
+        public static void SetStatic(this PlayerController2D player2d, bool value)
+        {
+            player2d.rigidbody2d.bodyType = value ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
+        }
+        
+        public static void ChangeFreeze(this PlayerController2D player2d)
+        {
+            player2d.SetStatic(!player2d.IsStatic());
         }
     }
 }

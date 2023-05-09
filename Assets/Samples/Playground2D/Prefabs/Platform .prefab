@@ -167,12 +167,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 1
-  blendMove: 0
   move: 0
-  movementDirection: {x: 0, y: 0}
-  movementDuration: 2
-  pauseDuration: 0.5
+  directionMovement: {x: 1, y: 0}
+  durationMovement: 4
   smoothMovement: 1
   rotate: 0
-  rotatePhase: 0
-  rotatingSpeed: 10
+  phaseRotation: 0
+  speedRotation: 10

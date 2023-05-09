@@ -1,18 +1,16 @@
-﻿using UnityEngine;
+﻿using CucuTools.PlayerSystem2D;
+using UnityEngine;
 
-namespace CucuTools.PlayerSystem2D
+namespace Samples.Playground2D.Scripts.Tools
 {
-    public class SpeedController2D : CucuBehaviour
+    public class SpeedController2D : ToolController2D
     {
+        [Header("Speed")]
         public bool running = false;
-        public bool sneaking = false;
         
         [Space]
         [Min(0)] public float moveSpeed = 5;
         [Min(0)] public float runSpeed = 10;
-        [Min(0)] public float sneakSpeed = 2;
-
-        [Space] public PlayerController2D player2d;
 
         public void Move(float move)
         {
@@ -22,8 +20,6 @@ namespace CucuTools.PlayerSystem2D
         private float GetSpeed()
         {
             if (running) return runSpeed;
-
-            if (sneaking) return sneakSpeed;
 
             return moveSpeed;
         }
