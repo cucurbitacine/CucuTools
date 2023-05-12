@@ -16,7 +16,7 @@ namespace Samples.Playground2D.Scripts.Tools
         [Min(0)]
         public float castRadius = 0.25f;
         
-        private Vector2 castDirection => player2d.move * player2d.playerRight;
+        private Vector2 castDirection => player2d.moveInput * player2d.playerRight;
         private Vector2 castPoint => player2d.playerPoint +
                                      player2d.playerNormal * (player2d.playerHeight * 0.5f) +
                                      castDirection * (player2d.playerWidth * 0.5f);

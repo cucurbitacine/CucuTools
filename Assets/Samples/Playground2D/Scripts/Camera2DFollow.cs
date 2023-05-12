@@ -9,8 +9,13 @@ namespace Samples.Playground2D.Scripts
         public float depth = 10f;
         public Vector2 offset;
 
-        [Space] public float positionChangeRate = 16;
-        [Space] public float rotationChangeRate = 16;
+        [Space]
+        [Min(0)] public float xChangeRate = 16;
+        [Min(0)] public float yChangeRate = 16;
+        
+        [Space]
+        [Min(0)] public float zChangeRate = 16;
+        
         private Camera _cam;
 
         public Vector2 position
@@ -41,8 +46,10 @@ namespace Samples.Playground2D.Scripts
                 }
                 else
                 {
-                    rotation = Quaternion.Lerp(rotation, targetRotation, rotationChangeRate * Time.deltaTime);
-                    position = Vector2.Lerp(position, targetPosition, positionChangeRate * Time.deltaTime);
+                    rotation = Quaternion.Lerp(rotation, targetRotation, zChangeRate * Time.deltaTime);
+                    
+                    position = Vector2.Lerp(position, targetPosition, xChangeRate * Time.deltaTime).x * Vector2.right
+                        + Vector2.Lerp(position, targetPosition, yChangeRate * Time.deltaTime).y * Vector2.up;
                 }
             }
         }

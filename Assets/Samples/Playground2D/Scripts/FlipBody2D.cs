@@ -1,4 +1,3 @@
-using System;
 using CucuTools.PlayerSystem2D;
 using UnityEngine;
 
@@ -28,23 +27,42 @@ namespace Samples.Playground2D.Scripts
         {
             if (player && player.moving)
             {
-                if (player.move > 0 && !lookingAtRight)
+                if (player.moveInput > 0 && !lookingAtRight)
                 {
                     Flip();
                 }
-                else if (player.move < 0 && lookingAtRight)
+                else if (player.moveInput < 0 && lookingAtRight)
                 {
                     Flip();
                 }
             }
         }
 
+        public float fallingTimeout = 0.5f;
+        public float fallingTimeoutDelta;
+        
         private void LateUpdate()
         {
-            if (player)
+            if (player && animator)
             {
                 animator.SetBool(Moving, player.moving);
-                animator.SetBool(Falling, player.falling);
+                
+                if (player.falling)
+                {
+                    if (0 <= fallingTimeoutDelta)
+                    {
+                        fallingTimeoutDelta -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        animator.SetBool(Falling, player.falling);
+                    }
+                }
+                else
+                {
+                    fallingTimeoutDelta = fallingTimeout;
+                    animator.SetBool(Falling, player.falling);
+                }
             }
         }
     }

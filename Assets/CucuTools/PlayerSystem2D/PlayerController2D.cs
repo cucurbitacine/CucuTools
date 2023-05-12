@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace CucuTools.PlayerSystem2D
@@ -7,6 +7,7 @@ namespace CucuTools.PlayerSystem2D
     {
         [Header("Info")]
         public bool grounded = false;
+        public bool isOnSlope = false;
         public bool moving = false;
         public bool jumping = false;
         public bool falling = false;
@@ -18,10 +19,10 @@ namespace CucuTools.PlayerSystem2D
         [Header("Movement")]
         [Min(0)] public float speedMax = 5;
         [Min(0)] public float accelerationMax = 100;
-
+        
         [Header("Jump")]
         [Min(0)] public float jumpHeight = 2f;
-        [Min(0)] public int jumpsInAir = 1;
+        [Min(0)] public int jumpsTotal = 2;
         [Min(0)] public float jumpTimeout = 0.2f;
         
         [Header("Gravity")]
@@ -37,6 +38,8 @@ namespace CucuTools.PlayerSystem2D
         [Header("Friction")]
         public PhysicsMaterial2D idleMat = default;
         public PhysicsMaterial2D moveMat = default;
+        public bool overrideMat = false;
+        public PhysicsMaterial2D overriddenMat = default;
 
         public const float MoveTolerance = 0.001f;
 
@@ -47,15 +50,15 @@ namespace CucuTools.PlayerSystem2D
         public const float MoveBouncinessDefault = 0f;
         
         private bool _wasGrounded = false;
-        private int _jumpsInAir = 0;
-        private float _jumpTimeoutDelta = 0f;
+        public int _jumpsCurrent = 0;
+        public float _jumpTimeoutDelta = 0f;
 
         private Vector2 castPoint => playerPoint - castDirection * castRadius;
         private Vector2 castDirection => -playerNormal;
         private float castRadius => (capsule2d ? capsule2d.size.x * 0.5f : 0.5f) - 0.001f;
         private float castDistance => groundDistanceCheck;
 
-        public float move { get; private set; }
+        public float moveInput { get; private set; }
         public Vector2 velocity { get; private set; }
         public Vector2 groundVelocity { get; private set; }
         
@@ -74,17 +77,17 @@ namespace CucuTools.PlayerSystem2D
 
         #region Public API
 
-        public void Move(float move)
+        public void Move(float input)
         {
-            if (Mathf.Abs(move) > MoveTolerance)
+            if (Mathf.Abs(input) > MoveTolerance)
             {
-                this.move = move;
+                moveInput = Mathf.Clamp(input, -1, 1);
                 
                 moving = true;
             }
             else
             {
-                this.move = 0f;
+                moveInput = 0f;
                 
                 moving = false;
             }
@@ -98,27 +101,37 @@ namespace CucuTools.PlayerSystem2D
         public void Jump()
         {
             var canJump = rigidbody2d.bodyType == RigidbodyType2D.Dynamic &&
-                0 <= _jumpTimeoutDelta || _jumpsInAir < jumpsInAir;
+                0 <= _jumpTimeoutDelta || _jumpsCurrent < jumpsTotal;
 
             if (canJump)
             {
                 jumping = true;
-                if (_jumpTimeoutDelta < 0) _jumpsInAir++;
+                _jumpsCurrent++;
                 
+                // calculate jump velocity
                 var jumpDirection = playerNormal;
                 var jumpSpeed = Mathf.Sqrt(2 * gravityPower * jumpHeight);
                 var jumpVelocity = jumpSpeed * jumpDirection;
 
+                // apply ground velocity
                 if (grounded)
                 {
                     jumpVelocity += (Vector2)Vector3.Project(groundVelocity, jumpDirection);
                 }
                 
+                // TODO: if first jump wasn't from ground (0 <= _jumpTimeoutDelta) then total jumps should be less by one 
+                
+                // reset jump timeout
+                _jumpTimeoutDelta = -1f;
+                
+                // calculate jump impulse
                 var jumpImpulse = jumpVelocity * rigidbody2d.mass;
 
+                // remove gravity falling velocity
                 var fallingVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, gravityDirection);
                 rigidbody2d.velocity -= fallingVelocity;
                 
+                // apply force
                 rigidbody2d.AddForce(jumpImpulse, ForceMode2D.Impulse);
             }
         }
@@ -133,7 +146,7 @@ namespace CucuTools.PlayerSystem2D
 
         public void ResetAirJump()
         {
-            _jumpsInAir = 0;
+            _jumpsCurrent = 0;
         }
 
         #endregion
@@ -148,27 +161,36 @@ namespace CucuTools.PlayerSystem2D
         
         private void UpdateGround()
         {
+            // save previous value
             _wasGrounded = grounded;
             
+            // cast to the ground
             groundHit2d = Physics2D.CircleCast(castPoint, castRadius, castDirection, castDistance, groundLayer);
             
+            // set preliminary values
             grounded = groundHit2d;
+            isOnSlope = false;
             
+            // check the angle of slope
             if (grounded)
             {
                 var angle = Vector2.Angle(-gravityDirection, groundHit2d.normal);
+                
                 grounded = angle < angleMaxSlope;
+                isOnSlope = angle > 0f;
             }
 
+            // invoke main state methods
             if (grounded && !_wasGrounded)
             {
-                Landed();
+                JustLanded();
             }
             else if (!grounded && _wasGrounded)
             {
-                Jumped();
+                LostGround();
             }
 
+            // save ground velocity
             if (grounded)
             {
                 if (groundHit2d.collider.attachedRigidbody)
@@ -180,38 +202,55 @@ namespace CucuTools.PlayerSystem2D
                     groundVelocity = Vector2.zero;
                 }
             }
+            
+            // set falling state
+            falling = !grounded && Vector2.Dot(Vector3.Project(rigidbody2d.velocity, gravityDirection), gravityDirection) > 0;
         }
 
-        private void UpdateJumping()
+        private void UpdateJumping(float deltaTime)
         {
+            // update jumping timeout
             if (grounded)
             {
                 _jumpTimeoutDelta = jumpTimeout;
             }
             else
             {
-                _jumpTimeoutDelta -= Time.deltaTime;
+                _jumpTimeoutDelta -= deltaTime;
             }
+            
+            // update jumping state
+            if (jumping && falling) jumping = false;
         }
 
         private void UpdateVelocity()
         {
-            var moveRight = playerRight;
+            // set the move direction as default
+            var moveDirection = playerRight;
             
+            // get the move direction relative to the ground
             if (grounded && !jumping)
             {
-                moveRight = -Vector2.Perpendicular(groundHit2d.normal).normalized;
+                moveDirection = -Vector2.Perpendicular(groundHit2d.normal).normalized;
             }
 
+            // apply input
             if (moving)
             {
-                velocity = moveRight * (move * speedMax);
+                velocity = moveDirection * (moveInput * speedMax);
             }
             else
             {
                 velocity = Vector2.zero;
             }
 
+            // check slope
+            if (isOnSlope && !grounded)
+            {
+                velocity = Vector2.zero;
+            }
+            
+            // apply the ground velocity
             if (grounded)
             {
                 velocity += groundVelocity;
@@ -220,12 +259,11 @@ namespace CucuTools.PlayerSystem2D
             {
                 velocity += (Vector2)Vector3.Project(groundVelocity, velocity.normalized);
             }
-
-            falling = !grounded && Vector2.Dot(Vector3.Project(rigidbody2d.velocity, gravityDirection), gravityDirection) > 0;
         }
 
         private void UpdateRigidbody()
         {
+            // update physics material
             if (grounded && !moving)
             {
                 rigidbody2d.sharedMaterial = idleMat;
@@ -234,14 +272,22 @@ namespace CucuTools.PlayerSystem2D
             {
                 rigidbody2d.sharedMaterial = moveMat;
             }
+            
+            if (overrideMat && overriddenMat != default)
+            {
+                rigidbody2d.sharedMaterial = overriddenMat;
+            }
         }
 
         private void UpdateForcing(float deltaTime)
         {
+            // check rigidbody body type
             if (rigidbody2d.bodyType != RigidbodyType2D.Dynamic) return;
             
+            // apply gravity
             rigidbody2d.AddForce(playerGravity * rigidbody2d.mass);
             
+            // apply movement
             if (moving)
             {
                 var prevVelocity = (Vector2)Vector3.Project(rigidbody2d.velocity, velocity);
@@ -253,14 +299,14 @@ namespace CucuTools.PlayerSystem2D
             }
         }
         
-        private void Jumped()
+        private void LostGround()
         {
         }
 
-        private void Landed()
+        private void JustLanded()
         {
             jumping = false;
-            
+
             ResetAirJump();
         }
         
@@ -275,11 +321,6 @@ namespace CucuTools.PlayerSystem2D
 
             yield return new WaitForSeconds(duration);
 
-            while (capsule2d.bounds.Intersects(target.bounds))
-            {
-                yield return new WaitForFixedUpdate();
-            }
-            
             Physics2D.IgnoreCollision(capsule2d, target, false);
         }
         
@@ -341,7 +382,7 @@ namespace CucuTools.PlayerSystem2D
             
             UpdateGround();
 
-            UpdateJumping();
+            UpdateJumping(Time.deltaTime);
             
             UpdateVelocity();
         }

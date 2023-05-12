@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grounded: 0
+  isOnSlope: 0
   moving: 0
   jumping: 0
   falling: 0
@@ -224,7 +225,7 @@ MonoBehaviour:
   speedMax: 5
   accelerationMax: 100
   jumpHeight: 2
-  jumpsInAir: 1
+  jumpsInAirTotal: 1
   jumpTimeout: 0.2
   gravity: {x: 0, y: -9.81}
   gravityScale: 5

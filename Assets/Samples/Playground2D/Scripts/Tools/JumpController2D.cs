@@ -15,7 +15,7 @@ namespace Samples.Playground2D.Scripts.Tools
         public LayerMask wallLayer = default;
         [Min(0)] public float castRadius = 0.25f;
         
-        private Vector2 castDirection => -player2d.move * player2d.playerRight;
+        private Vector2 castDirection => -player2d.moveInput * player2d.playerRight;
         private Vector2 castPoint => player2d.playerPoint +
                                      player2d.playerNormal * (player2d.playerHeight * 0.5f) +
                                      castDirection * (player2d.playerWidth * 0.5f);
@@ -36,8 +36,8 @@ namespace Samples.Playground2D.Scripts.Tools
             }
         }
 
-        private Quaternion jumpDirectionRotator => Quaternion.Euler(0, 0, Mathf.Sign(player2d.move) * jumpAngle);
-        private Vector2 moveDirection => (player2d.move * player2d.playerRight).normalized;
+        private Quaternion jumpDirectionRotator => Quaternion.Euler(0, 0, Mathf.Sign(player2d.moveInput) * jumpAngle);
+        private Vector2 moveDirection => (player2d.moveInput * player2d.playerRight).normalized;
         private Vector2 jumpDirection => (jumpDirectionRotator * moveDirection).normalized;
         
         public void WallJump()

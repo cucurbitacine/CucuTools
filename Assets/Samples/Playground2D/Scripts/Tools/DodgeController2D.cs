@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using CucuTools;
+﻿using System.Collections;
 using CucuTools.PlayerSystem2D;
 using UnityEngine;
 
@@ -12,6 +10,8 @@ namespace Samples.Playground2D.Scripts.Tools
         [Min(0)] public float dodgeDistance = 5f;
         [Min(0)] public float dodgeSpeed = 20f;
 
+        [Space] public PhysicsMaterial2D dodgeMat = default;
+        
         [Space] public LayerMask obstacleLayer = default;
 
         private Coroutine _dodge;
@@ -23,7 +23,7 @@ namespace Samples.Playground2D.Scripts.Tools
             if (_dodge != null) StopCoroutine(_dodge);
             _dodge = StartCoroutine(_Dodge(direction));
         }
-
+        
         private IEnumerator _Dodge(Vector2 direction)
         {
             var capsule2d = player2d.capsule2d;
@@ -39,11 +39,21 @@ namespace Samples.Playground2D.Scripts.Tools
 
             if (distance > 0.1f)
             {
-                player2d.rigidbody2d.bodyType = RigidbodyType2D.Kinematic;
+                if (dodgeMat == default)
+                {
+                    dodgeMat = new PhysicsMaterial2D() { name = "dodge", bounciness = 0f, friction = 0f };
+                }
+                
+                player2d.overrideMat = true;
+                player2d.overriddenMat = dodgeMat;
+                
+                //player2d.rigidbody2d.bodyType = RigidbodyType2D.Kinematic;
                 player2d.rigidbody2d.velocity = direction * dodgeSpeed;
                 yield return new WaitForSeconds(distance / dodgeSpeed);
                 player2d.rigidbody2d.velocity = Vector2.zero;
-                player2d.rigidbody2d.bodyType = RigidbodyType2D.Dynamic;
+                //player2d.rigidbody2d.bodyType = RigidbodyType2D.Dynamic;
+                
+                player2d.overrideMat = false;
             }
         }
     }
