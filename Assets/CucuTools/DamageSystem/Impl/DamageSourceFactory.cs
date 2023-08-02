@@ -2,11 +2,10 @@
 
 namespace CucuTools.DamageSystem.Impl
 {
-    public class DamageSourceFactoryExtended : DamageSourceExtended
+    public class DamageSourceFactory : DamageSource
     {
-        [Header("Factory Settings")]
-        public DamageFactory factory;
-        
+        [Header("Factory Settings")] public DamageFactory factory;
+
         public override Damage CreateDamage()
         {
             return factory.CreateDamage();

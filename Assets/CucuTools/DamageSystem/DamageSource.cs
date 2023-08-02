@@ -6,54 +6,41 @@ namespace CucuTools.DamageSystem
 {
     public abstract class DamageSource : CucuBehaviour
     {
-        [Space] public bool mute = false;
-
         public DamageManager manager = null;
         
         [Space]
-        public UnityEvent<DamageEvent> onDamageSent = new UnityEvent<DamageEvent>();
+        public UnityEvent<DamageEvent> onDamageDelivered = new UnityEvent<DamageEvent>();
         
         public abstract Damage CreateDamage();
         
-        public void SendDamage(DamageReceiver receiver, Action<DamageEvent> onSent, Action<DamageEvent> onReceived)
+        public void SendDamage(DamageReceiver receiver, Action<DamageEvent> eventCallback)
         {
-            if (mute) return;
-
-            var e = GenerateDamageEvent(receiver);
+            var dmg = CreateDamage();
             
-            onSent?.Invoke(e);
-            
-            onDamageSent.Invoke(e);
-            
-            if (manager != null)
-            {
-                manager.SendDamage(e);
-            }
-            
-            receiver.ReceiveDamage(e);
-            
-            onReceived?.Invoke(e);
-        }
-        
-        public void SendDamage(DamageReceiver receiver)
-        {
-            SendDamage(receiver, null, null);
-        }
-
-        private DamageEvent GenerateDamageEvent(DamageReceiver receiver)
-        {
-            var e = new DamageEvent(CreateDamage(), this, receiver);
+            var e = new DamageEvent(dmg, this, receiver);
 
             HandleDamage(e);
 
-            if (manager != null)
+            if (manager)
             {
                 manager.HandleDamageAsSource(e);
             }
 
-            return e;
+            receiver.ReceiveDamage(e, eventCallback);
+            
+            onDamageDelivered.Invoke(e);
+            
+            if (manager)
+            {
+                manager.DamageDelivered(e);
+            }
         }
         
+        public void SendDamage(DamageReceiver receiver)
+        {
+            SendDamage(receiver, null);
+        }
+
         protected virtual void HandleDamage(DamageEvent e)
         {
         }
