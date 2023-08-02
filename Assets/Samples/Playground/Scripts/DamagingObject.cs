@@ -1,6 +1,7 @@
 using System.Collections;
 using CucuTools.Attributes;
 using CucuTools.DamageSystem;
+using CucuTools.DamageSystem.Impl;
 using CucuTools.Others;
 using UnityEngine;
 
