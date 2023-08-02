@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CucuTools.DamageSystem.Impl
@@ -61,6 +62,11 @@ namespace CucuTools.DamageSystem.Impl
         private static bool CheckLayer(LayerMask layerMask, int layerNumber)
         {
             return (layerMask.value & (1 << layerNumber)) > 0;
+        }
+
+        protected void OnValidate()
+        {
+            if (source == null) source = GetComponent<DamageSource>();
         }
     }
 

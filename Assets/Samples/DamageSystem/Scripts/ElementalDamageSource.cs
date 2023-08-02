@@ -1,18 +1,26 @@
-﻿
-using CucuTools.DamageSystem;
+﻿using CucuTools.DamageSystem;
 using CucuTools.DamageSystem.Impl;
 using UnityEngine;
 
 namespace Samples.DamageSystem.Scripts
 {
-    public class ElementalDamageSource : SimpleDamageSourceExtended
+    public class ElementalDamageSource : SimpleDamageSource
     {
-        [Header("Elemental Damage Settings")]
-        public Elemental elemental = Elemental.Fire;
+        [Space]
+        public Elemental elemental;
+        public int damageBonus = 0;
         
         public override Damage CreateDamage()
         {
-            return new ElementalDamage(base.CreateDamage(), elemental);
+            var baseDmg = base.CreateDamage();
+
+            var dmg = new ElementalDamage();
+            
+            dmg.elemental = elemental;
+            dmg.amount = baseDmg.amount + damageBonus;
+            dmg.critical = baseDmg.critical;
+            
+            return dmg;
         }
     }
 }
