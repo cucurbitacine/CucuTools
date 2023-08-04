@@ -26,9 +26,16 @@ namespace Samples.DamageSystem.Scripts
             onClicked.Invoke();
         }
 
-        public void Select(bool value = true)
+        public void Select(bool value)
         {
             selected = value;
+
+            UpdateColor();
+        }
+        
+        public void Select()
+        {
+            Select(true);
         }
         
         public void Deselect()

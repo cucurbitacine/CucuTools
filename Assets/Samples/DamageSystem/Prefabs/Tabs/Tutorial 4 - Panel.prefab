@@ -1619,7 +1619,7 @@ MonoBehaviour:
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
+  generator:
     damageAmount: 10
     criticalRate: 0.2
     criticalDamage: 0.5
@@ -2191,7 +2191,7 @@ MonoBehaviour:
   hitType: 2
   hitMode: 1
   hitTimeout: 0.5
-  source: {fileID: 848876603}
+  source: {fileID: 8715424086157979442}
 --- !u!1 &1226317975
 GameObject:
   m_ObjectHideFlags: 0
@@ -3496,26 +3496,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &848876603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1103447964978961251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b70c6c587dc64478b87e3ce24ab74d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 1581849458}
-  onDamageDelivered:
-    m_PersistentCalls:
-      m_Calls: []
-  template:
-    damageAmount: 10
-    criticalRate: 0.2
-    criticalDamage: 0.5
 --- !u!114 &848876604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3531,6 +3511,23 @@ MonoBehaviour:
   speedMax: 50
   dampPosition: 8
   rigid: {fileID: 848876605}
+--- !u!114 &8715424086157979442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103447964978961251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a385646b43f0493b9a26480ceaded0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 1581849458}
+  onDamageDelivered:
+    m_PersistentCalls:
+      m_Calls: []
+  factory: {fileID: 11400000, guid: eb69a006762ef28419287b1f280b8f61, type: 2}
 --- !u!4 &1103447964978961252 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9190188438330415806, guid: 970f58566b26394439170a0701fd0fad, type: 3}

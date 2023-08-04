@@ -5,7 +5,7 @@ namespace Samples.DamageSystem.Scripts
     public class TabController : MonoBehaviour
     {
         public int selected;
-        [Space] public GameObject[] tabs;
+        [Space] public TabButton[] tabs;
 
         public void Select(int value)
         {
@@ -20,7 +20,7 @@ namespace Samples.DamageSystem.Scripts
             {
                 if (tabs[i])
                 {
-                    tabs[i].SetActive(selected == i);
+                    tabs[i].SelectTab(selected == i);
                 }
             }
         }

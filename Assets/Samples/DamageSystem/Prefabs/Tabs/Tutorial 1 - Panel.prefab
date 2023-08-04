@@ -746,7 +746,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9190188438330415801, guid: 970f58566b26394439170a0701fd0fad, type: 3}
   m_PrefabInstance: {fileID: 2413805885309011690}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &915585578
+--- !u!114 &1176708656998855777
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -755,17 +755,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6842538041991584851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b70c6c587dc64478b87e3ce24ab74d, type: 3}
+  m_Script: {fileID: 11500000, guid: a385646b43f0493b9a26480ceaded0b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
-    damageAmount: 10
-    criticalRate: 0.2
-    criticalDamage: 0.5
+  factory: {fileID: 11400000, guid: eb69a006762ef28419287b1f280b8f61, type: 2}
 --- !u!1001 &2413805885529180733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1308,7 +1305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90cec90744740074fb1baa704fb7ef42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 915585578}
+  source: {fileID: 1176708656998855777}
   receiver: {fileID: 598947593}
 --- !u!1001 &8014035334696299652
 PrefabInstance:

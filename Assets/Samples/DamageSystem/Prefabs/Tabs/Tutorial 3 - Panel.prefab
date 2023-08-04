@@ -445,12 +445,12 @@ MonoBehaviour:
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
+  elemental: 1
+  damageBonus: 1
+  generator:
     damageAmount: 10
     criticalRate: 0.2
     criticalDamage: 0.5
-  elemental: 1
-  damageBonus: 1
 --- !u!61 &302196003
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -832,12 +832,12 @@ MonoBehaviour:
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
+  elemental: 0
+  damageBonus: 1
+  generator:
     damageAmount: 10
     criticalRate: 0.2
     criticalDamage: 0.5
-  elemental: 0
-  damageBonus: 1
 --- !u!61 &756173468
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1412,7 +1412,7 @@ MonoBehaviour:
   hitType: 2
   hitMode: 1
   hitTimeout: 0.5
-  source: {fileID: 37598786}
+  source: {fileID: 5115087778061697092}
 --- !u!1 &1785201944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1600,12 +1600,12 @@ MonoBehaviour:
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
+  elemental: 2
+  damageBonus: 1
+  generator:
     damageAmount: 10
     criticalRate: 0.2
     criticalDamage: 0.5
-  elemental: 2
-  damageBonus: 1
 --- !u!61 &1985140398
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1847,26 +1847,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &37598786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5312924102162454073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b70c6c587dc64478b87e3ce24ab74d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  manager: {fileID: 0}
-  onDamageDelivered:
-    m_PersistentCalls:
-      m_Calls: []
-  template:
-    damageAmount: 10
-    criticalRate: 0.2
-    criticalDamage: 0.5
 --- !u!114 &37598787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1882,6 +1862,23 @@ MonoBehaviour:
   speedMax: 50
   dampPosition: 8
   rigid: {fileID: 37598788}
+--- !u!114 &5115087778061697092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5312924102162454073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a385646b43f0493b9a26480ceaded0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 0}
+  onDamageDelivered:
+    m_PersistentCalls:
+      m_Calls: []
+  factory: {fileID: 11400000, guid: eb69a006762ef28419287b1f280b8f61, type: 2}
 --- !u!4 &5312924102162454078 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9190188438330415806, guid: 970f58566b26394439170a0701fd0fad, type: 3}
@@ -2265,7 +2262,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 879929828493467877, guid: 324bf4f930194824a8b03a1f4db295e8, type: 3}
       propertyPath: m_Name
-      value: Tutorial 3 Variant
+      value: Tutorial 3 - Panel
       objectReference: {fileID: 0}
     - target: {fileID: 879929828493467877, guid: 324bf4f930194824a8b03a1f4db295e8, type: 3}
       propertyPath: m_IsActive

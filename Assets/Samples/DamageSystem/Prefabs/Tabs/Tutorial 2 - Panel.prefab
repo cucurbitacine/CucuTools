@@ -561,12 +561,12 @@ MonoBehaviour:
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
+  elemental: 0
+  damageBonus: 1
+  generator:
     damageAmount: 10
     criticalRate: 0.2
     criticalDamage: 0.5
-  elemental: 0
-  damageBonus: 1
 --- !u!1 &366982307
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,12 +1092,12 @@ MonoBehaviour:
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
+  elemental: 1
+  damageBonus: 1
+  generator:
     damageAmount: 10
     criticalRate: 0.2
     criticalDamage: 0.5
-  elemental: 1
-  damageBonus: 1
 --- !u!1 &1688818639
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,12 +1283,12 @@ MonoBehaviour:
   onDamageDelivered:
     m_PersistentCalls:
       m_Calls: []
-  template:
+  elemental: 2
+  damageBonus: 1
+  generator:
     damageAmount: 10
     criticalRate: 0.2
     criticalDamage: 0.5
-  elemental: 2
-  damageBonus: 1
 --- !u!1 &2047344213
 GameObject:
   m_ObjectHideFlags: 0
