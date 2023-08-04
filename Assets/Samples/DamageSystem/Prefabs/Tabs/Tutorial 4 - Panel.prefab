@@ -3545,7 +3545,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 879929828493467877, guid: 324bf4f930194824a8b03a1f4db295e8, type: 3}
       propertyPath: m_Name
-      value: Tutorial 4 Variant
+      value: Tutorial 4 - Panel
       objectReference: {fileID: 0}
     - target: {fileID: 879929828493467877, guid: 324bf4f930194824a8b03a1f4db295e8, type: 3}
       propertyPath: m_IsActive

@@ -11,6 +11,8 @@ namespace Samples.DamageSystem.Scripts
         [Space]
         public Text logField;
 
+        private int _hitCount = 0;
+        
         public string BuildMessage(DamageEvent e)
         {
             var rcvMsg = e.receiver.name;
@@ -37,13 +39,14 @@ namespace Samples.DamageSystem.Scripts
             return $"\"{rcvMsg}\" received \"{dmgMsg}\" damage from \"{srcMsg}\"";
         }
 
-        private int _hitCount = 0;
-        
         public void Log(DamageEvent e)
         {
             var msg = BuildMessage(e);
 
-            if (active) Debug.Log($">>> Damage :: {msg}");
+            if (active)
+            {
+                Debug.Log(msg);
+            }
 
             if (logField)
             {

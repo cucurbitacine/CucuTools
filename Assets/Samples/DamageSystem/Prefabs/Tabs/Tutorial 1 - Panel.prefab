@@ -316,7 +316,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615871802}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.015, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -364,7 +364,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 15580f605d926334dac0282b935726ac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c42a2c048fefddc469c98eb080bffc73, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -943,19 +943,7 @@ MonoBehaviour:
         m_CallState: 2
   onDied:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &598947592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1124,7 +1112,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 879929828493467877, guid: 324bf4f930194824a8b03a1f4db295e8, type: 3}
       propertyPath: m_Name
-      value: Tutorial 1 Variant
+      value: Tutorial 1 - Panel
       objectReference: {fileID: 0}
     - target: {fileID: 879929828493467878, guid: 324bf4f930194824a8b03a1f4db295e8, type: 3}
       propertyPath: m_RootOrder
@@ -1184,6 +1172,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 506044223}
     m_Modifications:
+    - target: {fileID: 1691834332145358074, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
+      propertyPath: m_Size.x
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1691834332145358074, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
+      propertyPath: m_Size.y
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 1691834332329862922, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1691834332329862922, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 0.65
+      objectReference: {fileID: 0}
     - target: {fileID: 1691834332329862924, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
       propertyPath: onClicked.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -1255,6 +1259,14 @@ PrefabInstance:
     - target: {fileID: 1691834332329862925, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1691834332329862926, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
+      propertyPath: m_Size.x
+      value: 1.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1691834332329862926, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
+      propertyPath: m_Size.y
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 1691834332329862926, guid: a4797f389d90a2f4292c86cdcb0d1813, type: 3}
       propertyPath: m_Color.b
