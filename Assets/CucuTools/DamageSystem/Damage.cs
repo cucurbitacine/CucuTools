@@ -2,8 +2,11 @@
 
 namespace CucuTools.DamageSystem
 {
+    /// <summary>
+    /// Damage information
+    /// </summary>
     [Serializable]
-    public class Damage
+    public class Damage // Use it or inherit it
     {
         public int amount;
         public bool critical;
@@ -15,7 +18,13 @@ namespace CucuTools.DamageSystem
         public static DamageCallback Event { get; set; }
     }
 
-    public class DamageEvent
+    /// <summary>
+    /// Damage event information
+    /// <seealso cref="Damage"/>
+    /// <seealso cref="DamageSource"/>
+    /// <seealso cref="DamageReceiver"/>
+    /// </summary>
+    public sealed class DamageEvent // Who hit who and how?
     {
         public readonly Damage damage = null;
         public readonly DamageSource source = null;

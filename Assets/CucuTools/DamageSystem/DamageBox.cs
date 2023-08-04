@@ -1,9 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CucuTools.DamageSystem.Impl
+namespace CucuTools.DamageSystem
 {
+    /// <summary>
+    /// Damage Box which interacting with <see cref="HitBox"/> as Source of damage
+    /// <seealso cref="DamageSource"/>
+    /// <seealso cref="HitBox"/>
+    /// </summary>
     [DisallowMultipleComponent]
     public abstract class DamageBox : MonoBehaviour
     {
@@ -36,35 +40,25 @@ namespace CucuTools.DamageSystem.Impl
             }
         }
 
-        protected void Hit(GameObject target)
+        protected void HandleTarget(GameObject target, HitType type, HitMode mode)
         {
-            var hitBox = target.GetComponent<HitBox>();
+            if (IsValidTarget(target, type, mode))
+            {
+                var hitBox = target.GetComponent<HitBox>();
 
-            if (hitBox)
-            {
-                Hit(hitBox);
-            }
-        }
-        
-        protected void Handle(GameObject target, HitType type, HitMode mode)
-        {
-            if (CheckTarget(target, type, mode))
-            {
-                Hit(target);
+                if (hitBox)
+                {
+                    Hit(hitBox);
+                }
             }
         }
 
-        private bool CheckTarget(GameObject target, HitType type, HitMode mode)
+        private bool IsValidTarget(GameObject target, HitType type, HitMode mode)
         {
-            return CheckLayer(targetLayerMask, target.layer) && (hitType == type || hitType == HitType.TriggerOrCollision) && hitMode == mode;
+            return (targetLayerMask.value & (1 << target.layer)) > 0 && (hitType == type || hitType == HitType.TriggerOrCollision) && hitMode == mode;
         }
         
-        private static bool CheckLayer(LayerMask layerMask, int layerNumber)
-        {
-            return (layerMask.value & (1 << layerNumber)) > 0;
-        }
-
-        protected void OnValidate()
+        protected virtual void OnValidate()
         {
             if (source == null) source = GetComponent<DamageSource>();
         }

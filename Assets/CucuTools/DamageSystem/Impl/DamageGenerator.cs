@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 namespace CucuTools.DamageSystem.Impl
 {
     [Serializable]
-    public class DamageTemplate
+    public class DamageGenerator
     {
         [Space]
         public int damageAmount = 1;
@@ -16,7 +16,7 @@ namespace CucuTools.DamageSystem.Impl
         [Min(0)]
         public float criticalDamage = 1f;
         
-        public void Apply(Damage dmg)
+        public void Generate(Damage dmg)
         {
             dmg.amount = damageAmount;
 
@@ -27,11 +27,11 @@ namespace CucuTools.DamageSystem.Impl
             }
         }
         
-        public Damage Create()
+        public Damage Generate()
         {
             var dmg = new Damage();
 
-            Apply(dmg);
+            Generate(dmg);
 
             return dmg;
         }

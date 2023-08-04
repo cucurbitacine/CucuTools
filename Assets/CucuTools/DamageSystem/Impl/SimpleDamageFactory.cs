@@ -7,12 +7,12 @@ namespace CucuTools.DamageSystem.Impl
     {
         public const string AssetName = nameof(SimpleDamageFactory);
         
-        [Header("Template Settings")]
-        public DamageTemplate template = new DamageTemplate();
+        [Header("Damage Settings")]
+        public DamageGenerator generator = new DamageGenerator();
         
         public override Damage CreateDamage()
         {
-            return template.Create();
+            return generator.Generate();
         }
     }
 }
