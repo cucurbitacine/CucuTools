@@ -10,10 +10,6 @@
     - [LayerSelect](#layerselect)
     - [ReadOnly](#readonly)
     - [SceneSelect](#sceneselect)
-  - [PlayerController](#playercontroller)
-    - [VisionController \& TouchController](#visioncontroller--touchcontroller)
-    - [HoverController \& DragController](#hovercontroller--dragcontroller)
-    - [*How setup player*](#how-setup-player)
   - [Damage System](#damage-system)
     - [Damage](#damage)
     - [DamageEvent](#damageevent)
@@ -21,6 +17,7 @@
     - [DamageReceiver](#damagereceiver)
     - [DamageManager](#damagemanager)
     - [DamageFactory](#damagefactory)
+    - [DamageBox \& HitBox](#damagebox--hitbox)
     - [Sequence of methods calls](#sequence-of-methods-calls)
     - [*Examples*](#examples)
 
@@ -29,7 +26,7 @@
 ## *Install*
 
 - ```Window``` > ```Package manager``` > ```Add Package from git URL...``` >
-  - ```https://github.com/cucurbitacine/CucuTools.git?path=/Assets/CucuTools#develop```
+  - ```https://github.com/cucurbitacine/CucuTools.git?path=/Assets/CucuTools```
 
 ## Async
 
@@ -174,70 +171,6 @@ public string sceneName;
 ![cucuscene]
 
 ---
-
-## PlayerController
-
-<!-- ![playerrigid] -->
-
-[>>> Watch video about Player Rigid Controller <<<][playerrigidvideo]
-
-> ***Features***
-> 
-> - rigidbody movement
-> - ground checking
-> - platform detecting
-> - allows use it as npc
-
-### VisionController & TouchController
-
-[>>> Watch video demonstration of vision and touch <<<][visiontouchvideo]
-
-> *One Ring to rule them all*
-> 
-> - ***VisionController*** checks what we are looking at at the moment
-> - ***VisionController*** keeps RaycastHit, so you could use it how do you want
-> - ***TouchController*** uses a ***VisionController*** to check how close the object we are looking at is
-  
-|Vision|Touch|
-|:-:|:-:|
-|![vision]|![touch]|
-
-### HoverController & DragController
-
-<!-- ![hoverdrag] -->
-
-- ***HoverController*** and ***DragController*** use a ***TouchController*** to handle interactive objects
-- just put ***HoverableBehaviour*** or ***DragableBehaviour*** on object with *Rigidbody* - and go on
-- ***DragController*** takes the weight of objects into account when dragging
-- physically dragging objects
-
-> *Hover Controller* is maximum simple.
-> 
-> ![hover]
-
-> *Drag Controller* is a little more complicated
-> 
-> ![drag]
->
-> - ***Fast Drag***: if turned off - physically dragging objects by changes velocity and angularVelocity of rigidbody. else - uses *MovePosition* and *MoveRotation*
-> - ***Is Phys Gun***: (like PhysGun in Half Life 2) if turned on - saves rotation before drag and rotates object relative eyes. else - rotates objects only around axis Y
-> - ***Dragging Speed Max***: max speed of dragging object
-> - ***Use Drop Distance***: if turned on - drops objects when real object's real position to far from expected position
-> - ***Drop Distance Max***: max allowed distance between object's real position and expected position. may vary if the weight of the object is taken into account
-> - ***Use Drag Smooth***: if turned on - more smooth dragging
-> - ***Drag Smooth***: degree of smooth
-> - ***Use Power per Mass***: if turned on - dragging properties depend on object's mass
-> - ***Max Mass***: max allowed dragging object's mass
-> - ***Power by Mass***: relation of dragging force to weight
-> - ***Drag Position and Rotation Offsets***: world offsets dragging position and rotation
-> - ***Drag Physic Material***: if not null - change *Physic Material* during dragging
-> - ***Why Player and Touch?***: it takes a player for ignoring collision colliders during dragging. touch is required for handle available objects
-
-### *How setup player*
-
-[>>> Watch video how use player system <<<][playersystemvideo]
-
----
 ## Damage System
 
 - simple
@@ -248,19 +181,20 @@ public string sceneName;
 
 ### Damage
 
-Base damage class to be passed between objects
+Base damage class to be passed between objects.
 
 ```c#
 public class Damage
 {
     public int amount;
     public bool critical;
+    // ...
 }
 ```
 
 ### DamageEvent
 
-Damage event represents a event of damage. Who hit, who had damaged, how, where... 
+Damage event represents a event of damage. Who hits, who had damaged, and how.
 
 ```c#
 public class DamageEvent
@@ -268,36 +202,28 @@ public class DamageEvent
     public readonly Damage damage = null;
     public readonly DamageSource source = null;
     public readonly DamageReceiver receiver = null;
-
     // ...
 }
 ```
 
 ### DamageSource
 
-Bad guy, who creates damage and send it to damage receivers.
+Bad guy, who creates damage and sends it to damage receivers.
 
-Concrete realisations of DamageSource would *Create Damage*. It could be just Damage or some child of Damage.
-
-When source will be *Generate Damage*, it must know who is his target. Because later it could *Handle Damage* event and change it. For example, add some more damage to goblins!
+Concrete realisations of *DamageSource* would *Create Damage*. It could be just Damage or some child of Damage.
 
 For us useful and comfortable is function *SendDamage* which... sending damage!
+
+Also you could to override *Handle Damage*. For example, to add some more damage to goblins!
 
 ```c#
 public abstract class DamageSource : MonoBehaviour
 {
-    [Space] public bool mute = false;
-
     public DamageManager manager = null;
     
     public abstract Damage CreateDamage();
 
-    public DamageEvent GenerateDamage(DamageReceiver receiver)
-    {
-        // ...
-    }
-
-    public virtual void SendDamage(DamageReceiver receiver)
+    public void SendDamage(DamageReceiver receiver)
     {
         // ...
     }
@@ -314,17 +240,13 @@ Poor whipping boy...
 
 Well, it is receiving damage. That's it. His child could *Handle Damage* as well. Also it has event *on Damage Received*.
 
+Also you could to override *Handle Damage*. For example, to increase damage from undead!
+
 ```c#
 public class DamageReceiver : MonoBehaviour
 {
-    [Space]
-    public bool mute = false;
-
     public DamageManager manager = null;
-    
-    [Space]
-    public UnityEvent<DamageEvent> onDamageReceived = new UnityEvent<DamageEvent>();
-
+    // ...
     public void ReceiveDamage(DamageEvent e)
     {
         // ...
@@ -344,23 +266,12 @@ So Hydra-A's head-3 bites Hydra-B's head-5. How do we know that it was Hydra-A t
 
 This is where the *DamageManager* comes into play. *DamageSource* and *DamageReceiver* have a link to *DamageManager*, which represent fighting entities.
 
-Note: having a *DamageManager* is optional! But if you have a need for it, just point out which sources and receivers belong to the *DamageManager*.
+Note: having a *DamageManager* is optional! But if you have a need for it, just point in sources and receivers which *DamageManager* they belong to.
 
 ```c#
 public class DamageManager : MonoBehaviour
 {
-    [Space]
-    public UnityEvent<DamageEvent> onDamageReceived = new UnityEvent<DamageEvent>();
-    
-    [Space]
-    public List<DamageSource> sources = new List<DamageSource>(); 
-    public List<DamageReceiver> receivers = new List<DamageReceiver>(); 
-
-    public void ReceiveDamage(DamageEvent e)
-    {
-        onDamageReceived.Invoke(e);
-    }
-    
+    // ...
     public virtual void HandleDamageAsSource(DamageEvent e)
     {
     }
@@ -368,7 +279,6 @@ public class DamageManager : MonoBehaviour
     public virtual void HandleDamageAsReceiver(DamageEvent e)
     {
     }
-
     // ...
 }
 ```
@@ -379,18 +289,18 @@ Below is how *Damage Event* handling is sources and receivers when they have *Da
 public abstract class DamageSource : MonoBehaviour
 {
     // ...
-    public DamageEvent GenerateDamage(DamageReceiver receiver)
+    public void SendDamage(DamageReceiver receiver)
     {
-        var e = new DamageEvent(CreateDamage(), this, receiver);
+        var dmg = CreateDamage();
+        var e = new DamageEvent(dmg, this, receiver);
 
         HandleDamage(e);
 
-        if (manager != null)
+        if (manager)
         {
             manager.HandleDamageAsSource(e);
         }
-
-        return e;
+        // ...
     }
     // ...
 }
@@ -400,16 +310,14 @@ public class DamageReceiver : MonoBehaviour
     // ...
     public void ReceiveDamage(DamageEvent e)
     {
-        if (mute) return;
-        
         HandleDamage(e);
         
-        if (manager != null)
+        if (manager)
         {
             manager.HandleDamageAsReceiver(e);
         }
-        
-        onDamageReceived.Invoke(e);
+
+        // ...
     }
     // ...
 }
@@ -425,7 +333,7 @@ public abstract class DamageFactory : ScriptableObject
     public abstract Damage CreateDamage();
 }
 
-public class DamageSourceReference : DamageSource
+public class DamageSourceFactory : DamageSource
 {
     [Space]
     public DamageFactory factory;
@@ -437,35 +345,74 @@ public class DamageSourceReference : DamageSource
 }
 ```
 
+### DamageBox & HitBox
+
+Now you know how to ~~deal pain~~ send damage. You will probably find the best and most convenient ways to do it in Unity. 
+But if you don't want to do it yourself, there is a ready-made solution: ***DamageBox*** and ***HitBox***.
+
+How it works:
+- *DamageBox* linked to some *DamageSource*
+- *DamageBox* Triggered or Collided with some *HitBox*
+- *HitBox* linked to some *DamageReceiver*
+- *DamageBox* sends damage from his *DamageSource* to *HitBox's* *DamageReceiver*
+
+That's easy. *DamageBox* has a few parameters:
+- HitType : How to collide? - Through triggering or colliding?
+- HitMode : When to collide? - Enter, Stay or Exit?
+
+Reminder: Please, don't forget set up your GameObject's *Collider* and *Rigidbody* to make it possible to *DamageBox* could triggering or colliding. He doesn't know how to do it on his own yet. More information about triggering and colliding you can find on official documentations.
+
+```c#
+public abstract class DamageBox : MonoBehaviour
+{
+    public HitType hitType = HitType.TriggerOrCollision;
+    public HitMode hitMode = HitMode.Stay;
+    // ...
+    public DamageSource source;
+    
+    public void Hit(HitBox hitBox)
+    {
+        // ...
+        source.SendDamage(hitBox.receiver);
+    }
+}
+```
+
+Well, *HitBox* is more easier... No one parameter, just put it on GameObject and go on! He is ready to take on all the pain of the world!
+
+```c#
+public abstract class HitBox : MonoBehaviour
+{
+    // ...
+    public DamageReceiver receiver;
+}
+```
+
 ### Sequence of methods calls
 
-- *DamageSource*: void SendDamage(DamageReceiver receiver)
-  - *DamageSource*: DamageEvent GenerateDamage(DamageReceiver receiver)
-    - *DamageSource* : Damage CreateDamage()
-    - *DamageSource* : void HandleDamage(DamageEvent e)
-    - *DamageManager*: void HandleDamageAsSource(DamageEvent e)
-- *DamageReceiver*: void ReceiveDamage(DamageEvent e)
-  - *DamageReceiver*: void HandleDamage(DamageEvent e)
-  - *DamageManager* : void HandleDamageAsReceiver(DamageEvent e)
-  - *DamageReceiver*: onDamageReceived.Invoke(info)
-  - *DamageManager*: void ReceiveDamage(DamageEvent e)
-  - *DamageManager*: onDamageReceived.Invoke(e)
+- *Source* : **Send Damage** to *Receiver*
+  - *Source* : Create Damage
+  - *Source* : Handle Damage
+  - *Manager* : Handle Damage as Source
+    - *Receiver* : **Receive Damage** from *Source*
+      - *Receiver* : Handle Damage
+      - *Manager* : Handle Damage As Receiver
+      - *Receiver* : Damage Received Event
+      - *Manager* : Damage Received Event
+  - *Source* : Damage Delivered Event
+  - *Manager* : Damage Delivered Event
 
 ### *Examples*
 
 Below is an example where there is
 - gun whose damage depends on its level
 - damage source of elemental damage (fire, water, etc.)
-- damage receiver in the head (doubles the damage)
-- damage receiver in the arm (halves damage, but not 0)
+- damage receiver in the head (doubles damage)
+- damage receiver in the arm (halves damage)
 - zombies that take double fire damage
 
-<!-- ![zombie] -->
-
-[>>> Watch video about damage system with zombies <<<][zombievideo]
-
 ```c#
-public class Gun : DamageSourceReference
+public class Gun : DamageSource
 {
     public int level = 1;
     // ...
@@ -495,8 +442,6 @@ public class ElementalDamageFactory : DamageFactory
             default: dmg = new Damage(); break;
         }
 
-        template.Apply(dmg);
-
         return dmg;
     }
 }
@@ -512,7 +457,7 @@ public class FireDamage : ElementalDamage
 ```
 
 ```c#
-public class HeadShotDamageReceiver : DamageReceiver
+public class HeadDamageReceiver : DamageReceiver
 {
     protected override void HandleDamage(DamageEvent e)
     {
@@ -522,7 +467,7 @@ public class HeadShotDamageReceiver : DamageReceiver
 ```
 
 ```c#
-public class ArmShotDamageReceiver : DamageReceiver
+public class ArmDamageReceiver : DamageReceiver
 {
     protected override void HandleDamage(DamageEvent e)
     {
@@ -554,13 +499,3 @@ public class ZombieDamageManager : DamageManager
 [cuculayer]:Images/Attributes/CucuLayer.png
 [cucureadonly]:Images/Attributes/CucuReadOnly.png
 [cucuscene]:Images/Attributes/CucuScene.png
-
-[playerrigidvideo]:https://streamable.com/8z39uf
-[visiontouchvideo]:https://streamable.com/ppnqjt
-[playersystemvideo]:https://streamable.com/20ll9q
-[zombievideo]:https://streamable.com/vbeaku
-
-[vision]:Images/PlayerSystem/vision.png
-[touch]:Images/PlayerSystem/touch.png
-[hover]:Images/PlayerSystem/hover.png
-[drag]:Images/PlayerSystem/drag.png
