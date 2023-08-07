@@ -4,11 +4,12 @@ namespace CucuTools.DamageSystem.Impl
 {
     public class SimpleDamageSource : DamageSource
     {
-        [Space] public DamageTemplate template = new DamageTemplate();
+        [Header("Damage Settings")]
+        public DamageGenerator generator = new DamageGenerator();
         
         public override Damage CreateDamage()
         {
-            return template.Create();
+            return generator.Generate();
         }
     }
 }

@@ -1,24 +1,34 @@
 ﻿using System;
-using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace CucuTools.DamageSystem
 {
+    /// <summary>
+    /// Damage information
+    /// </summary>
     [Serializable]
-    public class Damage
+    public class Damage // Use it or inherit it
     {
         public int amount;
         public bool critical;
+
+        public readonly Guid guid = Guid.NewGuid();
+        
+        public delegate void DamageCallback(DamageEvent e);
+
+        public static DamageCallback Event { get; set; }
     }
 
-    public class DamageEvent
+    /// <summary>
+    /// Damage event information
+    /// <seealso cref="Damage"/>
+    /// <seealso cref="DamageSource"/>
+    /// <seealso cref="DamageReceiver"/>
+    /// </summary>
+    public sealed class DamageEvent // Who hit who and how?
     {
         public readonly Damage damage = null;
         public readonly DamageSource source = null;
         public readonly DamageReceiver receiver = null;
-        
-        public Vector3 point = Vector3.zero;
-        public Vector3 normal = Vector3.zero;
         
         public DamageEvent(Damage dmg, DamageSource src, DamageReceiver rcv)
         {
@@ -26,38 +36,9 @@ namespace CucuTools.DamageSystem
             source = src;
             receiver = rcv;
         }
-    }
-    
-    [Serializable]
-    public class DamageTemplate
-    {
-        [Space]
-        public int damageAmount = 1;
-        
-        [Space]
-        [Min(0)]
-        public float criticalRate = 0.2f;
-        [Min(0)]
-        public float criticalDamage = 1f;
-        
-        public void Apply(Damage dmg)
+
+        public DamageEvent(DamageEvent e) : this(e.damage, e.source, e.receiver)
         {
-            dmg.amount = damageAmount;
-
-            dmg.critical = Random.Range(0f, 0.999f) < criticalRate;
-            if (dmg.critical)
-            {
-                dmg.amount += (int)(dmg.amount * criticalDamage);
-            }
-        }
-        
-        public Damage Create()
-        {
-            var dmg = new Damage();
-
-            Apply(dmg);
-
-            return dmg;
         }
     }
 }

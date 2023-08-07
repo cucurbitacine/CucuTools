@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Linq;
 using System.Reflection;
+using CucuTools.Async;
 using UnityEngine;
 
 namespace CucuTools
@@ -138,11 +140,30 @@ namespace CucuTools
 
         #endregion
 
+        #region Coroutines
+
+        public static Coroutine StartCoroutine(IEnumerator enumerator)
+        {
+            return CucuCoroutine.Start(enumerator);
+        }
+        
+        public static void StopCoroutine(Coroutine coroutine)
+        {
+            CucuCoroutine.Stop(coroutine);
+        }
+
+        #endregion
+        
         #region Extensions
 
         public static bool Contains(this LayerMask layerMask, int layerNumber)
         {
-            return Cucu.ContainsLayer(layerMask, layerNumber);
+            return ContainsLayer(layerMask, layerNumber);
+        }
+        
+        public static bool Contains(this int layerNumber, LayerMask layerMask)
+        {
+            return ContainsLayer(layerMask, layerNumber);
         }
         
         public static Vector3 Scale(this Vector3 vector3, float x, float y, float z)

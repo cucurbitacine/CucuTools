@@ -1,69 +1,56 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace CucuTools.DamageSystem
 {
+    /// <summary>
+    /// Damage Manager.
+    /// An entity that represents damage sources and receivers
+    /// <seealso cref="DamageSource"/>
+    /// <seealso cref="DamageReceiver"/>
+    /// <seealso cref="DamageEvent"/>
+    /// <seealso cref="Damage"/>
+    /// </summary>
+    [DisallowMultipleComponent]
     public class DamageManager : CucuBehaviour
     {
-        [Space]
+        [Header("Events")]
         public UnityEvent<DamageEvent> onDamageReceived = new UnityEvent<DamageEvent>();
+        public UnityEvent<DamageEvent> onDamageDelivered = new UnityEvent<DamageEvent>();
         
-        [Space]
-        public List<DamageSource> sources = new List<DamageSource>(); 
-        public List<DamageReceiver> receivers = new List<DamageReceiver>(); 
-
-        public void ReceiveDamage(DamageEvent e)
-        {
-            onDamageReceived.Invoke(e);
-        }
-        
-        public virtual void HandleDamageAsSource(DamageEvent e)
-        {
-        }
-        
+        /// <summary>
+        /// Handle Damage as if Manager was Receiver
+        /// </summary>
+        /// <param name="e"></param>
         public virtual void HandleDamageAsReceiver(DamageEvent e)
         {
         }
         
-        protected virtual void Awake()
+        /// <summary>
+        /// Handle Damage as if Manager was Source
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void HandleDamageAsSource(DamageEvent e)
         {
-            sources.ForEach(s => s.manager = this);
-            receivers.ForEach(r => r.manager = this);
-        }
-
-        protected virtual void OnEnable()
-        {
-            foreach (var receiver in receivers)
-            {
-                receiver.onDamageReceived.AddListener(ReceiveDamage);
-            }
-        }
-        
-        protected virtual void OnDisable()
-        {
-            foreach (var receiver in receivers)
-            {
-                receiver.onDamageReceived.RemoveListener(ReceiveDamage);
-            }
         }
     }
     
     /*
      * *** SEQUENCE OF METHODS CALLS ***
      * 
-     * DamageSource: void SendDamage(DamageReceiver receiver)
-     *    DamageSource: DamageEvent GenerateDamage(DamageReceiver receiver)
-     *       DamageSource : Damage CreateDamage()
-     *       DamageSource : void HandleDamage(DamageEvent e)
-     *       DamageManager: void HandleDamageAsSource(DamageEvent e)
-     *
-     *    DamageReceiver: void ReceiveDamage(DamageEvent e)
-     *       DamageReceiver: void HandleDamage(DamageEvent e)
-     *       DamageManager : void HandleDamageAsReceiver(DamageEvent e)
-     *       DamageReceiver: onDamageReceived.Invoke(info)
-     *
-     * DamageManager: void ReceiveDamage(DamageEvent e)
-     * DamageManager: onDamageReceived.Invoke(e)
+     * DamageSource     : void SendDamage(DamageReceiver receiver, Action<DamageEvent> eventCallback)
+     *    DamageSource  : Damage CreateDamage(DamageReceiver receiver)
+     *    DamageSource  : void HandleDamage(DamageEvent e)
+     *    DamageManager : void HandleDamageAsSource(DamageEvent e)
+     *    DamageReceiver    : void ReceiveDamage(DamageEvent e, Action<DamageEvent> eventCallback)
+     *       DamageReceiver : void HandleDamage(DamageEvent e)
+     *       DamageManager  : void HandleDamageAsReceiver(DamageEvent e)
+     *       DamageReceiver : onDamageReceived.Invoke(DamageEvent e)
+     *       DamageManager  : onDamageReceived.Invoke(DamageEvent e)
+     *       DamageReceiver : eventCallback.Invoke(DamageEvent e)
+     *       Damage         : Event.Invoke(DamageEvent e)
+     *    DamageSource : onDamageDelivered.Invoke(DamageEvent e)
+     *    DamageManager: onDamageDelivered.Invoke(DamageEvent e)
      */
 }
