@@ -1,10 +1,11 @@
-﻿using CucuTools.DamageSystem;
+﻿using CucuTools;
+using CucuTools.DamageSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Samples.DamageSystem.Scripts
 {
-    public class DamageLog : MonoBehaviour
+    public class DamageLog : CucuBehaviour
     {
         public bool active = true;
         
