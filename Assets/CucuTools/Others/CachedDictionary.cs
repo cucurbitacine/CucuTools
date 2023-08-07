@@ -34,18 +34,13 @@ namespace CucuTools.Others
             get => _cache[key];
             set => _cache[key] = value;
         }
-        
-        public bool TryGetValue(TKey key, out TValue value)
-        {
-            return _cache.TryGetValue(key, out value);
-        }
 
         public void Add(TKey key, TValue value)
         {
             _cache.Add(key, value);
         }
         
-        public bool TryGetValidValue(TKey key, out TValue value)
+        public bool TryGetValue(TKey key, out TValue value)
         {
             if (key == null)
             {

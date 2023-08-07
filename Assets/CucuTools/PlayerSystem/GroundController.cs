@@ -34,9 +34,8 @@ namespace CucuTools.PlayerSystem
         public bool fastCast = false;
 
         private RaycastHit _hit = default;
-        
-        private readonly CachedDictionary<Rigidbody, GroundPlatform> _platformCache =
-            new(r => r.GetComponent<GroundPlatform>(), g => g != null);
+
+        private readonly CachedComponent<Rigidbody, GroundPlatform> _platformCache = new();
         
         private readonly RaycastHit[] _overlap = new RaycastHit[32];
 
@@ -48,7 +47,7 @@ namespace CucuTools.PlayerSystem
             
             if (rigid.isKinematic) return true;
 
-            if (_platformCache.TryGetValidValue(rigid, out var groundPlatform)) return true;
+            if (_platformCache.TryGetValue(rigid, out var groundPlatform)) return true;
 
             return false;
         }

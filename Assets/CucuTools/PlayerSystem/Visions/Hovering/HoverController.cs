@@ -12,8 +12,7 @@ namespace CucuTools.PlayerSystem.Visions.Hovering
         [Header("References")]
         public TouchController touch = null;
 
-        private readonly CachedDictionary<Collider, HoverableBase> _hoverCache =
-            new(c => c.GetComponent<HoverableBase>(), h => h != null);
+        private readonly CachedComponent<Collider, HoverableBase> _hoverCache = new();
 
         public bool isOn
         {
@@ -53,7 +52,7 @@ namespace CucuTools.PlayerSystem.Visions.Hovering
 
         private void UpdateHover(TouchInfo info)
         {
-            if (_hoverCache.TryGetValidValue(info.hit.collider, out var hoverable))
+            if (_hoverCache.TryGetValue(info.hit.collider, out var hoverable))
             {
                 Hover(hoverable, info.inTouch);
             }

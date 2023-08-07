@@ -38,8 +38,7 @@ namespace CucuTools.PlayerSystem2D
         
         private const float RaySphereCastOffset = 0.01f;
         
-        private readonly CachedDictionary<Rigidbody2D, Ground2DPlatform> _platformCache =
-            new(r => r.GetComponent<Ground2DPlatform>(), g => g != null);
+        private readonly CachedComponent<Rigidbody2D, Ground2DPlatform> _platformCache = new();
         
         private readonly RaycastHit2D[] _overlap = new RaycastHit2D[32];
 
@@ -51,7 +50,7 @@ namespace CucuTools.PlayerSystem2D
             
             if (rigid.isKinematic) return true;
 
-            if (_platformCache.TryGetValidValue(rigid, out var groundPlatform)) return true;
+            if (_platformCache.TryGetValue(rigid, out var groundPlatform)) return true;
 
             return false;
         }

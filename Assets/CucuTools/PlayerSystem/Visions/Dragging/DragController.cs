@@ -60,8 +60,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
         private bool _nowDragging = false;
         private bool _wasDragging = false;
 
-        private readonly CachedDictionary<Rigidbody, DraggableBase> _draggableCache =
-            new(r => r.GetComponent<DraggableBase>(), d => d != null);
+        private readonly CachedComponent<Rigidbody, DraggableBase> _draggableCache = new();
 
         private readonly CachedDictionary<DraggableBase, Collider[]> _colliderCache =
             new(d => d.GetComponentsInChildren<Collider>(), array => array.Length > 0);
@@ -128,18 +127,18 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
 
         public bool TryGetDraggable(Rigidbody rigid, out DraggableBase draggable)
         {
-            return _draggableCache.TryGetValidValue(rigid, out draggable);
+            return _draggableCache.TryGetValue(rigid, out draggable);
         }
         
         private void ChangeDragMaterial(DraggableBase draggable, bool useDragMaterial)
         {
             if (dragPhysicMaterial == null) return;
             
-            if (_colliderCache.TryGetValidValue(draggable, out var cld))
+            if (_colliderCache.TryGetValue(draggable, out var cld))
             {
                 for (var i = 0; i < cld.Length; i++)
                 {
-                    _physicMaterialCache.TryGetValidValue(cld[i], out var mat);
+                    _physicMaterialCache.TryGetValue(cld[i], out var mat);
                     cld[i].sharedMaterial = useDragMaterial ? dragPhysicMaterial : mat;
                 }
             }
@@ -242,7 +241,7 @@ namespace CucuTools.PlayerSystem.Visions.Dragging
 
                 if (startDragging && !isDragging && touch.touchSomething)
                 {
-                    if (_draggableCache.TryGetValidValue(touch.current.hit.rigidbody, out var drag))
+                    if (_draggableCache.TryGetValue(touch.current.hit.rigidbody, out var drag))
                     {
                         if (drag.isOn && !drag.isDragging)
                         {
