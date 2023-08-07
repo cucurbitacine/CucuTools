@@ -1,12 +1,13 @@
 using System.Collections;
 using CucuTools.Attributes;
 using CucuTools.DamageSystem;
+using CucuTools.DamageSystem.Impl;
 using CucuTools.Others;
 using UnityEngine;
 
 namespace Examples.Playground.Scripts
 {
-    public class DamagingObject : DamageSourceReference
+    public class DamagingObject : DamageSourceFactory
     {
         [Space]
         public bool isEnabled = true;
