@@ -1,7 +1,7 @@
 using CucuTools.DamageSystem;
 using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scenes.DamageSystem.Scripts
 {
     public class DamageInvoker : MonoBehaviour
     {

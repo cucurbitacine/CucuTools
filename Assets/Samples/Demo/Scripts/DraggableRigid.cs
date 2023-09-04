@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scripts
 {
-    public class DraggableDemo : MonoBehaviour
+    public class DraggableRigid : MonoBehaviour
     {
         [Min(0)] public float speedMax = 50;
         [Min(0)] public float dampPosition = 8; 
@@ -12,7 +12,6 @@ namespace Samples.DamageSystem.Scripts
         
         private static Camera cameraMain => Camera.main;
         
-        private Vector2 offset;
         private Vector2 localTouch;
         private Vector2 anchor;
         private Vector2 dragPoint;
@@ -22,7 +21,6 @@ namespace Samples.DamageSystem.Scripts
         {
             var mousePosition = (Vector2)cameraMain.ScreenToWorldPoint(Input.mousePosition);
             localTouch = rigid.transform.InverseTransformPoint(mousePosition);
-            offset = mousePosition - rigid.position;
         }
 
         private void OnMouseDrag()

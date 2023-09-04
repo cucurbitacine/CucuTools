@@ -1,8 +1,8 @@
-﻿using System;
-using CucuTools.DamageSystem;
+﻿using CucuTools.DamageSystem;
+using Samples.Demo.Scripts;
 using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scenes.DamageSystem.Scripts
 {
     public class ElementalDamageReceiver : DamageReceiver
     {

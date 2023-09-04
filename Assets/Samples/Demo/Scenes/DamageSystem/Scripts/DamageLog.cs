@@ -3,7 +3,7 @@ using CucuTools.DamageSystem;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scenes.DamageSystem.Scripts
 {
     public class DamageLog : CucuBehaviour
     {

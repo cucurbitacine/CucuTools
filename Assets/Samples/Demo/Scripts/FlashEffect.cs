@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scripts
 {
     public class FlashEffect : MonoBehaviour
     {

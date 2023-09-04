@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scripts.UI
 {
     public class BarController : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using CucuTools.DamageSystem.Impl;
 using UnityEngine;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scenes.DamageSystem.Scripts
 {
     public class ElementalDamageSource : DamageSource
     {

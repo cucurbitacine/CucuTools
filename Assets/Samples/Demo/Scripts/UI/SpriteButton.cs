@@ -1,25 +1,26 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Samples.DamageSystem.Scripts
+namespace Samples.Demo.Scripts.UI
 {
+    [RequireComponent(typeof(Collider2D))]
     public class SpriteButton : MonoBehaviour
     {
         public SpriteRenderer targetSprite;
         
         [Space]
-        public Color normalColor = Color.white;
-        public Color selectColor = new Color(0.9f,0.9f,0.9f);
-        public Color hoverColor = new Color(0.8f,0.8f,0.8f);
-        public Color pressColor = new Color(0.4f,0.4f,0.4f);
+        public Color normalColor = new Color(1.00f,1.00f,1.00f);
+        public Color hoverColor = new Color(0.80f,0.80f,0.80f);
+        public Color pressColor = new Color(0.70f,0.70f,0.70f);
+        public Color selectColor = new Color(0.90f,0.90f,0.90f);
         
         [Space]
         public UnityEvent onClicked = new UnityEvent();
         
         [Space]
-        public bool selected;
         public bool hovered;
         public bool pressed;
+        public bool selected;
 
         public void Click()
         {
