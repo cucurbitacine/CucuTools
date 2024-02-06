@@ -8,7 +8,7 @@ namespace CucuTools.DamageSystem
     /// <seealso cref="DamageBox"/>
     /// </summary>
     [DisallowMultipleComponent]
-    public class HitBox : MonoBehaviour
+    public class HitBox : CucuBehaviour
     {
         [Space]
         public DamageReceiver receiver;

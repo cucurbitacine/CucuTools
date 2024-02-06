@@ -9,7 +9,7 @@ namespace CucuTools.DamageSystem
     /// <seealso cref="HitBox"/>
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class DamageBox : MonoBehaviour
+    public abstract class DamageBox : CucuBehaviour
     {
         public LayerMask targetLayerMask = 0;
         public HitType hitType = HitType.TriggerOrCollision;
