@@ -399,6 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ce325cb20f44a4b326a1bad7442170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
   receiver: {fileID: 171390059}
 --- !u!114 &171390062
 MonoBehaviour:
@@ -634,6 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ce325cb20f44a4b326a1bad7442170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
   receiver: {fileID: 187678753}
 --- !u!114 &187678756
 MonoBehaviour:
@@ -1065,6 +1067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ce325cb20f44a4b326a1bad7442170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
   receiver: {fileID: 371830470}
 --- !u!114 &371830474
 MonoBehaviour:
@@ -1826,6 +1829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ce325cb20f44a4b326a1bad7442170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
   receiver: {fileID: 958621236}
 --- !u!114 &958621239
 MonoBehaviour:
@@ -2185,6 +2189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbbe8a5dd0504c6dbcf86f41b6c63750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -2510,6 +2515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ce325cb20f44a4b326a1bad7442170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
   receiver: {fileID: 1362728017}
 --- !u!114 &1362728020
 MonoBehaviour:
@@ -2964,6 +2970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27ce325cb20f44a4b326a1bad7442170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  paused: 0
   receiver: {fileID: 1687134745}
 --- !u!114 &1687134749
 MonoBehaviour:

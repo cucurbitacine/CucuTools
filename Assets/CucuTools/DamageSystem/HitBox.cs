@@ -10,6 +10,8 @@ namespace CucuTools.DamageSystem
     [DisallowMultipleComponent]
     public class HitBox : CucuBehaviour
     {
+        public bool paused = false;
+        
         [Space]
         public DamageReceiver receiver;
 

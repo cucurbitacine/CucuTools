@@ -11,6 +11,9 @@ namespace CucuTools.DamageSystem
     [DisallowMultipleComponent]
     public abstract class DamageBox : CucuBehaviour
     {
+        public bool paused = false;
+        
+        [Space]
         public LayerMask targetLayerMask = 0;
         public HitType hitType = HitType.TriggerOrCollision;
         public HitMode hitMode = HitMode.Stay;
@@ -42,11 +45,11 @@ namespace CucuTools.DamageSystem
 
         protected void HandleTarget(GameObject target, HitType type, HitMode mode)
         {
-            if (IsValidTarget(target, type, mode))
+            if (!paused && IsValidTarget(target, type, mode))
             {
                 var hitBox = target.GetComponent<HitBox>();
 
-                if (hitBox)
+                if (hitBox && !hitBox.paused)
                 {
                     Hit(hitBox);
                 }

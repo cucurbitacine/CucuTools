@@ -2,7 +2,6 @@
 
 namespace CucuTools.DamageSystem.Impl
 {
-    [RequireComponent(typeof(Collider))]
     public class DamageBox3D : DamageBox
     {
         protected virtual void OnTriggerEnter(Collider other) => HandleTarget(other.gameObject, HitType.Trigger, HitMode.Enter);
