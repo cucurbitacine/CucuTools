@@ -49,13 +49,35 @@ namespace CucuTools.DamageSystem
             {
                 var hitBox = target.GetComponent<HitBox>();
 
-                if (hitBox && !hitBox.paused)
+                if (IsValidHitBox(hitBox))
                 {
                     Hit(hitBox);
                 }
             }
         }
 
+        private bool IsValidHitBox(HitBox hitBox)
+        {
+            if (hitBox == null) return false;
+            
+            if (hitBox.receiver == null) return false;
+            
+            if (hitBox.paused) return false;
+            
+            if (hitBox.ignoreSelf)
+            {
+                if (source.manager && hitBox.receiver.manager)
+                {
+                    if (source.manager == hitBox.receiver.manager)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        
         private bool IsValidTarget(GameObject target, HitType type, HitMode mode)
         {
             return (targetLayerMask.value & (1 << target.layer)) > 0 && (hitType == type || hitType == HitType.TriggerOrCollision) && hitMode == mode;

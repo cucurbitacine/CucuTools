@@ -11,6 +11,7 @@ namespace CucuTools.DamageSystem
     public class HitBox : CucuBehaviour
     {
         public bool paused = false;
+        public bool ignoreSelf = false;
         
         [Space]
         public DamageReceiver receiver;
