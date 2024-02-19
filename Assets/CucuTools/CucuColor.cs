@@ -6,23 +6,29 @@ namespace CucuTools
 {
     public struct CucuColor
     {
-        #region Lerp
+        #region Evaluate
 
-        public static Color Lerp(float value, params Color[] colors)
+        /// <summary>
+        /// Evaluating color from array of colors
+        /// </summary>
+        /// <param name="value">Value from 0 by 1</param>
+        /// <param name="colors">Array of colors</param>
+        /// <returns>Evaluated color</returns>
+        public static Color Evaluate(float value, params Color[] colors)
         {
             if (colors.Length == 0) return Color.black.Alpha(0f);
             if (colors.Length == 1) return colors[0];
 
             value = Mathf.Clamp01(value);
 
-            var dt = 1f / (colors.Length - 1);
+            var step = 1f / (colors.Length - 1);
 
             for (var i = 0; i < colors.Length - 1; i++)
             {
-                var t = dt * i;
-                if (t <= value && value <= t + dt)
+                var t = step * i;
+                if (t <= value && value <= t + step)
                 {
-                    return colors[i].LerpTo(colors[i + 1], Mathf.Clamp01((value - t) / dt));
+                    return Color.Lerp(colors[i], colors[i + 1], Mathf.Clamp01((value - t) / step));
                 }
             }
 
@@ -33,24 +39,81 @@ namespace CucuTools
 
         #region Gradients & Palettes
 
+        private const int GradientMaxAmountColor = 8;
+        
+        /// <summary>
+        /// Create <see cref="Gradient"/> based on array of colors
+        /// </summary>
+        /// <param name="colors"></param>
+        /// <returns></returns>
         public static Gradient CreateGradient(params Color[] colors)
         {
-            if (colors.Length > 8)
-            {
-                var linSpace = CucuMath.LinSpace(8);
-                colors = linSpace.Select(t => Lerp(t, colors)).ToArray();
-            }
+            var amount = Mathf.Min(colors.Length, GradientMaxAmountColor);
+            
+            var colorKeys = new GradientColorKey[amount];
+            var alphaKeys = new GradientAlphaKey[amount];
 
-            var times = CucuMath.LinSpace(colors.Length);
+            var deltaTime = 1f / (amount - 1);
+            for (var i = 0; i < amount; i++)
+            {
+                var time = i * deltaTime;
+
+                var color = Evaluate(time, colors);
+                        
+                colorKeys[i].time = time;
+                colorKeys[i].color = color;
+
+                alphaKeys[i].time = time;
+                alphaKeys[i].alpha = color.a;
+            }
 
             return new Gradient
             {
                 mode = GradientMode.Blend,
-                colorKeys = times.Select((t, i) => new GradientColorKey(colors[i], t)).ToArray(),
-                alphaKeys = times.Select((t, i) => new GradientAlphaKey(colors[i].a, t)).ToArray()
+                colorKeys = colorKeys,
+                alphaKeys = alphaKeys,
             };
         }
 
+        /// <summary>
+        /// Try to fill array of <see cref="Color"/> using colors from <see cref="Gradient"/>
+        /// </summary>
+        /// <param name="gradient">Colors source</param>
+        /// <param name="colors">Filled array</param>
+        /// <returns>Amount colors. Minimum: colors length or gradient length</returns>
+        public static int GetColorsNonAlloc(Gradient gradient, Color[] colors)
+        {
+            var amount = Mathf.Min(colors.Length, gradient.colorKeys.Length);
+            
+            for (var i = 0; i < amount; i++)
+            {
+                var color = gradient.colorKeys[i].color;
+                color.a = gradient.alphaKeys[i].alpha;
+                
+                colors[i] = color;
+            }
+
+            return amount;
+        }
+        
+        /// <summary>
+        /// Fill array of <see cref="Color"/> using <see cref="Gradient"/>.<see cref="Gradient.Evaluate"/> 
+        /// </summary>
+        /// <param name="gradient">Colors source</param>
+        /// <param name="colors">Filled array</param>
+        public static void EvaluateNonAlloc(Gradient gradient, Color[] colors)
+        {
+            var amount = colors.Length;
+
+            var deltaTime = 1f / (amount - 1);
+            for (var i = 0; i < amount; i++)
+            {
+                var time = i * deltaTime;
+
+                colors[i] = gradient.Evaluate(time);
+            }
+        }
+        
         public static readonly Color[] Rainbow = new Color[]
         {
             new Color(1.000f, 0.000f, 0.000f, 1.000f),
@@ -184,14 +247,14 @@ namespace CucuTools
             return Color.HSVToRGB(h, s, Mathf.Clamp01(value));
         }
 
-        public static Color LerpTo(this Color color, Color target, float t = 0.5f)
+        public static Color LerpTo(this Color color, Color target, float t)
         {
             return Color.Lerp(color, target, t);
         }
         
         public static Color Evaluate(this Color[] colors, float value)
         {
-            return CucuColor.Lerp(value, colors);
+            return CucuColor.Evaluate(value, colors);
         }
         
         public static Color Evaluate(this IEnumerable<Color> colors, float value)
@@ -218,12 +281,19 @@ namespace CucuTools
         {
             return new Vector4(color.r, color.g, color.b, color.a);
         }
+        
+        public static Color[] GetColors(this Gradient gradient, int amount)
+        {
+            var colors = new Color[amount];
 
+            CucuColor.EvaluateNonAlloc(gradient, colors);
+            
+            return colors;
+        }
+        
         public static Color[] GetColors(this Gradient gradient)
         {
-            return gradient.colorKeys
-                .Select((c, i) => new Color(c.color.r, c.color.g, c.color.b, gradient.alphaKeys[i].alpha))
-                .ToArray();
+            return gradient.GetColors(gradient.colorKeys.Length);
         }
         
         public static Gradient CreateGradient(this IEnumerable<Color> colors)
@@ -231,7 +301,7 @@ namespace CucuTools
             return CucuColor.CreateGradient(colors.ToArray());
         }
 
-        public static Color ToColorUV(this Vector2 uv, Color color00, Color color10, Color color11, Color color01)
+        public static Color EvaluateColor(this Vector2 uv, Color color00, Color color10, Color color11, Color color01)
         {
             return CucuColor.ColorUV(uv, color00, color10, color11, color01);
         }
