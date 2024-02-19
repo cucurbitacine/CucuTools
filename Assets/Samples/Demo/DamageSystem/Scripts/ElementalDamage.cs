@@ -2,7 +2,7 @@
 using CucuTools.DamageSystem;
 using UnityEngine;
 
-namespace Samples.Demo.Scenes.DamageSystem.Scripts
+namespace Samples.Demo.DamageSystem.Scripts
 {
     [Serializable]
     public class ElementalDamage : Damage

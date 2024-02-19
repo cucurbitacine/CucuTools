@@ -1,8 +1,6 @@
-using System;
-using CucuTools;
 using UnityEngine;
 
-namespace Samples.Demo.Scenes.Extensions
+namespace Samples.Demo.Extensions
 {
     public class LineController : MonoBehaviour
     {

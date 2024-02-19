@@ -2,7 +2,7 @@
 using Samples.Demo.Scripts;
 using UnityEngine;
 
-namespace Samples.Demo.Scenes.DamageSystem.Scripts
+namespace Samples.Demo.DamageSystem.Scripts
 {
     public class ElementalDamageReceiver : DamageReceiver
     {

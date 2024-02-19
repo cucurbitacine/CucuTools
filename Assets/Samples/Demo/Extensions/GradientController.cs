@@ -3,7 +3,7 @@ using CucuTools;
 using Samples.Demo.Scripts.UI;
 using UnityEngine;
 
-namespace Samples.Demo.Scenes.Extensions
+namespace Samples.Demo.Extensions
 {
     public class GradientController : MonoBehaviour
     {

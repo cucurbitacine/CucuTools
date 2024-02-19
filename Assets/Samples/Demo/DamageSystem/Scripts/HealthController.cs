@@ -3,7 +3,7 @@ using CucuTools.DamageSystem;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Samples.Demo.Scenes.DamageSystem.Scripts
+namespace Samples.Demo.DamageSystem.Scripts
 {
     public class HealthController : MonoBehaviour
     {

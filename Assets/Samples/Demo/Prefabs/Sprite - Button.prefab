@@ -223,12 +223,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 1691834332329862926}
   normalColor: {r: 0.9, g: 0.9, b: 0.09000002, a: 1}
-  selectColor: {r: 0.8, g: 0.8, b: 0.16, a: 1}
   hoverColor: {r: 1, g: 1, b: 0, a: 1}
   pressColor: {r: 0.7, g: 0.7, b: 0.21000001, a: 1}
+  selectColor: {r: 0.8, g: 0.8, b: 0.16, a: 1}
   onClicked:
     m_PersistentCalls:
       m_Calls: []
-  selected: 0
   hovered: 0
   pressed: 0
+  selected: 0
