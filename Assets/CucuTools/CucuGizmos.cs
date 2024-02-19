@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace CucuTools
@@ -8,65 +7,31 @@ namespace CucuTools
     {
         #region Lines
 
-        public static void DrawLines(params Vector3[] corners)
+        public static void DrawLineStrip(bool looped, params Vector3[] corners)
         {
-            for (var i = 0; i < corners.Length -1; i++)
-            {
-                Gizmos.DrawLine(corners[i], corners[i + 1]);
-            }
-        }
-
-        public static void DrawLines(IEnumerable<Vector3> corners)
-        {
-            DrawLines(corners.ToArray());
+            Gizmos.DrawLineStrip(corners, looped);
         }
         
-        public static void DrawLines(Vector3[] corners, Color[] colors)
+        public static void DrawLineStrip(params Vector3[] corners)
         {
-            DrawLines(corners.ToArray());
-        }
-        
-        public static void DrawLinesLoop(params Vector3[] corners)
-        {
-            DrawLines(corners);
-
-            DrawLines(corners[corners.Length - 1], corners[0]);
+            DrawLineStrip(false, corners);
         }
 
-        public static void DrawLinesLoop(IEnumerable<Vector3> corners)
+        public static void DrawLineLooped(params Vector3[] corners)
         {
-            DrawLinesLoop(corners.ToArray());
+            DrawLineStrip(true, corners);
         }
 
         #endregion
         
         #region Spheres
 
-        public static void DrawSpheres(float radius, params Vector3[] centers)
-        {
-            DrawSpheres(centers, radius);
-        }
-        
         public static void DrawSpheres(IEnumerable<Vector3> centers, float radius = 1f)
         {
             foreach (var center in centers)
             {
                 Gizmos.DrawSphere(center, radius);
             }
-        }
-        
-        public static void DrawSpheres(Vector3[] centers, float[] radius, Color[] colors)
-        {
-            for (var i = 0; i < centers.Length; i++)
-            {
-                Gizmos.color = colors[i];
-                Gizmos.DrawSphere(centers[i], radius[i]);
-            }
-        }
-        
-        public static void DrawWireSpheres(float radius, params Vector3[] centers)
-        {
-            DrawWireSpheres(centers, radius);
         }
         
         public static void DrawWireSpheres(IEnumerable<Vector3> centers, float radius = 1f)
@@ -77,29 +42,31 @@ namespace CucuTools
             }
         }
         
-        public static void DrawWireSpheres(Vector3[] centers, float[] radius, Color[] colors)
+        public static void DrawSpheres(float radius, params Vector3[] centers)
         {
-            for (var i = 0; i < centers.Length; i++)
-            {
-                Gizmos.color = colors[i];
-                Gizmos.DrawWireSphere(centers[i], radius[i]);
-            }
+            DrawSpheres(centers, radius);
         }
-
+        
+        public static void DrawWireSpheres(float radius, params Vector3[] centers)
+        {
+            DrawWireSpheres(centers, radius);
+        }
+        
         #endregion
         
-        public static void DrawWireCube(Vector3 origin, Vector3 size, Quaternion? rotation = null)
+        public static void DrawWireCube(Vector3 origin, Vector3? size = null, Quaternion? rotation = null)
         {
-            if (rotation == null) rotation = Quaternion.identity;
+            size ??= Vector3.one;
+            rotation ??= Quaternion.identity;
 
-            var a = -size * 0.5f;
-            var b = a + Vector3.up * size.y;
-            var c = b + Vector3.forward * size.z;
-            var d = c - Vector3.up * size.y;
-            var e = a + Vector3.right * size.x;
-            var f = b + Vector3.right * size.x;
-            var g = c + Vector3.right * size.x;
-            var h = d + Vector3.right * size.x;
+            var a = -size.Value * 0.5f;
+            var b = a + Vector3.up * size.Value.y;
+            var c = b + Vector3.forward * size.Value.z;
+            var d = c - Vector3.up * size.Value.y;
+            var e = a + Vector3.right * size.Value.x;
+            var f = b + Vector3.right * size.Value.x;
+            var g = c + Vector3.right * size.Value.x;
+            var h = d + Vector3.right * size.Value.x;
 
             a = rotation.Value * a + origin; 
             b = rotation.Value * b + origin; 
@@ -110,28 +77,39 @@ namespace CucuTools
             g = rotation.Value * g + origin; 
             h = rotation.Value * h + origin; 
             
-            DrawLinesLoop(a, b, c, d);
-            DrawLinesLoop(e, f, g, h);
-            DrawLines(a, e);
-            DrawLines(b, f);
-            DrawLines(c, g);
-            DrawLines(d, h);
+            DrawLineLooped(a, b, c, d);
+            DrawLineLooped(e, f, g, h);
+            DrawLineStrip(a, e);
+            DrawLineStrip(b, f);
+            DrawLineStrip(c, g);
+            DrawLineStrip(d, h);
         }
         
-        public static void DrawCircle(Vector3 center, Vector3 normal, float radius = 1f, int resolution = 32)
+        public static void DrawCircle(Vector3 center, Vector3? normal = null, float radius = 0.5f, int resolution = 36)
         {
-            var t = CucuMath.LinSpace(resolution);
+            normal ??= Vector3.up;
+            
+            var rot = Quaternion.FromToRotation(Vector3.up, normal.Value);
 
-            var rot = Quaternion.FromToRotation(Vector3.up, normal);
-
-            var points = new Vector3[t.Length];
-            for (var i = 0; i < t.Length; i++)
+            var lastPoint = Vector3.zero;
+            var dPhi = Mathf.PI * 2 / resolution;
+            for (var i = 0; i < resolution + 1; i++)
             {
-                var phi = t[i] * Mathf.PI * 2;
-                points[i] = center + (rot * new Vector3(Mathf.Cos(phi), 0, Mathf.Sin(phi)) * radius);
-            }
+                var phi = i * dPhi;
+                var point = center + (rot * new Vector3(Mathf.Cos(phi), 0, Mathf.Sin(phi)) * radius);
 
-            DrawLines(points);
+                if (i > 0)
+                {
+                    Gizmos.DrawLine(lastPoint, point);
+                }
+
+                if (i < resolution)
+                {
+                    Gizmos.DrawLine(center, point);
+                }
+                
+                lastPoint = point;
+            }
         }
     }
 }
