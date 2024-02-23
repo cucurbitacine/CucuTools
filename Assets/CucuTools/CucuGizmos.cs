@@ -111,5 +111,42 @@ namespace CucuTools
                 lastPoint = point;
             }
         }
+
+        private static readonly float[] GizmosDistance = new float[Bezier.DefaultResolution];
+        
+        public static void DrawBezier(Bezier bezier)
+        {
+            if (bezier.isEnd) return;
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(bezier.pointIn, 0.05f);
+            Gizmos.DrawWireSphere(bezier.pointOut, 0.05f);
+/*
+            // It is very noisy
+            if (!bezier.isEnd)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireSphere(bezier.pointTangentIn, 0.05f);
+                Gizmos.DrawLine(bezier.pointIn, bezier.pointTangentIn);
+
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(bezier.pointTangentOut, 0.05f);
+                Gizmos.DrawLine(bezier.pointOut, bezier.pointTangentOut);
+            }
+*/
+            Gizmos.color = Color.green;
+            CucuMath.LinSpace(0, bezier.GetLength(), GizmosDistance);
+
+            var lastPoint = bezier.Evaluate(GizmosDistance[0]);
+
+            for (var i = 1; i < GizmosDistance.Length; i++)
+            {
+                var point = bezier.Evaluate(GizmosDistance[i]);
+
+                Gizmos.DrawLine(lastPoint, point);
+
+                lastPoint = point;
+            }
+        }
     }
 }
