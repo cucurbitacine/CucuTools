@@ -6,11 +6,13 @@ namespace Samples.Demo.Scripts
     [RequireComponent(typeof(Collider2D))]
     public class DraggableSprite : MonoBehaviour
     {
+        [Space]
         public bool freezeX;
         public bool freezeY;
 
         [Space]
         public bool fixedArea;
+        public bool useParent = false;
         public Vector2 areaCenter = Vector2.zero;
         public Vector2 areaSize = Vector2.one;
         
@@ -22,6 +24,26 @@ namespace Samples.Demo.Scripts
         private Vector2 offset;
 
         public UnityEvent onPositionChanged = new UnityEvent();
+
+        private Vector2 GetAreaCenter()
+        {
+            if (useParent && transform.parent)
+            {
+                return transform.parent.TransformPoint(areaCenter);
+            }
+
+            return areaCenter;
+        }
+        
+        private Vector2 GetAreaSize()
+        {
+            if (useParent && transform.parent)
+            {
+                return transform.parent.TransformVector(areaSize);
+            }
+
+            return areaSize;
+        }
         
         private void OnMouseDown()
         {
@@ -42,8 +64,11 @@ namespace Samples.Demo.Scripts
 
                 if (fixedArea)
                 {
-                    position.x = Mathf.Clamp(position.x, areaCenter.x - areaSize.x * 0.5f, areaCenter.x + areaSize.x * 0.5f);
-                    position.y = Mathf.Clamp(position.y, areaCenter.y - areaSize.y * 0.5f, areaCenter.y + areaSize.y * 0.5f);
+                    var center = GetAreaCenter();
+                    var size = GetAreaSize();
+                    
+                    position.x = Mathf.Clamp(position.x, center.x - size.x * 0.5f, center.x + size.x * 0.5f);
+                    position.y = Mathf.Clamp(position.y, center.y - size.y * 0.5f, center.y + size.y * 0.5f);
                 }
                 
                 if (freezeX) position.x = collider2d.transform.position.x;
@@ -53,6 +78,10 @@ namespace Samples.Demo.Scripts
                 
                 onPositionChanged.Invoke();
             }
+        }
+
+        private void OnMouseUp()
+        {
         }
 
         private void Awake()
@@ -69,7 +98,7 @@ namespace Samples.Demo.Scripts
         {
             if (fixedArea && collider2d)
             {
-                Gizmos.DrawWireCube(areaCenter, areaSize);
+                Gizmos.DrawWireCube(GetAreaCenter(), GetAreaSize());
             }
         }
     }

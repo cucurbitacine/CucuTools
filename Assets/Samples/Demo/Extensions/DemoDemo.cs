@@ -1,6 +1,5 @@
 using System.Linq;
 using CucuTools;
-using UnityEditor;
 using UnityEngine;
 
 namespace Samples.Demo.Extensions
@@ -42,7 +41,7 @@ namespace Samples.Demo.Extensions
 
                 for (var i = 0; i < t.Length; i++)
                 {
-                    var point = CucuMath.BezierPosition(t[i],
+                    var point = Bezier.Position(t[i],
                         points[0].position, points[1].position, points[2].position, points[3].position);
 
                     line.SetPosition(i, point);
@@ -66,35 +65,4 @@ namespace Samples.Demo.Extensions
             UpdateLine();
         }
     }
-
-#if UNITY_EDITOR
-    [CustomEditor(typeof(DemoDemo))]
-    public class DemoDemoEditor : Editor
-    {
-        public float[] values;
-
-        public void OnSceneGUI()
-        {
-            if (values == null) values = new float[] { 1, 1, 1, 1 };
-
-            if (target is DemoDemo demo)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    if (i < demo.points.Length && demo.points[i] != null)
-                    {
-                        var point = demo.points[i];
-
-                        point.position = Handles.PositionHandle(point.position, Quaternion.identity);
-                    }
-                }
-
-                Handles.DrawDottedLine(demo.points[0].position, demo.points[1].position, 1f);
-                Handles.DrawDottedLine(demo.points[2].position, demo.points[3].position, 1f);
-
-                demo.UpdateLine();
-            }
-        }
-    }
-#endif
 }

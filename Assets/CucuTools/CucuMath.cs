@@ -49,7 +49,7 @@ namespace CucuTools
         {
             return LinSpace(0f, 1f, resolution);
         }
-
+        
         #region Search Range
 
         public static bool SearchRange<T>(out int left, out int right, T value, params T[] sortedArray)

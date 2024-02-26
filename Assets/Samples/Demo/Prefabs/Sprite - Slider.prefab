@@ -585,6 +585,7 @@ MonoBehaviour:
   freezeX: 0
   freezeY: 1
   fixedArea: 1
+  useParent: 0
   areaCenter: {x: 0, y: 0}
   areaSize: {x: 4, y: 0.4}
   collider2d: {fileID: 5251743800617938485}
@@ -604,6 +605,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 5251743800617938482}
+  lockHue: 0
+  lockSaturation: 0
+  lockValue: 0
+  lockAlpha: 0
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   hoverColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   pressColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}

@@ -101,14 +101,75 @@ namespace CucuTools
         public Bezier previousCurve { get; private set; }
         public Bezier nextCurve { get; private set; }
 
-        public Vector3 pointIn => origin;
-        public Vector3 tangentIn => direction;
-        public Vector3 pointTangentIn => pointIn + tangentIn * weightIn;
+        public Vector3 pointIn
+        {
+            get => origin;
+            set => origin = value;
+        }
 
-        public float weightOut => nextCurve?.weightIn ?? weightIn;
-        public Vector3 pointOut => nextCurve?.pointIn ?? pointIn;
-        public Vector3 tangentOut => -nextCurve?.tangentIn ?? Vector3.zero;
-        public Vector3 pointTangentOut => pointOut + tangentOut * weightOut;
+        public Vector3 tangentIn
+        {
+            get => direction;
+            set => direction = value;
+        }
+
+        public Vector3 pointTangentIn
+        {
+            get => pointIn + tangentIn * weightIn;
+            set
+            {
+                var vector = value - pointIn;
+                tangentIn = vector.normalized;
+                weightIn = vector.magnitude;
+            }
+        }
+
+        public float weightOut
+        {
+            get => nextCurve?.weightIn ?? weightIn;
+            set
+            {
+                if (nextCurve != null)
+                {
+                    nextCurve.weightIn = value;
+                }
+            }
+        }
+
+        public Vector3 pointOut
+        {
+            get => nextCurve?.pointIn ?? pointIn;
+            set
+            {
+                if (nextCurve != null)
+                {
+                    nextCurve.pointIn = value;
+                }
+            }
+        }
+
+        public Vector3 tangentOut
+        {
+            get => -nextCurve?.tangentIn ?? Vector3.zero;
+            set
+            {
+                if (nextCurve != null)
+                {
+                    nextCurve.tangentIn = -value;
+                }
+            }
+        }
+
+        public Vector3 pointTangentOut
+        {
+            get => pointOut + tangentOut * weightOut;
+            set
+            {
+                var vector = value - pointOut;
+                tangentOut = vector.normalized;
+                weightOut = vector.magnitude;
+            }
+        }
 
         public bool isBegin => previousCurve == null;
         public bool isEnd => nextCurve == null;

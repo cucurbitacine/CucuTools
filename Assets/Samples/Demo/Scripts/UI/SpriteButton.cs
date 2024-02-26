@@ -7,12 +7,18 @@ namespace Samples.Demo.Scripts.UI
     public class SpriteButton : MonoBehaviour
     {
         public SpriteRenderer targetSprite;
+
+        [Space]
+        public bool lockHue = false;
+        public bool lockSaturation = false;
+        public bool lockValue = false;
+        public bool lockAlpha = false;
         
         [Space]
-        public Color normalColor = new Color(1.00f,1.00f,1.00f);
-        public Color hoverColor = new Color(0.80f,0.80f,0.80f);
-        public Color pressColor = new Color(0.70f,0.70f,0.70f);
-        public Color selectColor = new Color(0.90f,0.90f,0.90f);
+        public Color normalColor = new Color(1.00f, 1.00f, 1.00f);
+        public Color hoverColor  = new Color(0.80f, 0.80f, 0.80f);
+        public Color pressColor  = new Color(0.70f, 0.70f, 0.70f);
+        public Color selectColor = new Color(0.90f, 0.90f, 0.90f);
         
         [Space]
         public UnityEvent onClicked = new UnityEvent();
@@ -48,22 +54,48 @@ namespace Samples.Demo.Scripts.UI
         {
             if (targetSprite)
             {
-                targetSprite.color = normalColor;
-
+                var color = normalColor;
+                
                 if (selected)
                 {
-                    targetSprite.color = selectColor;
+                    color = selectColor;
                 }
                 
                 if (hovered)
                 {
-                    targetSprite.color = hoverColor;
+                    color = hoverColor;
                 }
                 
                 if (pressed)
                 {
-                    targetSprite.color = pressColor;
+                    color = pressColor;
                 }
+                
+                Color.RGBToHSV(targetSprite.color, out var hueLocked, out var sLocked, out var vLocked);
+                var alphaLocked = targetSprite.color.a;
+
+                Color.RGBToHSV(color, out var hue, out var saturation, out var value);
+                var alpha = color.a;
+
+                if (lockHue)
+                {
+                    hue = hueLocked;
+                }
+                
+                if (lockSaturation)
+                {
+                    saturation = sLocked;
+                }
+                
+                if (lockValue)
+                {
+                    value = vLocked;
+                }
+
+                color = Color.HSVToRGB(hue, saturation, value);
+                color.a = lockAlpha ? alphaLocked : alpha;
+                
+                targetSprite.color = color;
             }
         }
         
@@ -91,8 +123,6 @@ namespace Samples.Demo.Scripts.UI
             pressed = false;
             
             UpdateColor();
-
-            
         }
         
         private void OnMouseExit()
