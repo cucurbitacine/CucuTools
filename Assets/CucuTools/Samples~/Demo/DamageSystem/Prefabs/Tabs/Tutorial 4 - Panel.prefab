@@ -374,6 +374,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 1393384113}
+  lockHue: 0
+  lockSaturation: 0
+  lockValue: 0
+  lockAlpha: 0
   normalColor: {r: 1, g: 1, b: 1, a: 0}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   pressColor: {r: 0.90196085, g: 0.90196085, b: 0.09019608, a: 1}
@@ -631,6 +635,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 1588746521}
+  lockHue: 0
+  lockSaturation: 0
+  lockValue: 0
+  lockAlpha: 0
   normalColor: {r: 1, g: 1, b: 1, a: 0}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   pressColor: {r: 0.90196085, g: 0.90196085, b: 0.09019608, a: 1}
@@ -802,7 +810,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79eb7c01493436348b8a914787eb6d86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -1084,6 +1092,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 1031319606}
+  lockHue: 0
+  lockSaturation: 0
+  lockValue: 0
+  lockAlpha: 0
   normalColor: {r: 1, g: 1, b: 1, a: 0}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   pressColor: {r: 0.90196085, g: 0.90196085, b: 0.09019608, a: 1}
@@ -1385,7 +1397,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79eb7c01493436348b8a914787eb6d86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -1469,7 +1481,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79eb7c01493436348b8a914787eb6d86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -1553,7 +1565,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79eb7c01493436348b8a914787eb6d86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -1905,6 +1917,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 1717066714}
+  lockHue: 0
+  lockSaturation: 0
+  lockValue: 0
+  lockAlpha: 0
   normalColor: {r: 1, g: 1, b: 1, a: 0}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   pressColor: {r: 0.90196085, g: 0.90196085, b: 0.09019608, a: 1}
@@ -2076,7 +2092,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79eb7c01493436348b8a914787eb6d86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -2160,7 +2176,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 79eb7c01493436348b8a914787eb6d86, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
@@ -2632,6 +2648,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 1352576456}
+  lockHue: 0
+  lockSaturation: 0
+  lockValue: 0
+  lockAlpha: 0
   normalColor: {r: 1, g: 1, b: 1, a: 0}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   pressColor: {r: 0.90196085, g: 0.90196085, b: 0.09019608, a: 1}
@@ -3108,6 +3128,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetSprite: {fileID: 349413339}
+  lockHue: 0
+  lockSaturation: 0
+  lockValue: 0
+  lockAlpha: 0
   normalColor: {r: 1, g: 1, b: 1, a: 0}
   hoverColor: {r: 1, g: 1, b: 1, a: 1}
   pressColor: {r: 0.90196085, g: 0.90196085, b: 0.09019608, a: 1}
