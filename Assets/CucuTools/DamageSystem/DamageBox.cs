@@ -11,6 +11,8 @@ namespace CucuTools.DamageSystem
     [DisallowMultipleComponent]
     public abstract class DamageBox : CucuBehaviour
     {
+        #region SerializeField
+
         public bool paused = false;
         
         [Space]
@@ -21,6 +23,8 @@ namespace CucuTools.DamageSystem
         
         [Space]
         public DamageSource source;
+
+        #endregion
 
         private readonly Dictionary<HitBox, float> timeouts = new Dictionary<HitBox, float>();
         
@@ -39,9 +43,30 @@ namespace CucuTools.DamageSystem
             {
                 timeouts[hitBox] = timeNow;
 
-                source.SendDamage(hitBox.receiver);
+                SendDamage(hitBox);
             }
         }
+
+        #region Virtual API
+
+        protected virtual bool IsValidTargetInternal(GameObject target)
+        {
+            return true;
+        }
+        
+        protected virtual bool IsValidHitBoxInternal(HitBox hitBox)
+        {
+            return true;
+        }
+
+        protected virtual void SendDamage(HitBox hitBox)
+        {
+            source.SendDamage(hitBox.receiver);
+        }
+
+        #endregion
+
+        #region Protected & Private API
 
         protected void HandleTarget(GameObject target, HitType type, HitMode mode)
         {
@@ -55,7 +80,15 @@ namespace CucuTools.DamageSystem
                 }
             }
         }
-
+        
+        private bool IsValidTarget(GameObject target, HitType type, HitMode mode)
+        {
+            return (targetLayerMask.value & (1 << target.layer)) > 0 &&
+                   (hitType == HitType.TriggerOrCollision || hitType == type) &&
+                   hitMode == mode && 
+                   IsValidTargetInternal(target);
+        }
+        
         private bool IsValidHitBox(HitBox hitBox)
         {
             if (hitBox == null) return false;
@@ -75,13 +108,10 @@ namespace CucuTools.DamageSystem
                 }
             }
 
-            return true;
+            return IsValidHitBoxInternal(hitBox);
         }
-        
-        private bool IsValidTarget(GameObject target, HitType type, HitMode mode)
-        {
-            return (targetLayerMask.value & (1 << target.layer)) > 0 && (hitType == type || hitType == HitType.TriggerOrCollision) && hitMode == mode;
-        }
+
+        #endregion
         
         protected virtual void OnValidate()
         {
