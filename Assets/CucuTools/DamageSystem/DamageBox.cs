@@ -9,8 +9,13 @@ namespace CucuTools.DamageSystem
     /// <seealso cref="HitBox"/>
     /// </summary>
     [DisallowMultipleComponent]
-    public abstract class DamageBox : MonoBehaviour
+    public abstract class DamageBox : CucuBehaviour
     {
+        #region SerializeField
+
+        public bool paused = false;
+        
+        [Space]
         public LayerMask targetLayerMask = 0;
         public HitType hitType = HitType.TriggerOrCollision;
         public HitMode hitMode = HitMode.Stay;
@@ -18,6 +23,8 @@ namespace CucuTools.DamageSystem
         
         [Space]
         public DamageSource source;
+
+        #endregion
 
         private readonly Dictionary<HitBox, float> timeouts = new Dictionary<HitBox, float>();
         
@@ -36,27 +43,75 @@ namespace CucuTools.DamageSystem
             {
                 timeouts[hitBox] = timeNow;
 
-                source.SendDamage(hitBox.receiver);
+                SendDamage(hitBox);
             }
         }
 
+        #region Virtual API
+
+        protected virtual bool IsValidTargetInternal(GameObject target)
+        {
+            return true;
+        }
+        
+        protected virtual bool IsValidHitBoxInternal(HitBox hitBox)
+        {
+            return true;
+        }
+
+        protected virtual void SendDamage(HitBox hitBox)
+        {
+            source.SendDamage(hitBox.receiver);
+        }
+
+        #endregion
+
+        #region Protected & Private API
+
         protected void HandleTarget(GameObject target, HitType type, HitMode mode)
         {
-            if (IsValidTarget(target, type, mode))
+            if (!paused && IsValidTarget(target, type, mode))
             {
                 var hitBox = target.GetComponent<HitBox>();
 
-                if (hitBox)
+                if (IsValidHitBox(hitBox))
                 {
                     Hit(hitBox);
                 }
             }
         }
-
+        
         private bool IsValidTarget(GameObject target, HitType type, HitMode mode)
         {
-            return (targetLayerMask.value & (1 << target.layer)) > 0 && (hitType == type || hitType == HitType.TriggerOrCollision) && hitMode == mode;
+            return (targetLayerMask.value & (1 << target.layer)) > 0 &&
+                   (hitType == HitType.TriggerOrCollision || hitType == type) &&
+                   hitMode == mode && 
+                   IsValidTargetInternal(target);
         }
+        
+        private bool IsValidHitBox(HitBox hitBox)
+        {
+            if (hitBox == null) return false;
+            
+            if (hitBox.receiver == null) return false;
+            
+            if (hitBox.paused) return false;
+            
+            if (hitBox.ignoreSelf)
+            {
+                if (source.manager && hitBox.receiver.manager)
+                {
+                    if (source.manager == hitBox.receiver.manager)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return IsValidHitBoxInternal(hitBox);
+        }
+
+        #endregion
         
         protected virtual void OnValidate()
         {

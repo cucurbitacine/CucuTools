@@ -4,8 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/Samples/DamageSystem/Scenes/DamageSystem.unity
-    guid: b50301b66fb311d40b45ad5c8dea0820
+  m_Scenes: []
   m_configObjects: {}

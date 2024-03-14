@@ -8,8 +8,11 @@ namespace CucuTools.DamageSystem
     /// <seealso cref="DamageBox"/>
     /// </summary>
     [DisallowMultipleComponent]
-    public class HitBox : MonoBehaviour
+    public class HitBox : CucuBehaviour
     {
+        public bool paused = false;
+        public bool ignoreSelf = false;
+        
         [Space]
         public DamageReceiver receiver;
 
