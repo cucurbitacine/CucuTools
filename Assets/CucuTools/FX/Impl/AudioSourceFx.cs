@@ -38,7 +38,7 @@ namespace CucuTools.FX.Impl
             }
         }
 
-        public override void UnPause()
+        public override void Unpause()
         {
             if (source)
             {

@@ -1,3 +1,4 @@
+using System;
 using CucuTools.Attributes;
 using UnityEngine;
 
@@ -5,16 +6,26 @@ namespace CucuTools.FX
 {
     public abstract class BaseFx : CucuBehaviour
     {
+        public bool playOnStart;
+
         public abstract bool isPlaying { get; }
-        
-        [DrawButton(group:"FX", colorHex:"aaaaff")]
+
+        [DrawButton(group: "FX", colorHex: "aaaaff")]
         public abstract void Play();
-        [DrawButton(group:"FX")]
+
+        [DrawButton(group: "FX")]
         public abstract void Pause();
-        [DrawButton(group:"FX")]
-        public abstract void UnPause();
-        [DrawButton(group:"FX", colorHex:"ffaaaa")]
+
+        [DrawButton(group: "FX")]
+        public abstract void Unpause();
+
+        [DrawButton(group: "FX", colorHex: "ffaaaa")]
         public abstract void Stop();
+
+        private void Start()
+        {
+            if (playOnStart) Play();
+        }
     }
 
     public static class BaseFxExt
@@ -24,12 +35,12 @@ namespace CucuTools.FX
             fx.transform.SetPositionAndRotation(position, rotation);
             fx.Play();
         }
-        
+
         public static void Play(this BaseFx fx, Vector3 position)
         {
             fx.Play(position, fx.transform.rotation);
         }
-        
+
         public static void Play(this BaseFx fx, Quaternion rotation)
         {
             fx.Play(fx.transform.position, rotation);

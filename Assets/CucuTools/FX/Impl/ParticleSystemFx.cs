@@ -12,7 +12,7 @@ namespace CucuTools.FX.Impl
             set => _particle = value;
         }
 
-        public override bool isPlaying => particle != null && particle.isPlaying;
+        public override bool isPlaying => particle && particle.isPlaying;
 
         public override void Play()
         {
@@ -31,7 +31,7 @@ namespace CucuTools.FX.Impl
             }
         }
 
-        public override void UnPause()
+        public override void Unpause()
         {
             if (particle)
             {
