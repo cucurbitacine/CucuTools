@@ -17,6 +17,10 @@ namespace CucuTools
             if (isSingleton && singleton != this)
             {
                 isSingleton = false;
+
+                Debug.LogWarning($"{name} cannot be singleton because singleton already exists.");
+
+                gameObject.SetActive(false);
             }
         }
         

@@ -1,8 +1,10 @@
+using System;
+using CucuTools;
 using CucuTools.Attributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CucuTools.FX
+namespace Samples.Demo.FX
 {
     public class DevSceneLoader : Singleton<DevSceneLoader>
     {
@@ -56,6 +58,28 @@ namespace CucuTools.FX
         {
             SceneManager.sceneLoaded -= SceneLoaded;
             SceneManager.sceneUnloaded -= SceneUnloaded;
+        }
+
+        private void OnGUI()
+        {
+            sceneName = GUILayout.TextField(sceneName);
+
+            loadSceneMode = (LoadSceneMode)GUILayout.Toolbar((int)loadSceneMode, Enum.GetNames(typeof(LoadSceneMode)));
+            
+            if (GUILayout.Button("Load"))
+            {
+                Load();
+            }
+            
+            if (GUILayout.Button("Unload"))
+            {
+                Unload();
+            }
+            
+            if (GUILayout.Button($"Set Active: {lastLoadedScene.name}"))
+            {
+                ActiveLastLoadedScene();
+            }
         }
     }
 }

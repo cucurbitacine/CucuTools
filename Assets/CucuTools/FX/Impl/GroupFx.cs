@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CucuTools.FX
+namespace CucuTools.FX.Impl
 {
     public class GroupFx : BaseFx
     {
