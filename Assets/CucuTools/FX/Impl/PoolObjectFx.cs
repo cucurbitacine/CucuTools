@@ -1,19 +1,21 @@
+using CucuTools.Pools;
+
 namespace CucuTools.FX.Impl
 {
-    public class CloneFx : CloneBehaviour
+    public class PoolObjectFx : PoolObject
     {
         public BaseFx fx;
 
-        private void Start()
+        private void Awake()
         {
             if (fx == null) fx = GetComponent<BaseFx>();
         }
 
         private void Update()
         {
-            if (fx)
+            if (fx && !fx.isPlaying)
             {
-                Free(!fx.isPlaying);
+                Release();
             }
         }
 

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CucuTools.FX.Impl
 {
-    public class ParticleSystemFx : BaseFx
+    public class ParticleSystemFx : VisualFx
     {
         [SerializeField] private ParticleSystem _particle;
 
@@ -22,23 +22,7 @@ namespace CucuTools.FX.Impl
                 particle.Play();
             }
         }
-
-        public override void Pause()
-        {
-            if (particle)
-            {
-                if (!particle.isPaused) particle.Pause();
-            }
-        }
-
-        public override void Unpause()
-        {
-            if (particle)
-            {
-                if (particle.isPaused) particle.Play();
-            }
-        }
-
+        
         public override void Stop()
         {
             if (particle)

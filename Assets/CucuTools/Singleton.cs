@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace CucuTools
 {
+    public sealed class Singleton : Singleton<Singleton>
+    {
+    }
+    
     public abstract class Singleton<T> : CucuBehaviour where T : Singleton<T>
     {
         [SerializeField] private bool _isSingleton = false;

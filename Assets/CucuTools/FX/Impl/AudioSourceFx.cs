@@ -7,8 +7,10 @@ namespace CucuTools.FX.Impl
     public class AudioSourceFx : AudioFx
     {
         [SerializeField] private AudioSource _source;
-        
-        [Space] public SelectMode mode = SelectMode.Current;
+
+        [Space]
+        public bool playOnAwake = false;
+        public SelectMode mode = SelectMode.Current;
         [Min(-1)]
         public int index = -1;
         public AudioClip[] clips = Array.Empty<AudioClip>();
@@ -27,22 +29,6 @@ namespace CucuTools.FX.Impl
             {
                 source.clip = GetClip();
                 source.Play();
-            }
-        }
-
-        public override void Pause()
-        {
-            if (source)
-            {
-                source.Pause();
-            }
-        }
-
-        public override void Unpause()
-        {
-            if (source)
-            {
-                source.UnPause();
             }
         }
 
@@ -84,6 +70,11 @@ namespace CucuTools.FX.Impl
         private void Awake()
         {
             if (source == null) source = GetComponent<AudioSource>();
+
+            if (playOnAwake)
+            {
+                Play();
+            }
         }
 
         private void OnValidate()

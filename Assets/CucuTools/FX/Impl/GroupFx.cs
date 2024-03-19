@@ -17,22 +17,6 @@ namespace CucuTools.FX.Impl
             }
         }
 
-        public override void Pause()
-        {
-            for (var i = 0; i < fx.Count; i++)
-            {
-                fx[i]?.Pause();
-            }
-        }
-
-        public override void Unpause()
-        {
-            for (var i = 0; i < fx.Count; i++)
-            {
-                fx[i]?.Unpause();
-            }
-        }
-
         public override void Stop()
         {
             for (var i = 0; i < fx.Count; i++)

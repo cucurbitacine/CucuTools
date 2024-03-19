@@ -1,6 +1,7 @@
 using System.Collections;
 using CucuTools.Async;
 using CucuTools.FX;
+using CucuTools.Pools;
 using UnityEngine;
 
 namespace CucuTools
@@ -36,16 +37,16 @@ namespace CucuTools
 
         #region Prefab Manager
 
-        public static PrefabManager PrefabManager => PrefabManager.singleton;
+        public static PoolManager PoolManager => PoolManager.singleton;
         
         public static GameObject Instantiate(GameObject prefab)
         {
-            return PrefabManager.Create(prefab);
+            return PoolManager.Create(prefab);
         }
         
         public static T Instantiate<T>(T prefab) where T : Component
         {
-            return PrefabManager.Create<T>(prefab);
+            return PoolManager.Create<T>(prefab);
         }
 
         #endregion
