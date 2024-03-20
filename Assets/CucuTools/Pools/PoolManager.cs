@@ -10,57 +10,39 @@ namespace CucuTools.Pools
     {
         private readonly List<PoolObjectProfile> profiles = new List<PoolObjectProfile>();
 
-        public GameObject Create(GameObject prefab)
+        public void Create(GameObject prefab, out PoolObject poolObject)
         {
             if (prefab == null) throw new NullReferenceException();
             
-            var prefabId = prefab.GetInstanceID();
-            
             var activeScene = SceneManager.GetActiveScene();
+            
+            var prefabId = prefab.GetInstanceID();
             var sceneId = activeScene.handle;
-            
-            foreach (var profile in profiles)
-            {
-                if (profile.available && profile.released && profile.typeId == prefabId)
-                {
-                    if (profile.groupId != sceneId)
-                    {
-                        if (profile.gameObject.transform.parent)
-                        {
-                            profile.gameObject.transform.SetParent(null);
-                        }
-                        SceneManager.MoveGameObjectToScene(profile.gameObject, activeScene);
-                        profile.groupId = sceneId;
-                    }
 
-                    if (profile.poolObject.releaseOnDisable && !profile.gameObject.activeSelf)
-                    {
-                        profile.gameObject.SetActive(true);
-                    }
-                    
-                    profile.released = false;
-                    return profile.gameObject;
-                }
+            if (TryGetReleasedObject(prefabId, activeScene, out var releasedProfile))
+            {
+                poolObject = releasedProfile.poolObject;
             }
-
-            var createdObject = Instantiate(prefab);
-            var poolObject = createdObject.GetComponent<PoolObject>();
-            if (poolObject == null) poolObject = createdObject.AddComponent<PoolObject>();
-
-            var poolObjectProfile = new PoolObjectProfile()
+            else
             {
-                poolObject = poolObject,
-                typeId = prefabId,
-                groupId = sceneId,
-                disposed = false,
-                released = false,
-            };
-
-            poolObject.profile = poolObjectProfile;
-
-            profiles.Add(poolObjectProfile);
+                var createdObject = Instantiate(prefab);
+                
+                poolObject = createdObject.GetComponent<PoolObject>();
+                
+                if (poolObject == null)
+                {
+                    poolObject = createdObject.AddComponent<PoolObject>();
+                }
+                
+                AddPoolObject(poolObject, prefabId, sceneId);
+            }
+        }
+        
+        public GameObject Create(GameObject prefab)
+        {
+            Create(prefab, out var poolObject);
             
-            return createdObject;
+            return poolObject.gameObject;
         }
         
         public T Create<T>(T prefab) where T : Component
@@ -68,6 +50,39 @@ namespace CucuTools.Pools
             return Create(prefab.gameObject).GetComponent<T>();
         }
 
+        public bool Add(GameObject prefab, GameObject clone)
+        {
+            if (prefab == null) throw new NullReferenceException();
+            if (clone == null) throw new NullReferenceException();
+            
+            var poolObject = clone.GetComponent<PoolObject>();
+
+            if (poolObject)
+            {
+                if (profiles.Any(p => p.available && p.poolObject == poolObject))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                poolObject = clone.AddComponent<PoolObject>();
+            }
+
+            var activeScene = SceneManager.GetActiveScene();
+            
+            var prefabId = prefab.GetInstanceID();
+            var sceneId = activeScene.handle;
+            
+            AddPoolObject(poolObject, prefabId, sceneId);
+            return true;
+        }
+
+        public bool Add<T>(T prefab, T clone) where T : Component
+        {
+            return Add(prefab.gameObject, clone.gameObject);
+        }
+        
         public int Count(Func<PoolObjectProfile, bool> predicate)
         {
             return profiles.Count(predicate);
@@ -106,6 +121,56 @@ namespace CucuTools.Pools
         public int RemoveGroupObjects(int groupId)
         {
             return profiles.RemoveAll(p => p.groupId == groupId);
+        }
+
+        private bool TryGetReleasedObject(int prefabId, Scene scene, out PoolObjectProfile profileReleased)
+        {
+            var sceneId = scene.handle;
+            
+            foreach (var profile in profiles)
+            {
+                if (profile.available && profile.released && profile.typeId == prefabId)
+                {
+                    if (profile.groupId != sceneId)
+                    {
+                        if (profile.gameObject.transform.parent)
+                        {
+                            profile.gameObject.transform.SetParent(null);
+                        }
+                        SceneManager.MoveGameObjectToScene(profile.gameObject, scene);
+                        profile.groupId = sceneId;
+                    }
+
+                    if (profile.poolObject.releaseOnDisable && !profile.gameObject.activeSelf)
+                    {
+                        profile.gameObject.SetActive(true);
+                    }
+                    
+                    profile.released = false;
+                    
+                    profileReleased = profile;
+                    return true;
+                }
+            }
+
+            profileReleased = null;
+            return false;
+        }
+        
+        private void AddPoolObject(PoolObject poolObject, int prefabId, int sceneId)
+        {
+            var poolObjectProfile = new PoolObjectProfile()
+            {
+                poolObject = poolObject,
+                typeId = prefabId,
+                groupId = sceneId,
+                disposed = false,
+                released = false,
+            };
+
+            poolObject.profile = poolObjectProfile;
+
+            profiles.Add(poolObjectProfile);
         }
         
         private void SceneUnloaded(Scene scene)

@@ -1,7 +1,7 @@
-using System;
 using CucuTools;
 using CucuTools.Attributes;
 using CucuTools.FX;
+using Samples.Demo.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -10,20 +10,24 @@ namespace Samples.Demo.FX
 {
     public class FxSceneController : CucuBehaviour
     {
+        [Header("Spawning")]
+        public BaseFx prefab;
+        public bool instantiateNew = false;
+        [Range(1f, 10f)]
+        [SerializeField] private float _frequencySpawning = 1f;
+        public Vector2 centerSpawn = Vector2.zero;
+        public Vector2 sizeSpawn = Vector2.one;
+
+        [Header("Info")]
+        [Min(0f)]
+        public float timoutCleaning = 5f;
+        
+        [Space]
         public int calls;
         public int instances;
         public int released;
-
-        [Space]
-        [Range(1f, 10f)]
-        [SerializeField] private float _frequency = 1f;
-        public Vector2 centerSpawn = Vector2.zero;
-        public Vector2 sizeSpawn = Vector2.one;
         
-        [Space]
-        public BaseFx prefab;
-
-        [Space]
+        [Header("UI")]
         public Text textCalls;
         public Text textInstances;
         public Text textReleased;
@@ -34,17 +38,18 @@ namespace Samples.Demo.FX
             return Vector2.Scale(random, sizeSpawn) + centerSpawn;
         }
         
-        public float frequency
+        public float frequencySpawning
         {
-            get => _frequency;
-            set => _frequency = value;
+            get => _frequencySpawning;
+            set => _frequencySpawning = value;
         }
-        public float period => 1f / frequency;
+        public float periodSpawning => 1f / frequencySpawning;
         
-        private float timer;
+        private float _timerSpawning;
+        private float _timerCleaning;
 
         [DrawButton]
-        public void ClearPool()
+        public void CleanPool()
         {
             var count = Cucu.PoolManager.DestroyReleasedObjects();
             
@@ -57,7 +62,18 @@ namespace Samples.Demo.FX
         
         private void Call()
         {
-            var fx = Cucu.Instantiate(prefab);
+            BaseFx fx;
+
+            if (instantiateNew)
+            {
+                fx = Instantiate(prefab);
+                Cucu.PoolManager.Add(prefab, fx);
+            }
+            else
+            {
+                fx = Cucu.Instantiate(prefab);
+            }
+
             fx.transform.SetParent(transform);
                 
             fx.Play(GetSpawnPoint());
@@ -83,22 +99,46 @@ namespace Samples.Demo.FX
 
         private void Start()
         {
-            timer = 0f;
+            _timerSpawning = 0f;
+            _timerCleaning = timoutCleaning;
+            
+            DemoFPS.singleton.Hello();
         }
 
         private void Update()
         {
-            if (timer > period) timer = period;
+            if (prefab == null) return;
             
-            if (timer <= 0)
+            if (_timerSpawning > periodSpawning) _timerSpawning = periodSpawning;
+            
+            if (_timerSpawning <= 0)
             {
                 Call();
 
-                timer = period;
+                _timerSpawning = periodSpawning;
             }
             else
             {
-                timer -= Time.deltaTime;
+                _timerSpawning -= Time.deltaTime;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                instantiateNew = !instantiateNew;
+            }
+
+            if (timoutCleaning > 0)
+            {
+                if (_timerCleaning <= 0)
+                {
+                    CleanPool();
+                    
+                    _timerCleaning = timoutCleaning;
+                }
+                else
+                {
+                    _timerCleaning -= Time.deltaTime;
+                }
             }
         }
 

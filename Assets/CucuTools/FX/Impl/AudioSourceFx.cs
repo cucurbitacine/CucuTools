@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -6,14 +6,15 @@ namespace CucuTools.FX.Impl
 {
     public class AudioSourceFx : AudioFx
     {
+        [Header("Audio Source")]
         [SerializeField] private AudioSource _source;
-
-        [Space]
-        public bool playOnAwake = false;
-        public SelectMode mode = SelectMode.Current;
+        public bool loop = false;
+        
+        [Header("Audio Clips")]
+        public SelectMode selectMode = SelectMode.Current;
         [Min(-1)]
-        public int index = -1;
-        public AudioClip[] clips = Array.Empty<AudioClip>();
+        public int selected = -1;
+        public List<AudioClip> clips = new List<AudioClip>();
 
         public AudioSource source
         {
@@ -42,50 +43,51 @@ namespace CucuTools.FX.Impl
         
         private AudioClip GetClip()
         {
-            if (clips.Length == 0)
+            if (clips.Count == 0)
             {
                 return source ? source.clip : null;
             }
 
-            var selected = index;
+            var next = selected;
             
-            switch (mode)
+            switch (selectMode)
             {
                 case SelectMode.Current:
-                    selected = index;
+                    next = selected;
                     break;
                 case SelectMode.Next:
-                    selected = (index + 1) % clips.Length; 
+                    next = (selected + 1) % clips.Count; 
                     break;
                 case SelectMode.Random:
-                    selected = Random.Range(0, clips.Length);
+                    next = Random.Range(0, clips.Count);
                     break;
             }
             
-            index = Mathf.Clamp(selected, 0, clips.Length - 1);
+            selected = Mathf.Clamp(next, 0, clips.Count - 1);
                 
-            return clips[index];
+            return clips[selected];
         }
 
         private void Awake()
         {
             if (source == null) source = GetComponent<AudioSource>();
 
-            if (playOnAwake)
+            if (source)
             {
-                Play();
+                source.playOnAwake = false;
+                source.loop = loop;
             }
         }
 
         private void OnValidate()
         {
-            if (clips.Length > 0)
+            if (clips.Count > 0)
             {
-                index = Mathf.Clamp(index, 0, clips.Length - 1);
+                selected = Mathf.Clamp(selected, 0, clips.Count - 1);
             }
             else
             {
-                index = -1;
+                selected = -1;
             }
         }
 

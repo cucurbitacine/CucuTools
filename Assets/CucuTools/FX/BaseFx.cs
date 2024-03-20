@@ -5,6 +5,8 @@ namespace CucuTools.FX
 {
     public abstract class BaseFx : CucuBehaviour
     {
+        public bool playOnStart = false;
+        
         public abstract bool isPlaying { get; }
 
         [DrawButton(group: "FX", colorHex: "aaaaff")]
@@ -12,6 +14,14 @@ namespace CucuTools.FX
 
         [DrawButton(group: "FX", colorHex: "ffaaaa")]
         public abstract void Stop();
+
+        protected virtual void Start()
+        {
+            if (playOnStart)
+            {
+                Play();
+            }
+        }
     }
 
     public static class BaseFxExt

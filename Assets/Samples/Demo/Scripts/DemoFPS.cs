@@ -3,7 +3,7 @@ using CucuTools;
 using UnityEngine;
 using UnityEngine.Profiling;
 
-namespace Samples.Demo
+namespace Samples.Demo.Scripts
 {
     public class DemoFPS : Singleton<DemoFPS>
     {

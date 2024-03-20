@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8144355362251551060}
   - component: {fileID: 7946495320617198016}
   m_Layer: 0
-  m_Name: Firework FX
+  m_Name: FxPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0c09a39974f4601bf8ba0ca28a4137a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playOnStart: 0
   fx:
   - {fileID: 8144355363742652937}
   - {fileID: 8144355362895811329}
@@ -107,7 +108,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 1adec3ce93c7e004dab29d264d8ce88b, type: 2}
-  m_audioClip: {fileID: 8300000, guid: cc01591abee3cb446a22e06500718037, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 0.75
   m_Pitch: 1
@@ -205,13 +206,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0828be294746569d4a40c810fc8eed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playOnStart: 0
   _source: {fileID: 8144355362895811331}
-  playOnAwake: 0
-  mode: 2
-  index: 0
+  loop: 0
+  selectMode: 0
+  selected: 0
   clips:
-  - {fileID: 8300000, guid: 413b748ed2fec7a408a14063b9ab9586, type: 3}
-  - {fileID: 8300000, guid: 281193078381c0f4bbcd730187f367ab, type: 3}
+  - {fileID: 8300000, guid: 192930885c3f68e4ca805f1ad34175b6, type: 3}
 --- !u!1 &8144355363742652936
 GameObject:
   m_ObjectHideFlags: 0
@@ -5055,4 +5056,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2b4164064b24d7c9bea79e51fea4b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playOnStart: 0
   _particle: {fileID: 8144355363742652942}
