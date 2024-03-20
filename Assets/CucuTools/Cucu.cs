@@ -1,5 +1,7 @@
 using System.Collections;
 using CucuTools.Async;
+using CucuTools.FX;
+using CucuTools.Pools;
 using UnityEngine;
 
 namespace CucuTools
@@ -29,6 +31,22 @@ namespace CucuTools
         public static void StopCoroutine(Coroutine coroutine)
         {
             CucuCoroutine.Stop(coroutine);
+        }
+
+        #endregion
+
+        #region Prefab Manager
+
+        public static PoolManager PoolManager => PoolManager.singleton;
+        
+        public static GameObject Instantiate(GameObject prefab)
+        {
+            return PoolManager.Create(prefab);
+        }
+        
+        public static T Instantiate<T>(T prefab) where T : Component
+        {
+            return PoolManager.Create<T>(prefab);
         }
 
         #endregion
