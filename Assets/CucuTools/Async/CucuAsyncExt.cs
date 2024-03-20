@@ -33,7 +33,7 @@ namespace CucuTools.Async
         /// <returns>Task</returns>
         public static async Task AsTask(this IEnumerator enumerator)
         {
-            await enumerator.AsTask(CucuCoroutine.Instance);
+            await enumerator.AsTask(CucuCoroutine.singleton);
         }
 
         /// <summary>
