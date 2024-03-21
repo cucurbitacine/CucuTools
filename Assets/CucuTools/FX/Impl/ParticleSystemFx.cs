@@ -14,13 +14,16 @@ namespace CucuTools.FX.Impl
 
         public override bool isPlaying => particle && particle.isPlaying;
 
-        public override void Play()
+        protected override bool PlayInternal()
         {
             if (particle)
             {
                 particle.Stop();
                 particle.Play();
+                return true;
             }
+
+            return false;
         }
         
         public override void Stop()

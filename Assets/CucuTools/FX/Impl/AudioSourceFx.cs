@@ -24,13 +24,17 @@ namespace CucuTools.FX.Impl
         
         public override bool isPlaying => source != null && source.isPlaying;
         
-        public override void Play()
+        protected override bool PlayInternal()
         {
             if (source)
             {
                 source.clip = GetClip();
                 source.Play();
+
+                return true;
             }
+
+            return false;
         }
 
         public override void Stop()

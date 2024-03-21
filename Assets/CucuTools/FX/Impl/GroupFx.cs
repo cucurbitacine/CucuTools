@@ -9,12 +9,14 @@ namespace CucuTools.FX.Impl
 
         public override bool isPlaying => fx.Any(f => f.isPlaying);
 
-        public override void Play()
+        protected override bool PlayInternal()
         {
             for (var i = 0; i < fx.Count; i++)
             {
                 fx[i]?.Play();
             }
+
+            return true;
         }
 
         public override void Stop()

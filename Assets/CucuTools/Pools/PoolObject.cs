@@ -25,7 +25,7 @@ namespace CucuTools.Pools
             }
         }
         
-        private void Awake()
+        protected virtual void Awake()
         {
             if (profile != null)
             {
@@ -33,7 +33,7 @@ namespace CucuTools.Pools
             }
         }
         
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             if (releaseOnDisable)
             {
@@ -41,7 +41,7 @@ namespace CucuTools.Pools
             }
         }
         
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             Dispose();
         }
