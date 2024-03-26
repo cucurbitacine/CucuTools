@@ -8,7 +8,7 @@ namespace CucuTools.StateMachines.Impl
         public StateEventType eventType;
 
         [Space]
-        public UnityEvent stateEvent = new UnityEvent();
+        public UnityEvent onUpdated = new UnityEvent();
         
         [Space]
         public StateBase state;
@@ -17,7 +17,7 @@ namespace CucuTools.StateMachines.Impl
         {
             if (eventType == stateEventType)
             {
-                stateEvent.Invoke();
+                onUpdated.Invoke();
             }
         }
 

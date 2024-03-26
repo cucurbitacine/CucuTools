@@ -8,45 +8,27 @@ namespace CucuTools.StateMachines
         #region SerializeField
 
         [Header("State Machine")]
+        public bool isStateMachine = true;
+        [Tooltip("Will be used only if it's a state machine")]
+        public bool enterOnStart = true;
+        
+        [Space]
         [SerializeField] private StateBase _activeState;
-
-        [Space]
-        public bool autoDone = false;
-        public bool isRoleState = false;
-        
-        [Space]
-        [Tooltip("Will be used only if it's not a state role")]
-        public bool reloadOnEnable = false;
-        [Tooltip("Will be used only if it's not a state role")]
-        public bool startOnStart = false;
-        
-        [Space]
-        [SerializeField] private StateBase _entryState;
         
         #endregion
 
         #region Public API
-
-        public StateBase activeState
-        {
-            get => _activeState;
-            private set => _activeState = value;
-        }
-
-        public StateBase entryState
-        {
-            get => _entryState;
-            set => _entryState = value;
-        }
-
+        
+        public StateBase activeState => subState;
+        
         public StateBase lastState { get; private set; }
         
         public UnityEvent<StateBase> onStateChanged { get; } = new UnityEvent<StateBase>();
-        
-        public bool isRoleStateMachine
+
+        public bool isState
         {
-            get => !isRoleState;
-            set => isRoleState = !value;
+            get => !isStateMachine;
+            set => isStateMachine = !value;
         }
         
         #endregion
@@ -55,83 +37,64 @@ namespace CucuTools.StateMachines
 
         protected override void OnEnter()
         {
-            activeState = entryState;
-
-            if (activeState)
-            {
-                activeState.Enter();
+            var entryState = GetEntryState();
             
-                onStateChanged.Invoke(activeState);
-            }
+            SetState(entryState);
         }
 
         protected override void OnUpdate(float deltaTime)
         {
             if (activeState && activeState.isDone)
             {
-                NextState();
-            }
+                var nextState = GetNextState();
 
-            if (activeState)
-            {
-                activeState.UpdateState(deltaTime);
+                SetState(nextState);
             }
         }
 
         protected override void OnExit()
         {
-            if (activeState)
-            {
-                activeState.Exit();   
-            }
-
-            activeState = null;
+            SetSubState(null);
         }
 
         #endregion
 
         #region State Machine
-
-        public void NextState()
-        {
-            var nextState = GetNextState();
-            
-            NextState(nextState);
-        }
         
-        public void NextState(StateBase state)
+        public void SetState(StateBase state)
         {
-            if (state == this) return;
-            
+            if (state == this)
+            {
+                Debug.LogWarning($"\"{name}\" has tried to set itself as active state.");
+                
+                return;
+            }
+
             lastState = activeState;
             
-            if (activeState)
-            {
-                activeState.Exit();
-            }
-            
-            activeState = state;
+            SetSubState(state);
 
-            if (activeState)
-            {
-                activeState.Enter();
+            _activeState = state;
             
-                onStateChanged.Invoke(activeState);
-            }
-
-            if (autoDone)
+            if (state)
             {
-                if (activeState == null)
-                {
-                    isDone = true;
-                }
+                OnStateChange();
+                
+                onStateChanged.Invoke(state);
             }
-            
-            OnStateChange();
+            else
+            {
+                isDone = true;
+            }
         }
 
+        public abstract StateBase GetEntryState();
         public abstract StateBase GetNextState();
 
+        protected virtual void OnStart()
+        {
+        }
+        
         protected virtual void OnStateChange()
         {
         }
@@ -140,29 +103,28 @@ namespace CucuTools.StateMachines
 
         #region MonoBehaviour
 
-        protected virtual void OnEnable()
+        private void Start()
         {
-            if (isRoleStateMachine && reloadOnEnable && isActive)
-            {
-                Exit();
-                
-                Enter();
-            }
-        }
-        
-        protected virtual void Start()
-        {
-            if (isRoleStateMachine && startOnStart)
+            if (isStateMachine && enterOnStart)
             {
                 Enter();   
             }
+
+            OnStart();
         }
         
-        protected virtual void Update()
+        private void Update()
         {
-            if (isRoleStateMachine && !isDone)
+            if (isActive && isStateMachine)
             {
-                UpdateState(Time.deltaTime);
+                if (isDone)
+                {
+                    Exit();
+                }
+                else
+                {
+                    UpdateState(Time.deltaTime);
+                }
             }
         }
 

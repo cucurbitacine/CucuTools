@@ -7,53 +7,54 @@ namespace CucuTools.StateMachines.Impl
     {
         [Header("Queue")]
         public bool looped = false;
-        public bool getStatesInChildren = false;
+        public bool getInChildren = true;
         
         [Space]
-        public int selected = 0;
-        public List<StateBase> states = new List<StateBase>();
+        public List<StateBase> queue = new List<StateBase>();
         
+        private int _selected = 0;
+
+        public override StateBase GetEntryState()
+        {
+            return queue.Count > 0 ? queue[0] : null;
+        }
+
         public override StateBase GetNextState()
         {
-            var index = selected;
+            var index = _selected;
             
             if (looped)
             {
-                index = (index + 1) % states.Count;
+                index = (index + 1) % queue.Count;
             }
             else
             {
                 index++;
             }
 
-            return 0 <= index && index < states.Count ? states[index] : null;
+            return 0 <= index && index < queue.Count ? queue[index] : null;
         }
 
         protected override void OnStateChange()
         {
-            var index = states.IndexOf(activeState);
+            var index = queue.IndexOf(activeState);
 
             if (index >= 0)
             {
-                selected = index;
+                _selected = index;
             }
         }
 
         private void Awake()
         {
-            if (getStatesInChildren)
+            if (getInChildren)
             {
-                states.Clear();
-                states.AddRange(GetComponentsInChildren<StateBase>());
+                queue.Clear();
+                queue.AddRange(GetComponentsInChildren<StateBase>());
+                queue.RemoveAll(s => s.transform.parent != transform);
             }
             
-            states.RemoveAll(s => s == null || s == this);
-
-            if (states.Count > 0)
-            {
-                selected %= states.Count;
-                entryState = states[selected];
-            }
+            queue.RemoveAll(s => s == null || s == this); 
         }
     }
 }

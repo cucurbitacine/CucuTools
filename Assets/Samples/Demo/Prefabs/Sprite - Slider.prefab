@@ -582,6 +582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa8a81956b9e45f9a833c8f6e2e91d67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDragging: 0
   freezeX: 0
   freezeY: 1
   fixedArea: 1

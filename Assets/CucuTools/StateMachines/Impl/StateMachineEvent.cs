@@ -5,14 +5,14 @@ namespace CucuTools.StateMachines.Impl
 {
     public class StateMachineEvent : CucuBehaviour
     {
-        public UnityEvent<StateBase> stateMachineEvent = new UnityEvent<StateBase>();
+        public UnityEvent<StateBase> onStateChanged = new UnityEvent<StateBase>();
         
         [Space]
         public StateMachineBase stateMachine;
 
         public void Invoke(StateBase state)
         {
-            stateMachineEvent.Invoke(state);
+            onStateChanged.Invoke(state);
         }
         
         private void Awake()
