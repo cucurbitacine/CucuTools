@@ -6,6 +6,8 @@ namespace Samples.Demo.Scripts
     [RequireComponent(typeof(Collider2D))]
     public class DraggableSprite : MonoBehaviour
     {
+        public bool isDragging = false;
+        
         [Space]
         public bool freezeX;
         public bool freezeY;
@@ -51,6 +53,8 @@ namespace Samples.Demo.Scripts
             {
                 var mousePosition = (Vector2)cameraMain.ScreenToWorldPoint(Input.mousePosition);
                 offset = collider2d.transform.InverseTransformPoint(mousePosition);
+
+                isDragging = true;
             }
         }
 
@@ -82,6 +86,7 @@ namespace Samples.Demo.Scripts
 
         private void OnMouseUp()
         {
+            isDragging = false;
         }
 
         private void Awake()
