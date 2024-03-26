@@ -2,6 +2,7 @@ using System.Collections;
 using CucuTools.Async;
 using CucuTools.FX;
 using CucuTools.Pools;
+using CucuTools.StateMachines;
 using UnityEngine;
 
 namespace CucuTools
@@ -98,6 +99,56 @@ namespace CucuTools
             return transform.InverseTransformVector(worldVector);
         }
 
+        public static void Restart(this StateBase state)
+        {
+            state.Exit();
+            state.Enter();
+        }
+        
+        
+        public static bool TryInstall(this StateBase state, object core)
+        {
+            const string installMethodName = "Install"; 
+            
+            var installMethod = state.GetType().GetMethod(installMethodName);
+            if (installMethod != null)
+            {
+                var parameters = installMethod.GetParameters();
+                if (parameters.Length == 1)
+                {
+                    if (parameters[0].ParameterType.IsInstanceOfType(core))
+                    {
+                        installMethod.Invoke(state, new object[] { core });
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+ 
+        public static bool TryInstall<TCore>(this StateBase state, TCore core, out StateBase<TCore> stateWithCore)
+        {
+            if (state.TryInstall(core))
+            {
+                stateWithCore = state as StateBase<TCore>;
+                return true;
+            }
+
+            stateWithCore = default;
+            return false;
+        }
+
+        public static void ForceNextState(this StateMachineBase stateMachine)
+        {
+            if (stateMachine.isActive)
+            {
+                var nextState = stateMachine.GetNextState();
+
+                stateMachine.SetState(nextState);
+            }
+        }
+        
         #endregion
     }
 }

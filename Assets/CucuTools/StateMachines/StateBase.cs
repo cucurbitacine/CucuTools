@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace CucuTools.StateMachines
 {
-    [DisallowMultipleComponent]
     public class StateBase : CucuBehaviour
     {
         #region SerializeField
@@ -17,6 +17,9 @@ namespace CucuTools.StateMachines
         
         #endregion
 
+        private float _enterTime;
+        private float _enterUnscaledTime;
+        
         #region Public API
 
         public bool isActive
@@ -30,6 +33,11 @@ namespace CucuTools.StateMachines
             get => _isDone;
             set => _isDone = value;
         }
+
+        public float time => Time.time - _enterTime;
+        public float unscaledTime => Time.unscaledTime - _enterTime;
+        
+        public StateBase subState { get; private set; }
         
         public UnityEvent<StateEventType> onUpdated { get; } = new UnityEvent<StateEventType>();
         
@@ -37,12 +45,15 @@ namespace CucuTools.StateMachines
         {
             if (isActive) return;
             
+            isActive = true;
+            
             if (needReset && isDone)
             {
                 isDone = false;
             }
-            
-            isActive = true;
+
+            _enterTime = Time.time;
+            _enterUnscaledTime = Time.unscaledTime;
             
             OnEnter();
             
@@ -53,6 +64,11 @@ namespace CucuTools.StateMachines
         {
             if (isActive)
             {
+                if (subState)
+                {
+                    subState.UpdateState(deltaTime);
+                }
+                
                 OnUpdate(deltaTime);
                 
                 onUpdated.Invoke(StateEventType.Update);
@@ -61,28 +77,45 @@ namespace CucuTools.StateMachines
 
         public void Exit()
         {
-            if (isActive)
+            if (!isActive) return;
+
+            isActive = false;
+            
+            if (subState)
             {
-                isActive = false;
-
-                OnExit();
-                
-                if (needReset && isDone)
-                {
-                    isDone = false;
-                }
-                
-                onUpdated.Invoke(StateEventType.Exit);
+                subState.Exit();
             }
-        }
-
-        public void Toggle()
-        {
-            isDone = !isDone;
+                
+            OnExit();
+            
+            if (needReset && isDone)
+            {
+                isDone = false;
+            }
+                
+            onUpdated.Invoke(StateEventType.Exit);
         }
         
         #endregion
 
+        protected void SetSubState(StateBase state)
+        {
+            if (isActive)
+            {
+                if (subState)
+                {
+                    subState.Exit();
+                }
+            
+                subState = state;
+            
+                if (subState)
+                {
+                    subState.Enter();
+                }
+            }
+        }
+        
         #region Virtual API
 
         protected virtual void OnEnter()
@@ -107,25 +140,25 @@ namespace CucuTools.StateMachines
         Exit,
     }
 
-    public abstract class StateBase<TStateMachine> : StateBase where TStateMachine : StateMachineBase
+    public abstract class StateBase<TCore> : StateBase
     {
         [Space]
-        [SerializeField] private TStateMachine _stateMachine = null;
+        [SerializeField] private TCore _core = default;
 
-        public TStateMachine stateMachine
+        public TCore core
         {
-            get => _stateMachine;
-            private set => _stateMachine = value;
+            get => _core;
+            private set => _core = value;
         }
         
-        public void Initialize(TStateMachine sm)
+        public void Install(TCore core)
         {
-            stateMachine = sm;
+            this.core = core;
 
-            OnInitialize();
+            OnInstall();
         }
 
-        protected virtual void OnInitialize()
+        protected virtual void OnInstall()
         {
         }
     }
