@@ -65,7 +65,7 @@ namespace CucuTools.DamageSystem.Utils
 
         private void SendDamage2D(Collider2D cld2d, bool forced = false)
         {
-            if (!cld2d.gameObject.layer.Contains(layerMask)) return;
+            if (!cld2d.gameObject.CompareLayer(layerMask)) return;
             
             if (!cld2d.TryGetComponent<DamageReceiver>(out var receiver))
             {
@@ -80,7 +80,7 @@ namespace CucuTools.DamageSystem.Utils
         
         private void SendDamage3D(Collider cld3d, bool forced = false)
         {
-            if (!cld3d.gameObject.layer.Contains(layerMask)) return;
+            if (!cld3d.gameObject.CompareLayer(layerMask)) return;
             
             if (!cld3d.TryGetComponent<DamageReceiver>(out var receiver))
             {
