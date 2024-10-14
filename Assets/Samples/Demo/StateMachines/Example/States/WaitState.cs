@@ -11,7 +11,7 @@ namespace Samples.Demo.StateMachines.Example.States
 
         private float _delay = 0f;
         
-        protected override void OnStartState()
+        protected override void OnEnter()
         {
             if (threshold > 0)
             {
@@ -19,11 +19,11 @@ namespace Samples.Demo.StateMachines.Example.States
             }
         }
 
-        protected override void OnUpdateState(float deltaTime)
+        protected override void OnExecute()
         {
             if (time > (duration + _delay))
             {
-                isDone = true;
+                SetDone(true);
             }
         }
     }

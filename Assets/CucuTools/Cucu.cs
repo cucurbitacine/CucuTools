@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using CucuTools.StateMachines;
-using CucuTools.Utils;
 using UnityEngine;
 
 namespace CucuTools
@@ -10,28 +10,24 @@ namespace CucuTools
         public const string CreateAsset = Root + "/";
         public const string DamageGroup = "Damage System/";
 
-        #region Others
-
-        public static bool ContainsLayer(LayerMask layerMask, int layerNumber)
-        {
-            return (layerMask.value & (1 << layerNumber)) > 0;
-        }
-
-        #endregion
-
         #region Extensions
 
-        public static bool Contains(this LayerMask layerMask, int layerNumber)
+        public static bool CompareLayer(this LayerMask layerMask, int layer)
         {
-            return ContainsLayer(layerMask, layerNumber);
+            return (layerMask.value & (1 << layer)) > 0;
+        }
+        
+        public static bool CompareLayer(this GameObject gameObject, LayerMask layerMask)
+        {
+            return layerMask.CompareLayer(gameObject.layer);
         }
 
-        public static bool Contains(this int layerNumber, LayerMask layerMask)
+        public static bool CompareLayer(this Component component, LayerMask layerMask)
         {
-            return ContainsLayer(layerMask, layerNumber);
+            return component.gameObject.CompareLayer(layerMask);
         }
 
-        public static bool TryInstall(this object holder, object core)
+        public static bool TrySetContext(this object holder, object context)
         {
             const string methodName = nameof(IContextHolder<object>.SetContext);
 
@@ -41,26 +37,10 @@ namespace CucuTools
             var parameters = method.GetParameters();
             if (parameters.Length != 1) return false;
 
-            if (!parameters[0].ParameterType.IsInstanceOfType(core)) return false;
+            if (!parameters[0].ParameterType.IsInstanceOfType(context)) return false;
             
-            method.Invoke(holder, new object[] { core });
+            method.Invoke(holder, new object[] { context });
             return true;
-        }
-
-        public static void RestartState(this StateBase state)
-        {
-            state.StopState();
-            state.StartState();
-        }
-
-        public static void ForceNextState(this StateMachineBase stateMachine)
-        {
-            if (stateMachine.isActive)
-            {
-                var nextState = stateMachine.GetNextState();
-
-                stateMachine.SetNextState(nextState);
-            }
         }
 
         public static void LinSpace(float a, float b, float[] array)
@@ -173,5 +153,112 @@ namespace CucuTools
         }
         
         #endregion
+        
+        #region ParticleSystem
+
+        public static void PlaySafe(this ParticleSystem particleSystem, bool play)
+        {
+            if (play)
+            {
+                if (!particleSystem.isPlaying)
+                {
+                    particleSystem.Play();
+                }
+            }
+            else
+            {
+                if (particleSystem.isPlaying)
+                {
+                    particleSystem.Stop();
+                }
+            }
+        }
+
+        #endregion
+        
+        #region AudioSource
+
+        public static void PlaySafe(this AudioSource audioSource, bool play)
+        {
+            if (play)
+            {
+                if (!audioSource.isPlaying)
+                {
+                    audioSource.Play();
+                }
+            }
+            else
+            {
+                if (audioSource.isPlaying)
+                {
+                    audioSource.Stop();
+                }
+            }
+        }
+        
+        public static void PlayOneShot(this AudioSource audio, params AudioClip[] clips)
+        {
+            if (clips != null && clips.Length > 0)
+            {
+                audio.PlayOneShot(clips[Random.Range(0, clips.Length)]);
+            }
+        }
+        
+        public static void PlayOneShot(this GameObject gameObject, params AudioClip[] clips)
+        {
+            if (gameObject.TryGetComponent<AudioSource>(out var audio))
+            {
+                audio.PlayOneShot(clips);
+            }
+        }
+        
+        public static void PlayOneShot(this AudioSource audio, List<AudioClip> clips)
+        {
+            if (clips != null && clips.Count > 0)
+            {
+                audio.PlayOneShot(clips[Random.Range(0, clips.Count)]);
+            }
+        }
+
+        public static void PlayOneShot(this GameObject gameObject, List<AudioClip> clips)
+        {
+            if (gameObject.TryGetComponent<AudioSource>(out var audio))
+            {
+                audio.PlayOneShot(clips);
+            }
+        }
+        
+        public static void PlayOneShot(this GameObject gameObject, AudioClip clip)
+        {
+            if (gameObject.TryGetComponent<AudioSource>(out var audio))
+            {
+                audio.PlayOneShot(clip);
+            }
+        }
+
+        #endregion
+        
+        public static void PlaySafe(this GameObject gameObject, bool value)
+        {
+            if (gameObject.TryGetComponent<ParticleSystem>(out var particle))
+            {
+                particle.PlaySafe(value);
+            }
+
+            if (gameObject.TryGetComponent<AudioSource>(out var audio))
+            {
+                audio.PlaySafe(value);
+            }
+        }
+
+        public static void PlaySafe(this GameObject gameObject)
+        {
+            gameObject.PlaySafe(true);
+        }
+
+        public static void StopSafe(this GameObject gameObject)
+        {
+            gameObject.PlaySafe(false);
+        }
     }
 }

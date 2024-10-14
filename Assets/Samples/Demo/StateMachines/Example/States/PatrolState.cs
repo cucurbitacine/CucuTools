@@ -20,7 +20,7 @@ namespace Samples.Demo.StateMachines.Example.States
             move.SetContext(Context);
         }
 
-        protected override void OnStartState()
+        protected override void OnEnter()
         {
             if (points.Count == 0)
             {
@@ -31,19 +31,19 @@ namespace Samples.Demo.StateMachines.Example.States
             SetSubState(move);
         }
 
-        protected override void OnUpdateState(float deltaTime)
+        protected override void OnExecute()
         {
-            if (SubState == wait)
+            if (wait.IsRunning)
             {
-                if (wait.isDone)
+                if (wait.IsDone)
                 {
                     move.point = NextPoint();
                     SetSubState(move);
                 }
             }
-            else if (SubState == move)
+            else if (move.IsRunning)
             {
-                if (move.isDone)
+                if (move.IsDone)
                 {
                     SetSubState(wait);
                 }

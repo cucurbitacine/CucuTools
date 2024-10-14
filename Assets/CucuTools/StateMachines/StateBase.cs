@@ -1,190 +1,117 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace CucuTools.StateMachines
 {
-    /// <summary>
-    /// State
-    /// </summary>
-    public class StateBase : MonoBehaviour
+    [DisallowMultipleComponent]
+    public class StateBase : MonoBehaviour, IStateMachine
     {
-        private float _enterUnscaledTime;
+        public event Action<bool> Done;
+        public event Action<bool> ExecutionUpdated;
         
-        #region SerializeField
+        [field: SerializeField] public bool IsRunning { get; private set; }
+        
+        [field: Space]
+        [field: SerializeField] public bool IsDone { get; private set; }
+        [field: SerializeField] public bool UndoneOnEnter { get; set; } = true;
+        
+        public IState SubState { get; private set; }
 
-        [SerializeField] private bool _isActive = false;
-        
-        [Header("State")]
-        [SerializeField] private bool _isDone = false;
-        [SerializeField] private bool _undoneOnStartState = true;
-        
-        #endregion
-        
-        #region Public API
-
-        /// <summary>
-        /// Current State Status
-        /// </summary>
-        public bool isActive
-        {
-            get => _isActive;
-            private set => _isActive = value;
-        }
-        
-        /// <summary>
-        /// State is Done or Not
-        /// </summary>
-        public bool isDone
-        {
-            get => _isDone;
-            set => _isDone = value;
-        }
-
-        /// <summary>
-        /// Reset <see cref="isDone"/> after <see cref="StartState"/> or not
-        /// </summary>
-        public bool undoneOnStartState
-        {
-            get => _undoneOnStartState;
-            set => _undoneOnStartState = value;
-        }
-        
-        /// <summary>
-        /// Time since the start state
-        /// </summary>
-        public float time { get; private set; }
-        
-        /// <summary>
-        /// Unscaled Time since the start state
-        /// </summary>
         public float unscaledTime => Time.unscaledTime - _enterUnscaledTime;
-        
-        /// <summary>
-        /// Current Sub State
-        /// </summary>
-        public StateBase SubState { get; private set; }
+        public float time => Time.time - _enterTime;
 
-        /// <summary>
-        /// Event of State. Started or Stopped
-        /// </summary>
-        public event Action<StateEventType> OnStateUpdated;
+        private float _enterUnscaledTime;
+        private float _enterTime;
         
-        /// <summary>
-        /// Start Current State. It is possible if ONLY State is Not Active
-        /// </summary>
-        [ContextMenu(nameof(StartState))]
-        public void StartState()
+        public void SetDone(bool value)
         {
-            if (isActive) return;
+            if (IsDone == value) return;
             
-            isActive = true;
-            if (undoneOnStartState && isDone)
+            IsDone = value;
+            
+            Done?.Invoke(IsDone);
+        }
+        
+        public void Enter()
+        {
+            if (IsRunning) return;
+
+            if (UndoneOnEnter)
             {
-                isDone = false;
+                SetDone(false);
             }
 
-            time = 0f;
             _enterUnscaledTime = Time.unscaledTime;
+            _enterTime = Time.time;
             
-            OnStartState();
-            OnStateUpdated?.Invoke(StateEventType.Start);
+            OnEnter();
+            
+            IsRunning = true;
+            
+            SubState?.Enter();
+            
+            ExecutionUpdated?.Invoke(true);
         }
 
-        /// <summary>
-        /// Update Current State. It is possible if ONLY State is Active
-        /// </summary>
-        /// <param name="deltaTime"></param>
-        public void UpdateState(float deltaTime)
+        public void Execute()
         {
-            if (isActive)
+            if (IsRunning)
             {
-                SubState?.UpdateState(deltaTime);
+                OnExecute();
                 
-                OnUpdateState(deltaTime);
-
-                time += deltaTime;
+                SubState?.Execute();
             }
         }
 
-        /// <summary>
-        /// Stop Current State. It is possible if ONLY State is Active
-        /// </summary>
-        [ContextMenu(nameof(StopState))]
-        public void StopState()
+        public void Exit()
         {
-            if (!isActive) return;
+            if (!IsRunning) return;
 
-            SetSubState(null);
+            SubState?.Exit();
+
+            OnExit();
             
-            isActive = false;
-            isDone = true;
+            IsRunning = false;
             
-            OnStopState();
-            OnStateUpdated?.Invoke(StateEventType.Stop);
+            ExecutionUpdated?.Invoke(false);
+        }
+
+        public void SetSubState(IState state)
+        {
+            if (IsRunning)
+            {
+                SubState?.Exit();
+
+                SubState = state;
+                
+                SubState?.Enter();
+            }
+            else
+            {
+                SubState = state;
+            }
+
+            OnSetSubState();
         }
         
-        #endregion
-
-        /// <summary>
-        /// Set new Sub State.
-        /// If Current State is Active, Stop/Start methods will be called on Old and New Sub States.
-        /// </summary>
-        /// <param name="subState"></param>
-        protected void SetSubState(StateBase subState)
+        protected virtual void OnEnter()
         {
-            if (subState == this)
-            {
-                Debug.LogWarning($"\"{name}\" has tried to set itself as Sub State. It's impossible!");
-                return;
-            }
-
-            if (isActive)
-            {
-                SubState?.StopState();
-            }
-            
-            SubState = subState;
-
-            if (isActive)
-            {
-                SubState?.StartState();
-            }
         }
         
-        #region Virtual API
-
-        /// <summary>
-        /// Is called after <see cref="StartState"/>
-        /// </summary>
-        protected virtual void OnStartState()
+        protected virtual void OnExecute()
+        {
+        }
+        
+        protected virtual void OnExit()
         {
         }
 
-        /// <summary>
-        /// It is called after <see cref="UpdateState"/> of <see cref="SubState"/> and if only Current State is Active
-        /// </summary>
-        /// <param name="deltaTime"></param>
-        protected virtual void OnUpdateState(float deltaTime)
+        protected virtual void OnSetSubState()
         {
         }
-
-        /// <summary>
-        /// It is called after <see cref="StopState"/>
-        /// </summary>
-        protected virtual void OnStopState()
-        {
-        }
-
-        #endregion
     }
-
-    public enum StateEventType
-    {
-        Start,
-        Stop,
-    }
-
-    /// <inheritdoc cref="CucuTools.StateMachines.StateBase" />
+    
+    /// <inheritdoc cref="StateBase" />
     public abstract class StateBase<T> : StateBase, IContextHolder<T>
     {
         [Header("Context")]

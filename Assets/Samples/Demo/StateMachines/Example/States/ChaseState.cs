@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Samples.Demo.StateMachines.Example.States
 {
-    public class ChaseState : StateBase<NpcStateMachine>
+    public class ChaseState : StateBase<NpcState>
     {
         [Header("CHASE")]
         public MoveState move;
@@ -13,17 +13,17 @@ namespace Samples.Demo.StateMachines.Example.States
             move.SetContext(Context.npc);
         }
 
-        protected override void OnStartState()
+        protected override void OnEnter()
         {
             move.point = Context.targetPosition;
             SetSubState(move);
         }
 
-        protected override void OnUpdateState(float deltaTime)
+        protected override void OnExecute()
         {
-            if (move.isDone)
+            if (move.IsDone)
             {
-                isDone = true;
+                SetDone(true);
             }
             else
             {
@@ -33,7 +33,7 @@ namespace Samples.Demo.StateMachines.Example.States
 
         private void OnDrawGizmos()
         {
-            if (isActive && Context != null)
+            if (IsRunning && Context != null)
             {
                 Gizmos.color = Color.green;
                 Gizmos.DrawWireSphere(Context.targetPosition, 1f);

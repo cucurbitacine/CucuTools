@@ -5,28 +5,30 @@ using UnityEngine.Events;
 
 namespace Samples.Demo.StateMachines
 {
-    public class StateMachineUI : MonoBehaviour
+    public class StateUI : MonoBehaviour
     {
-        public StateMachineBase stateMachine;
-
-        public UnityEvent<string> onStateNameChanged = new UnityEvent<string>();
+        [SerializeField] private GameObject stateSource;
+        
+        [SerializeField] private UnityEvent<string> onStateNameChanged = new UnityEvent<string>();
 
         private string lastStateName = string.Empty;
         
-        public string GetStateName(StateBase state)
+        private IState _state;
+        
+        public string GetStateName(IState state)
         {
             if (state == null) return "[-]";
 
             return state.GetType().Name.Replace("state", "", StringComparison.OrdinalIgnoreCase);
         }
         
-        public string GetFullStateName(StateBase state)
+        public string GetFullStateName(IState state)
         {
-            if (state == null) GetStateName(state);
+            if (state == null) GetStateName(null);
             
-            if (state.SubState)
+            if (state is IStateMachine stateMachine)
             {
-                return $"{GetStateName(state)} > {GetFullStateName(state.SubState)}";
+                return $"{GetStateName(state)} > {GetFullStateName(stateMachine.SubState)}";
             }
             
             return GetStateName(state);
@@ -44,12 +46,17 @@ namespace Samples.Demo.StateMachines
 
         private void CheckStateName()
         {
-            if (stateMachine && stateMachine.isActive)
+            if (_state != null && _state.IsRunning)
             {
-                var stateNameText = GetFullStateName(stateMachine.ActiveState);
+                var stateNameText = GetFullStateName(_state);
                 
                 CheckStateName(stateNameText);
             }
+        }
+
+        private void Awake()
+        {
+            stateSource.TryGetComponent(out _state);
         }
 
         private void Update()

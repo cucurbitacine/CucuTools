@@ -52,18 +52,18 @@ namespace Samples.Demo.StateMachines.Example.States
             return areaSize;
         }
         
-        protected override void OnUpdateState(float deltaTime)
+        protected override void OnExecute()
         {
             var targetPoint = GetPoint(Context);
             
             if (Vector2.Distance(Context.position, targetPoint) > threshold)
             {
                 var direction = ((Vector3)targetPoint - Context.position).normalized;
-                Context.position += direction * (speed * deltaTime);
+                Context.position += direction * (speed * Time.deltaTime);
             }
             else
             {
-                isDone = true;
+                SetDone(true);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Samples.Demo.StateMachines.Example.States
                 Gizmos.DrawWireCube(GetAreaCenter(target), GetAreaSize(target));
             }
             
-            if (isActive && Context)
+            if (IsRunning && Context)
             {
                 Gizmos.DrawLine(Context.position, GetPoint(Context));
                 

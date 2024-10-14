@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Samples.Demo.StateMachines.Example
 {
-    public class NpcStateMachine : StateMachineBase
+    public class NpcState : StateBase
     {
         [Header("NPC")]
         public Transform npc;
@@ -38,25 +38,15 @@ namespace Samples.Demo.StateMachines.Example
             get => npc.position;
             set => npc.position = value;
         }
-        
-        protected override void OnStartStateMachine()
+
+        public StateBase GetNextState()
         {
-            patrol.SetContext(npc);
-            chase.SetContext(this);
-            attack.SetContext(this);
-            search.SetContext(this);
-            
-            EntryState = patrol;
-        }
-        
-        public override StateBase GetNextState()
-        {
-            if (ActiveState == attack) // ATTACK -> CHASE / PATROL
+            if (attack.IsRunning) // ATTACK -> CHASE / PATROL
             {
                 return hasTarget ? chase : patrol;
             }
             
-            if (ActiveState == chase) // CHASE -> ATTACK / CHASE / SEARCH
+            if (chase.IsRunning) // CHASE -> ATTACK / CHASE / SEARCH
             {
                 if (attack.CanAttack())
                 {
@@ -69,41 +59,60 @@ namespace Samples.Demo.StateMachines.Example
             return hasTarget ? chase : patrol; // STATE -> CHASE / PATROL
         }
 
-        private void Awake()
+        protected override void OnEnter()
         {
-            foreach (var stateNpc in GetComponentsInChildren<StateBase>())
-            {
-                stateNpc.TryInstall(this);
-            }
+            patrol.SetContext(npc);
+            chase.SetContext(this);
+            attack.SetContext(this);
+            search.SetContext(this);
+            
+            SetSubState(patrol);
         }
 
-        protected override void OnUpdateStateMachine(float deltaTime)
+        protected override void OnExecute()
         {
+            if (SubState.IsDone)
+            {
+                var nextState = GetNextState();
+                
+                SetSubState(nextState);
+                
+                return;
+            }
+            
             if (hasTarget)
             {
                 lastTargetPosition = targetPosition;
                 
-                if (ActiveState == patrol) // PATROL -> CHASE
+                if (patrol.IsRunning) // PATROL -> CHASE
                 {
-                    SetNextState(chase);
+                    SetSubState(chase);
                 } 
-                else if (ActiveState == search) // SEARCH -> CHASE
+                else if (search.IsRunning) // SEARCH -> CHASE
                 {
-                    SetNextState(chase);
+                    SetSubState(chase);
                 }
             }
             else
             {
-                if (ActiveState == chase) // CHASE -> SEARCH
+                if (chase.IsRunning) // CHASE -> SEARCH
                 {
-                    SetNextState(search);
+                    SetSubState(search);
                 }
+            }
+        }
+        
+        private void Awake()
+        {
+            foreach (var stateNpc in GetComponentsInChildren<StateBase>())
+            {
+                stateNpc.TrySetContext(this);
             }
         }
         
         private void FixedUpdate()
         {
-            if (isActive)
+            if (IsRunning)
             {
                 var count = Physics2D.OverlapCircleNonAlloc(position, visibilityDistance, _overlap, targetLayerMask);
 

@@ -3,13 +3,12 @@ using UnityEngine;
 
 namespace Samples.Demo.StateMachines
 {
-    public class StateMachineDebugger : MonoBehaviour
+    public class StateDebugger : MonoBehaviour
     {
         public bool paused = false;
         
         [Space]
         public string customName = string.Empty;
-        public StateMachineBase stateMachine;
 
         [Space]
         public bool debugLog = true;
@@ -30,7 +29,9 @@ namespace Samples.Demo.StateMachines
         
         private int frameNumber;
         
-        private string GetStateMachineName(StateMachineBase sm)
+        private IState _state;
+        
+        private string GetStateMachineName(IState sm)
         {
             if (sm == null) return DefaultStateMachineName;
             
@@ -38,45 +39,43 @@ namespace Samples.Demo.StateMachines
 
             if (string.IsNullOrWhiteSpace(customName))
             {
-                stateMachineName = $"{sm.name} ({sm.GetType().Name})";
+                stateMachineName = $"{sm.GetType().Name}";
+
+                if (sm is MonoBehaviour mono)
+                {
+                    stateMachineName = $"{mono.name} ({stateMachineName})";
+                }
             }
 
             return stateMachineName;
         }
 
-        private string GetStateName(StateBase state)
+        private string GetStateName(IState state)
         {
             if (state == null) return DefaultStateName;
+
+            var stateName = $"{state.GetType().Name}";
+
+            if (state is MonoBehaviour mono)
+            {
+                stateName = $"{mono.name} ({stateName})";
+            }    
             
-            var stateName = $"{state.name} ({state.GetType().Name})";
-            var subStateName = state.SubState ? $" > {GetStateName(state.SubState)}" : "";
+            var subStateName = state is IStateMachine stateMachine && stateMachine.SubState != null ? $" > {GetStateName(stateMachine.SubState)}" : "";
             
             return $"{stateName}{subStateName}";
         }
 
-        private void HandleStateUpdate(StateEventType eventType)
+        private void HandleStateUpdate(bool isExecuting)
         {
             if (paused) return;
 
             if (debugLog)
             {
-                Log($"{GetStateMachineName(stateMachine)} :: Updated :: {eventType}");
+                Log($"{GetStateMachineName(_state)} :: Executing :: {isExecuting}");
             }
         }
-
-        private void HandleStateChange(StateBase nextState)
-        {
-            if (paused) return;
-            
-            if (debugLog && stateMachine)
-            {
-                var activeState = stateMachine.ActiveState;
-                var lastState = stateMachine.PreviousState;
-                
-                Log($"{GetStateMachineName(stateMachine)} :: Changed :: [{GetStateName(lastState)}] => [{GetStateName(activeState)}]");
-            }
-        }
-
+        
         private void Log(string msg)
         {
             if (showFrameNumber)
@@ -88,38 +87,20 @@ namespace Samples.Demo.StateMachines
                 Debug.Log($"{msg}");
             }
         }
-        
-        private void Validate()
-        {
-            if (stateMachine == null) stateMachine = GetComponent<StateMachineBase>();
-        }
 
         private void Awake()
         {
-            Validate();
-        }
-        
-        private void OnValidate()
-        {
-            Validate();
+            TryGetComponent(out _state);
         }
         
         private void OnEnable()
         {
-            if (stateMachine)
-            {
-                stateMachine.OnStateUpdated += HandleStateUpdate;
-                stateMachine.OnStateChanged += HandleStateChange;
-            }
+            _state.ExecutionUpdated += HandleStateUpdate;
         }
 
         private void OnDisable()
         {
-            if (stateMachine)
-            {
-                stateMachine.OnStateUpdated -= HandleStateUpdate;
-                stateMachine.OnStateChanged -= HandleStateChange;
-            }
+            _state.ExecutionUpdated -= HandleStateUpdate;
         }
         
         private void LateUpdate()
@@ -130,11 +111,20 @@ namespace Samples.Demo.StateMachines
         private void OnDrawGizmos()
         {
 #if UNITY_EDITOR
-            if (Application.isPlaying && handleLabel && stateMachine && stateMachine.actAsStateMachine && stateMachine.isActive)
+            if (Application.isPlaying && handleLabel && _state != null && _state.IsRunning)
             {
-                var position = anchor ? anchor.position : stateMachine.transform.position + labelOffset;
-                var text = $"{GetStateMachineName(stateMachine)} > {GetStateName(stateMachine.ActiveState)}";
+                var position = anchor ? anchor.position : anchor.transform.position + labelOffset;
+                var text = string.Empty;
 
+                if (_state is IStateMachine stateMachine)
+                {
+                    text = $"{GetStateMachineName(stateMachine)} > {GetStateName(stateMachine.SubState)}";
+                }
+                else
+                {
+                    text = $"{GetStateName(_state)}";
+                }
+                
                 if (_labelStyle == null)
                 {
                     _labelStyle = new GUIStyle(GUI.skin.label);

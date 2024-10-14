@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Samples.Demo.StateMachines.Example.States
 {
-    public class NpcAttackState : StateBase<NpcStateMachine>
+    public class NpcAttackState : StateBase<NpcState>
     {
         [Header("ATTACK")]
         [Min(0f)] public float attackDistance = 1f;
@@ -14,7 +14,7 @@ namespace Samples.Demo.StateMachines.Example.States
             return Context.hasTarget && Vector2.Distance(Context.position, Context.targetPosition) < attackDistance;
         }
         
-        protected override void OnUpdateState(float deltaTime)
+        protected override void OnExecute()
         {
             if (time > attackDelay)
             {
@@ -23,13 +23,13 @@ namespace Samples.Demo.StateMachines.Example.States
                     Context.target.gameObject.SetActive(false);
                 }
 
-                isDone = true;
+                SetDone(true);
             }
         }
 
         private void OnDrawGizmos()
         {
-            if (isActive && Context != null)
+            if (IsRunning && Context != null)
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawWireSphere(Context.position, attackDistance);

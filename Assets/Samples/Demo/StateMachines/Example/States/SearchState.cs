@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Samples.Demo.StateMachines.Example.States
 {
-    public class SearchState : StateBase<NpcStateMachine>
+    public class SearchState : StateBase<NpcState>
     {
         [Header("SEARCH")]
         public MoveState move;
@@ -15,33 +15,34 @@ namespace Samples.Demo.StateMachines.Example.States
             wander.SetContext(Context.npc);
         }
 
-        protected override void OnStartState()
+        protected override void OnEnter()
         {
             move.point = Context.lastTargetPosition;
+            
             SetSubState(move);
         }
 
-        protected override void OnUpdateState(float deltaTime)
+        protected override void OnExecute()
         {
-            if (SubState == move)
+            if (move.IsRunning)
             {
-                if (move.isDone)
+                if (move.IsDone)
                 {
                     SetSubState(wander);
                 }
             }
-            else if (SubState == wander)
+            else if (wander.IsRunning)
             {
-                if (wander.isDone)
+                if (wander.IsDone)
                 {
-                    isDone = true;
+                    SetDone(true);
                 }
             }
         }
 
         private void OnDrawGizmos()
         {
-            if (isActive && Context != null)
+            if (IsRunning && Context != null)
             {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireSphere(Context.lastTargetPosition, 1f);

@@ -8,51 +8,50 @@ namespace CucuTools.StateMachines.Utils
     /// </summary>
     public sealed class StateEvent : MonoBehaviour
     {
-        [SerializeField] private StateBase state;
+        public enum StateEventType
+        {
+            Enter,
+            Exit,
+        }
+        
+        [SerializeField] private GameObject state;
 
         [Space]
-        [SerializeField] private StateEventType eventType = StateEventType.Start;
+        [SerializeField] private StateEventType eventType = StateEventType.Enter;
 
         [Space]
         [SerializeField] private UnityEvent onStateUpdated = new UnityEvent();
+
+        private IState _state;
         
-        private void HandleStateUpdate(StateEventType stateEvent)
+        private void OnExecutionUpdated(bool isExecuting)
         {
-            if (eventType == stateEvent)
+            if (isExecuting && (eventType == StateEventType.Enter))
+            {
+                onStateUpdated.Invoke();
+            }
+            
+            if (!isExecuting && (eventType == StateEventType.Exit))
             {
                 onStateUpdated.Invoke();
             }
         }
-
-        private void Initialize()
-        {
-            if (state == null) state = GetComponent<StateBase>();
-        }
         
         private void Awake()
         {
-            Initialize();
-        }
-
-        private void OnValidate()
-        {
-            Initialize();
+            TryGetComponent(out _state);
         }
 
         private void OnEnable()
         {
-            if (state)
-            {
-                state.OnStateUpdated += HandleStateUpdate;
-            }
+            _state.ExecutionUpdated += OnExecutionUpdated;
+
+            if (_state.IsRunning) OnExecutionUpdated(true);
         }
         
         private void OnDisable()
         {
-            if (state)
-            {
-                state.OnStateUpdated -= HandleStateUpdate;
-            }
+            _state.ExecutionUpdated -= OnExecutionUpdated;
         }
     }
 }
