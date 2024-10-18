@@ -195,5 +195,13 @@ namespace CucuTools.InventorySystem
             item = null;
             return false;
         }
+
+        public static void Clear(this IInventory inventory)
+        {
+            for (var i = 0; i < inventory.CountSlots; i++)
+            {
+                inventory.GetSlot(i).Clear();
+            }
+        }
     }
 }

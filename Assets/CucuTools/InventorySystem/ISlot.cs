@@ -93,5 +93,13 @@ namespace CucuTools.InventorySystem
         {
             return slot.TryPeek(out item) && slot.TryPick(item);
         }
+
+        public static void Clear(this ISlot slot)
+        {
+            if (slot.TryPeek(out var item))
+            {
+                slot.Pick(item, slot.CountItems);
+            }
+        }
     }
 }
