@@ -55,4 +55,9 @@ namespace CucuTools.LevelSystem
             return (T)context.Resolve(typeof(T));
         }
     }
+
+    public interface IContextable
+    {
+        public void Init(ContextContainer context);
+    }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CucuTools.LevelSystem
 {
     [DisallowMultipleComponent]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IContextable
     {
         public const int PlayerDefault = 0;
         
@@ -41,7 +41,12 @@ namespace CucuTools.LevelSystem
             }
         }
         
-        public virtual IEnumerator EnablePlayer(ContextContainer levelContext)
+        public virtual void Init(ContextContainer context)
+        {
+            
+        }
+        
+        public virtual IEnumerator EnablePlayer()
         {
             if (!ContainsPlayer(PlayerDefault))
             {

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CucuTools.LevelSystem
 {
     [DisallowMultipleComponent]
-    public class LevelController : MonoBehaviour
+    public class LevelController : MonoBehaviour, IContextable
     {
         [SerializeField] private PlayerController player;
         [SerializeField] private CameraController camera;
@@ -36,16 +36,17 @@ namespace CucuTools.LevelSystem
             return _levelContext;
         }
         
+        public virtual void Init(ContextContainer context)
+        {
+            context.Bind<LevelController>(this);
+        }
+        
         #endregion
 
         #region Virtual API
 
         protected virtual IEnumerator EnableLevel()
         {
-            InitializeContext(GetLevelContext());
-            
-            FindAll();
-            
             yield return EnablePlayer();
             yield return EnableCamera();
         }
@@ -55,20 +56,15 @@ namespace CucuTools.LevelSystem
             DisableCamera();
             DisablePlayer();
         }
-
-        protected virtual void InitializeContext(ContextContainer levelContext)
-        {
-            levelContext.Bind<LevelController>(this);
-        }
         
         protected virtual IEnumerator EnablePlayer()
         {
-            yield return player.EnablePlayer(GetLevelContext());
+            yield return player.EnablePlayer();
         }
         
         protected virtual IEnumerator EnableCamera()
         {
-            yield return camera.EnableCamera(GetLevelContext());
+            yield return camera.EnableCamera();
         }
         
         protected virtual void DisablePlayer()
@@ -83,23 +79,30 @@ namespace CucuTools.LevelSystem
 
         #endregion
         
-        private void FindAll()
+        protected void FindAll()
         {
             if (player == null) player = Find<PlayerController>();
             if (camera == null) camera = Find<CameraController>();
         }
         
-        private static T Find<T>() where T : MonoBehaviour
+        protected static T Find<T>() where T : MonoBehaviour
         {
             return FindAnyObjectByType<T>();
         }
+
+        protected virtual void Awake()
+        {
+            Init(GetLevelContext());
+            
+            FindAll();
+        }
         
-        private IEnumerator Start()
+        protected virtual IEnumerator Start()
         {
             yield return EnableLevel();
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             DisableLevel();
         }

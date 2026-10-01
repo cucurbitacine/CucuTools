@@ -3,11 +3,15 @@ using UnityEngine;
 
 namespace CucuTools.LevelSystem
 {
-    public class CameraController : MonoBehaviour
+    public class CameraController : MonoBehaviour, IContextable
     {
         public virtual Camera CameraMain => Camera.main;
 
-        public virtual IEnumerator EnableCamera(ContextContainer levelContext)
+        public virtual void Init(ContextContainer context)
+        {
+        }
+        
+        public virtual IEnumerator EnableCamera()
         {
             yield break;
         }
