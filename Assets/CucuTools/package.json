@@ -1,0 +1,14 @@
+{
+  "name": "com.cucugamestudio.cucutools",
+  "displayName": "CucuTools",
+  "version": "3.0.0",
+  "unity": "6000.6",
+  "unityRelease": "0f1",
+  "description": "CucuTools is a collection of tools for Unity game development. It includes various utilities and scripts to enhance workflow and productivity.",
+  "dependencies": {},
+  "author": {
+    "name": "Evgenii Monin",
+    "email": "cucubitter@gmail.com",
+    "url":"https://github.com/cucurbitacine"
+  }
+}
