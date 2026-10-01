@@ -1,7 +1,7 @@
 {
   "name": "com.cucugamestudio.cucutools",
   "displayName": "CucuTools",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "unity": "6000.6",
   "unityRelease": "0f1",
   "description": "CucuTools is a collection of tools for Unity game development. It includes various utilities and scripts to enhance workflow and productivity.",

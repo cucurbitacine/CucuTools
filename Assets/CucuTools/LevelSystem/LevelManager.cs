@@ -70,7 +70,7 @@ namespace CucuTools.LevelSystem
         
         private void OnLevelLoaded(LevelController level, LevelParameters levelParameters)
         {
-            level.SetParameters(levelParameters);
+            level.SetLevelParameters(levelParameters);
             
             LevelLoaded?.Invoke(level);
         }
