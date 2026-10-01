@@ -22,6 +22,7 @@ namespace CucuTools.LevelSystem
 
         public AsyncOperation LoadSceneAsync(int sceneBuildIndex, LoadSceneParameters sceneParameters, LevelParameters levelParameters)
         {
+            if (levelParameters == null) levelParameters = new LevelParameters();
             levelParameters.PreviousSceneId = GetActiveScene().buildIndex;
             
             var loadingScene = SceneManager.LoadSceneAsync(sceneBuildIndex, sceneParameters);
@@ -40,6 +41,7 @@ namespace CucuTools.LevelSystem
         
         public AsyncOperation LoadSceneAsync(string sceneName, LoadSceneParameters sceneParameters, LevelParameters levelParameters)
         {
+            if (levelParameters == null) levelParameters = new LevelParameters();
             levelParameters.PreviousSceneId = GetActiveScene().buildIndex;
             
             var loadingScene = SceneManager.LoadSceneAsync(sceneName, sceneParameters);
@@ -121,7 +123,7 @@ namespace CucuTools.LevelSystem
         
         public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene, LoadSceneParameters sceneParameters)
         {
-            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), sceneParameters, default);
+            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), sceneParameters, null);
         }
         
         public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene, LevelParameters levelParameters)
@@ -131,7 +133,7 @@ namespace CucuTools.LevelSystem
         
         public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene)
         {
-            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), levelScene.GetLoadSceneParameters(), default);
+            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), levelScene.GetLoadSceneParameters(), null);
         }
     }
 }

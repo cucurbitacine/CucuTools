@@ -38,12 +38,12 @@ namespace CucuTools.LevelSystem
 
         #region Virtual API
 
-        protected virtual IEnumerator EnableLevel()
+        protected virtual IEnumerator StartLevel()
         {
             yield break;
         }
 
-        protected virtual void DisableLevel()
+        protected virtual void DestroyLevel()
         {
         }
 
@@ -57,12 +57,12 @@ namespace CucuTools.LevelSystem
         
         protected virtual IEnumerator Start()
         {
-            yield return EnableLevel();
+            yield return StartLevel();
         }
 
         protected virtual void OnDestroy()
         {
-            DisableLevel();
+            DestroyLevel();
         }
     }
 
