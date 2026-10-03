@@ -34,17 +34,34 @@ namespace CucuTools.LevelSystem
         #endregion
 
         #region Virtual & Abstract API
-
+        
         protected abstract IEnumerator StartLevel();
         protected abstract void DestroyLevel();
         protected virtual void OnAwake() { }
 
+        protected virtual IEnumerator StartComponents()
+        {
+            foreach (var levelComponent in m_components)
+            {
+                yield return levelComponent.OnStartLevel();
+            }
+        }
+
+        protected virtual void DestroyComponents()
+        {
+            foreach (var levelComponent in m_components)
+            {
+                levelComponent.OnDestroyLevel();
+            }
+        }
+        
         #endregion
 
         private void FindAll()
         {
             m_components.Clear();
             m_components.AddRange(FindObjectsByType<LevelComponent>(FindObjectsInactive.Exclude));
+            m_components.Sort((a, b) => a.Order.CompareTo(b.Order));
         }
 
         private void BindAll()
@@ -75,11 +92,13 @@ namespace CucuTools.LevelSystem
         
         private IEnumerator Start()
         {
+            yield return StartComponents();
             yield return StartLevel();
         }
 
         private void OnDestroy()
         {
+            DestroyComponents();
             DestroyLevel();
         }
     }
