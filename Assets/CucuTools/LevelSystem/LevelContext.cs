@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CucuTools.LevelSystem
 {
-    public class ContextContainer
+    public class LevelContext
     {
         private readonly Dictionary<Type, object> context = new Dictionary<Type, object>();
 
@@ -33,31 +33,26 @@ namespace CucuTools.LevelSystem
         }
     }
 
-    public static class ContextContainerExtension
+    public static class LevelContextExtension
     {
-        public static bool Contains<T>(this ContextContainer context)
+        public static bool Contains<T>(this LevelContext context)
         {
             return context.Contains(typeof(T));
         }
         
-        public static void Bind<T>(this ContextContainer context, T t)
+        public static void Bind<T>(this LevelContext context, T t)
         {
             context.Bind(typeof(T), t);
         }
         
-        public static T Unbind<T>(this ContextContainer context)
+        public static T Unbind<T>(this LevelContext context)
         {
             return (T)context.Unbind(typeof(T));
         }
         
-        public static T Resolve<T>(this ContextContainer context)
+        public static T Resolve<T>(this LevelContext context)
         {
             return (T)context.Resolve(typeof(T));
         }
-    }
-
-    public interface IContextable
-    {
-        public void Init(ContextContainer context);
     }
 }

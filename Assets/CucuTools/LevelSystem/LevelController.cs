@@ -1,74 +1,86 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CucuTools.LevelSystem
 {
     [DisallowMultipleComponent]
-    public class LevelController : MonoBehaviour, IContextable
+    public abstract class LevelController : MonoBehaviour
     {
-        [SerializeField] private LevelParameters levelParameters;
-
-        private ContextContainer levelContext;
+        private LevelParams m_levelParams;
+        private LevelContext m_levelContext;
+        private readonly List<LevelComponent> m_components = new List<LevelComponent>();
         
         #region Public API
 
-        public LevelParameters GetLevelParameters()
+        public LevelParams GetParams()
         {
-            return levelParameters;
+            return m_levelParams;
         }
         
-        public void SetLevelParameters(LevelParameters parameters)
+        public void SetParams(LevelParams levelParams)
         {
-            levelParameters = parameters;
+            m_levelParams = levelParams;
         }
 
-        public ContextContainer GetLevelContext()
+        public LevelContext GetContext()
         {
-            if (levelContext == null) levelContext = new ContextContainer();
-            return levelContext;
+            if (m_levelContext == null) m_levelContext = new LevelContext();
+            return m_levelContext;
         }
-        
-        public virtual void Init(ContextContainer context)
-        {
-            context.Bind<LevelController>(this);
-        }
+
+        public abstract void BindAll(LevelContext context);
         
         #endregion
 
-        #region Virtual API
+        #region Virtual & Abstract API
 
-        protected virtual IEnumerator StartLevel()
-        {
-            yield break;
-        }
-
-        protected virtual void DestroyLevel()
-        {
-        }
+        protected abstract IEnumerator StartLevel();
+        protected abstract void DestroyLevel();
+        protected virtual void OnAwake() { }
 
         #endregion
-        
 
+        private void FindAll()
+        {
+            m_components.Clear();
+            m_components.AddRange(FindObjectsByType<LevelComponent>(FindObjectsInactive.Exclude));
+        }
+
+        private void BindAll()
+        {
+            var levelContext = GetContext();
+            BindAll(levelContext);
+        }
+        
+        private void ResolveAll()
+        {
+            var levelContext = GetContext();
+            foreach (var levelComponent in m_components)
+            {
+                levelComponent.ResolveAll(levelContext);
+            }
+        }
+        
         protected virtual void Awake()
         {
-            Init(GetLevelContext());
+            OnAwake();
+            
+            FindAll();
+            
+            BindAll();
+
+            ResolveAll();
         }
         
-        protected virtual IEnumerator Start()
+        private IEnumerator Start()
         {
             yield return StartLevel();
         }
 
-        protected virtual void OnDestroy()
+        private void OnDestroy()
         {
             DestroyLevel();
         }
-    }
-
-    [Serializable]
-    public class LevelParameters
-    {
-        [field: SerializeField] public int PreviousSceneId { get; set; }
     }
 }
