@@ -33,7 +33,7 @@ namespace CucuTools.LevelSystem
         }
     }
 
-    public static class LevelContextExtension
+    public static class LevelContextExtensions
     {
         public static bool Contains<T>(this LevelContext context)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CucuTools.LevelSystem
 {
     [Serializable]
-    public class LevelParams
+    public class LevelParameters
     {
         [field: SerializeField] public int PreviousSceneId { get; set; }
     }

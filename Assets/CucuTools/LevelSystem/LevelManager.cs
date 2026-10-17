@@ -20,10 +20,10 @@ namespace CucuTools.LevelSystem
             return SceneManager.GetActiveScene();
         }
 
-        public AsyncOperation LoadSceneAsync(int sceneBuildIndex, LoadSceneParameters sceneParameters, LevelParams levelParams)
+        public AsyncOperation LoadSceneAsync(int sceneBuildIndex, LoadSceneParameters sceneParameters, LevelParameters levelParameters)
         {
-            if (levelParams == null) levelParams = new LevelParams();
-            levelParams.PreviousSceneId = GetActiveScene().buildIndex;
+            if (levelParameters == null) levelParameters = new LevelParameters();
+            levelParameters.PreviousSceneId = GetActiveScene().buildIndex;
             
             var loadingScene = SceneManager.LoadSceneAsync(sceneBuildIndex, sceneParameters);
 
@@ -32,17 +32,17 @@ namespace CucuTools.LevelSystem
                 loadingScene.completed += loading =>
                 {
                     var scene = SceneManager.GetSceneByBuildIndex(sceneBuildIndex);
-                    OnSceneLoaded(scene, levelParams);
+                    OnSceneLoaded(scene, levelParameters);
                 };
             }
             
             return loadingScene;
         }
         
-        public AsyncOperation LoadSceneAsync(string sceneName, LoadSceneParameters sceneParameters, LevelParams levelParams)
+        public AsyncOperation LoadSceneAsync(string sceneName, LoadSceneParameters sceneParameters, LevelParameters levelParameters)
         {
-            if (levelParams == null) levelParams = new LevelParams();
-            levelParams.PreviousSceneId = GetActiveScene().buildIndex;
+            if (levelParameters == null) levelParameters = new LevelParameters();
+            levelParameters.PreviousSceneId = GetActiveScene().buildIndex;
             
             var loadingScene = SceneManager.LoadSceneAsync(sceneName, sceneParameters);
 
@@ -51,34 +51,34 @@ namespace CucuTools.LevelSystem
                 loadingScene.completed += loading =>
                 {
                     var scene = SceneManager.GetSceneByName(sceneName);
-                    OnSceneLoaded(scene, levelParams);
+                    OnSceneLoaded(scene, levelParameters);
                 };
             }
             
             return loadingScene;
         }
         
-        private void OnSceneLoaded(Scene scene, LevelParams levelParams)
+        private void OnSceneLoaded(Scene scene, LevelParameters levelParameters)
         {
             foreach (var gameObject in scene.GetRootGameObjects())
             {
                 if (gameObject.TryGetComponent(out LevelController level))
                 {
-                    OnLevelLoaded(level, levelParams);
+                    OnLevelLoaded(level, levelParameters);
                     return;
                 }
             }
         }
         
-        private void OnLevelLoaded(LevelController level, LevelParams levelParams)
+        private void OnLevelLoaded(LevelController level, LevelParameters levelParameters)
         {
-            level.SetParams(levelParams);
+            level.SetLevelParameters(levelParameters);
             
             LevelLoaded?.Invoke(level);
         }
     }
 
-    public static class LevelManagerExt
+    public static class LevelManagerExtensions
     {
         // SCENE NAME
         
@@ -87,9 +87,9 @@ namespace CucuTools.LevelSystem
             return manager.LoadSceneAsync(sceneName, sceneParameters, default);
         }
         
-        public static AsyncOperation LoadSceneAsync(this LevelManager manager, string sceneName, LevelParams levelParams)
+        public static AsyncOperation LoadSceneAsync(this LevelManager manager, string sceneName, LevelParameters levelParameters)
         {
-            return manager.LoadSceneAsync(sceneName, default, levelParams);
+            return manager.LoadSceneAsync(sceneName, default, levelParameters);
         }
         
         public static AsyncOperation LoadSceneAsync(this LevelManager manager, string sceneName)
@@ -104,9 +104,9 @@ namespace CucuTools.LevelSystem
             return manager.LoadSceneAsync(sceneBuildIndex, sceneParameters, default);
         }
         
-        public static AsyncOperation LoadSceneAsync(this LevelManager manager, int sceneBuildIndex, LevelParams levelParams)
+        public static AsyncOperation LoadSceneAsync(this LevelManager manager, int sceneBuildIndex, LevelParameters levelParameters)
         {
-            return manager.LoadSceneAsync(sceneBuildIndex, default, levelParams);
+            return manager.LoadSceneAsync(sceneBuildIndex, default, levelParameters);
         }
         
         public static AsyncOperation LoadSceneAsync(this LevelManager manager, int sceneBuildIndex)
@@ -116,9 +116,9 @@ namespace CucuTools.LevelSystem
         
         // LEVEL SCENE
         
-        public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene, LoadSceneParameters sceneParameters, LevelParams levelParams)
+        public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene, LoadSceneParameters sceneParameters, LevelParameters levelParameters)
         {
-            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), sceneParameters, levelParams);
+            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), sceneParameters, levelParameters);
         }
         
         public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene, LoadSceneParameters sceneParameters)
@@ -126,14 +126,34 @@ namespace CucuTools.LevelSystem
             return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), sceneParameters, null);
         }
         
-        public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene, LevelParams levelParams)
+        public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene, LevelParameters levelParameters)
         {
-            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), levelScene.GetLoadSceneParameters(), levelParams);
+            return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), levelScene.GetLoadSceneParameters(), levelParameters);
         }
         
         public static AsyncOperation LoadSceneAsync(this LevelManager manager, LevelSceneAsset levelScene)
         {
             return manager.LoadSceneAsync(levelScene.GetSceneBuildIndex(), levelScene.GetLoadSceneParameters(), null);
+        }
+        
+        public static AsyncOperation LoadSceneAsync(this LevelSceneAsset levelScene, LoadSceneParameters sceneParameters, LevelParameters levelParameters)
+        {
+            return LevelManager.Instance.LoadSceneAsync(levelScene, sceneParameters, levelParameters);
+        }
+        
+        public static AsyncOperation LoadSceneAsync(this LevelSceneAsset levelScene, LoadSceneParameters sceneParameters)
+        {
+            return LevelManager.Instance.LoadSceneAsync(levelScene, sceneParameters, null);
+        }
+        
+        public static AsyncOperation LoadSceneAsync(this LevelSceneAsset levelScene, LevelParameters levelParameters)
+        {
+            return LevelManager.Instance.LoadSceneAsync(levelScene, levelScene.GetLoadSceneParameters(), levelParameters);
+        }
+        
+        public static AsyncOperation LoadSceneAsync(this LevelSceneAsset levelScene)
+        {
+            return LevelManager.Instance.LoadSceneAsync(levelScene, levelScene.GetLoadSceneParameters(), null);
         }
     }
 }
