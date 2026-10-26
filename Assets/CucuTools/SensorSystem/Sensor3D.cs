@@ -3,18 +3,31 @@ using UnityEngine;
 namespace CucuTools.SensorSystem
 {
     [RequireComponent(typeof(Collider))]
-    public abstract class Sensor3D : Sensor
+    public sealed class Sensor3D : Sensor<Collider, Collision>
     {
-        private Collider _collider;
-
-        public Collider GetCollider()
-        {
-            return _collider;
-        }
-        
         private void Awake()
         {
-            _collider = GetComponent<Collider>();
+            SetCollider(GetComponent<Collider>());
+        }
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            OnEnter(other);
+        }
+        
+        private void OnTriggerExit(Collider other)
+        {
+            OnExit(other);
+        }
+        
+        private void OnCollisionEnter(Collision other)
+        {
+            OnEnter(other);
+        }
+        
+        private void OnCollisionExit(Collision other)
+        {
+            OnExit(other);
         }
     }
 }

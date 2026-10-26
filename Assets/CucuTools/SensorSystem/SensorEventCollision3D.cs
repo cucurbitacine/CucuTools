@@ -3,11 +3,8 @@ using UnityEngine.Events;
 
 namespace CucuTools.SensorSystem
 {
-    public class SensorEventCollision3D : SensorEvent
+    public sealed class SensorEventCollision3D : SensorEvent3D
     {
-        [Space]
-        [SerializeField] private SensorCollision3D _sensor;
-
         [Space]
         [SerializeField] private UnityEvent<Collision> _onEvent = new UnityEvent<Collision>();
 
@@ -34,21 +31,16 @@ namespace CucuTools.SensorSystem
             OnEvent(SensorEventType.OnExit, other);
         }
         
-        private void Awake()
-        {
-            if (_sensor == null) _sensor = GetComponentInParent<SensorCollision3D>();
-        }
-        
         private void Start()
         {
-            _sensor.OnEnter += OnSensorEnter;
-            _sensor.OnExit += OnSensorExit;
+            GetSensor().onCollisionEnter += OnSensorEnter;
+            GetSensor().onCollisionExit += OnSensorExit;
         }
         
         private void OnDestroy()
         {
-            _sensor.OnEnter -= OnSensorEnter;
-            _sensor.OnExit -= OnSensorExit;
+            GetSensor().onCollisionEnter -= OnSensorEnter;
+            GetSensor().onCollisionExit -= OnSensorExit;
         }
     }
 }

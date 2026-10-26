@@ -3,11 +3,8 @@ using UnityEngine.Events;
 
 namespace CucuTools.SensorSystem
 {
-    public class SensorEventTrigger2D : SensorEvent
+    public sealed class SensorEventTrigger2D : SensorEvent2D
     {
-        [Space]
-        [SerializeField] private SensorTrigger2D _sensor;
-
         [Space]
         [SerializeField] private UnityEvent<Collider2D> _onEvent = new UnityEvent<Collider2D>();
 
@@ -34,21 +31,16 @@ namespace CucuTools.SensorSystem
             OnEvent(SensorEventType.OnExit, other);
         }
         
-        private void Awake()
-        {
-            if (_sensor == null) _sensor = GetComponentInParent<SensorTrigger2D>();
-        }
-        
         private void Start()
         {
-            _sensor.OnEnter += OnSensorEnter;
-            _sensor.OnExit += OnSensorExit;
+            GetSensor().onTriggerEnter += OnSensorEnter;
+            GetSensor().onTriggerExit += OnSensorExit;
         }
         
         private void OnDestroy()
         {
-            _sensor.OnEnter -= OnSensorEnter;
-            _sensor.OnExit -= OnSensorExit;
+            GetSensor().onTriggerEnter -= OnSensorEnter;
+            GetSensor().onTriggerExit -= OnSensorExit;
         }
     }
 }
