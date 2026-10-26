@@ -12,11 +12,6 @@ namespace CucuTools.SensorSystem
             return _collider;
         }
         
-        public bool CheckCollider(Collider collider)
-        {
-            return CheckGameObject(collider.gameObject);
-        }
-        
         private void Awake()
         {
             _collider = GetComponent<Collider>();

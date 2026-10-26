@@ -9,23 +9,19 @@ namespace CucuTools.SensorSystem
         public event Action<Collision> OnEnter;
         public event Action<Collision> OnExit;
         
+        private void Start()
+        {
+            GetCollider().isTrigger = false;
+        }
+        
         private void OnCollisionEnter(Collision other)
         {
-            if (!CheckCollider(other.collider)) return;
-            
             OnEnter?.Invoke(other);
         }
         
         private void OnCollisionExit(Collision other)
         {
-            if (!CheckCollider(other.collider)) return;
-            
             OnExit?.Invoke(other);
-        }
-        
-        private void Start()
-        {
-            GetCollider().isTrigger = false;
         }
     }
 }

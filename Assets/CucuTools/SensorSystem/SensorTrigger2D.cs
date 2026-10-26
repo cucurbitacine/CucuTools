@@ -9,23 +9,19 @@ namespace CucuTools.SensorSystem
         public event Action<Collider2D> OnEnter;
         public event Action<Collider2D> OnExit;
 
+        private void Start()
+        {
+            GetCollider().isTrigger = true;
+        }
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (!CheckCollider(other)) return;
-            
             OnEnter?.Invoke(other);
         }
         
         private void OnTriggerExit2D(Collider2D other)
         {
-            if (!CheckCollider(other)) return;
-            
             OnExit?.Invoke(other);
-        }
-        
-        private void Start()
-        {
-            GetCollider().isTrigger = true;
         }
     }
 }

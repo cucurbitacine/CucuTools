@@ -8,24 +8,20 @@ namespace CucuTools.SensorSystem
     {
         public event Action<Collider> OnEnter;
         public event Action<Collider> OnExit;
-
+        
+        private void Start()
+        {
+            GetCollider().isTrigger = true;
+        }
+        
         private void OnTriggerEnter(Collider other)
         {
-            if (!CheckCollider(other)) return;
-            
             OnEnter?.Invoke(other);
         }
         
         private void OnTriggerExit(Collider other)
         {
-            if (!CheckCollider(other)) return;
-            
             OnExit?.Invoke(other);
-        }
-        
-        private void Start()
-        {
-            GetCollider().isTrigger = true;
         }
     }
 }

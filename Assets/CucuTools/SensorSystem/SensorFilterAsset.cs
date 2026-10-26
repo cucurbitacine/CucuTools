@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CucuTools.SensorSystem
@@ -6,25 +7,32 @@ namespace CucuTools.SensorSystem
     [CreateAssetMenu(menuName = "CucuTools/Sensor System/Sensor Filter Asset", fileName = "SensorFilter", order = 0)]
     public class SensorFilterAsset : ScriptableObject
     {
-        [SerializeField] private LayerMask sensorLayers = ~0;
+        [SerializeField] private LayerMask _layerMask = ~0;
         [Space]
-        [SerializeField] private List<string> sensorTags = new List<string>();
+        [SerializeField] private List<string> _tags = new List<string>();
 
-        public int SensorTagsCount => sensorTags.Count;
-        public string GetSensorTag(int number) => sensorTags[number];
-        public LayerMask GetSensorLayer() => sensorLayers;
+        public LayerMask GetSensorMask() => _layerMask;
+        public IReadOnlyList<string> GetTags() => _tags;
+
+        public bool CheckGameObject(GameObject gameObject)
+        {
+            return CheckLayer(gameObject.layer) && CheckTag(gameObject.tag);
+        }
         
         public bool CheckLayer(int layer)
         {
-            return (sensorLayers.value & (1 << layer)) != 0;
+            var mask = GetSensorMask();
+            return (mask.value & (1 << layer)) != 0;
         }
         
         public bool CheckTag(string tag)
         {
             if (string.IsNullOrWhiteSpace(tag)) return true;
-            if (sensorTags == null || sensorTags.Count == 0) return true;
+
+            var tags = GetTags();
+            if (tags == null || tags.Count == 0) return true;
             
-            return sensorTags.Contains(tag);
+            return tags.Contains(tag);
         }
     }
 }
