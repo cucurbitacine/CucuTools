@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CucuTools.LevelSystem
@@ -9,7 +10,7 @@ namespace CucuTools.LevelSystem
     {
         private LevelParameters _levelParameters;
         private LevelContext _levelContext;
-        private readonly List<LevelComponent> _levelComponents = new List<LevelComponent>();
+        private readonly Dictionary<int, List<LevelComponent>> _components = new Dictionary<int, List<LevelComponent>>();
         
         #region Public API
 
@@ -23,7 +24,7 @@ namespace CucuTools.LevelSystem
             _levelParameters = levelParameters;
         }
 
-        public LevelContext GetContext()
+        public LevelContext GetOrCreateContext()
         {
             if (_levelContext == null) _levelContext = new LevelContext();
             return _levelContext;
@@ -41,17 +42,32 @@ namespace CucuTools.LevelSystem
 
         protected virtual IEnumerator StartComponents()
         {
-            foreach (var levelComponent in _levelComponents)
+            var coroutines = new List<Coroutine>();
+            foreach (var key in _components.Keys.OrderBy(k => k))
             {
-                yield return levelComponent.OnStartLevel();
+                foreach (var component in _components[key])
+                {
+                    var coroutine = StartCoroutine(component.OnStartLevel());
+                    coroutines.Add(coroutine);
+                }
+
+                foreach (var coroutine in coroutines)
+                {
+                    yield return coroutine;
+                }
+                
+                coroutines.Clear();
             }
         }
 
         protected virtual void OnDestroyComponents()
         {
-            foreach (var levelComponent in _levelComponents)
+            foreach (var key in _components.Keys.OrderBy(k => k))
             {
-                levelComponent.OnDestroyLevel();
+                foreach (var component in _components[key])
+                {
+                    component.OnDestroyLevel();
+                }
             }
         }
         
@@ -59,20 +75,27 @@ namespace CucuTools.LevelSystem
 
         private void FindAll()
         {
-            _levelComponents.Clear();
-            _levelComponents.AddRange(FindObjectsByType<LevelComponent>(FindObjectsInactive.Exclude));
-            _levelComponents.Sort((a, b) => a.Order.CompareTo(b.Order));
+            var components = FindObjectsByType<LevelComponent>(FindObjectsInactive.Exclude);
+            foreach (var component in components)
+            {
+                var order = component.Order;
+                if (!_components.TryGetValue(order, out var list))
+                {
+                    list = new List<LevelComponent>();
+                    _components[order] = list;
+                }
+                list.Add(component);
+            }
         }
 
         private void BindAll()
         {
-            var levelContext = GetContext();
+            var levelContext = GetOrCreateContext();
             
             levelContext.Bind(GetType(), this);
-            
-            foreach (var levelComponent in _levelComponents)
+            foreach (var component in _components.SelectMany(c=>c.Value))
             {
-                levelContext.Bind(levelComponent.GetType(), levelComponent);
+                levelContext.Bind(component.GetType(), component);
             }
             
             BindAll(levelContext);
@@ -80,18 +103,20 @@ namespace CucuTools.LevelSystem
         
         private void ResolveAll()
         {
-            var levelContext = GetContext();
+            var levelContext = GetOrCreateContext();
             
-            foreach (var levelComponent in _levelComponents)
+            foreach (var key in _components.Keys.OrderBy(k => k))
             {
-                levelComponent.ResolveAll(levelContext);
+                foreach (var component in _components[key])
+                {
+                    component.ResolveAll(levelContext);
+                }
             }
         }
         
         private void Awake()
         {
             FindAll();
-            
             OnAwake();
         }
         
