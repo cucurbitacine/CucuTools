@@ -4,7 +4,6 @@ using UnityEngine;
 namespace CucuTools.DamageSystem
 {
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(DamageAgent))]
     public sealed class Health : MonoBehaviour
     {
         [field: Min(0)]
@@ -12,24 +11,18 @@ namespace CucuTools.DamageSystem
         [field: Min(1)]
         [field: SerializeField] public int MaxValue { get; private set; } = 1;
         
-        private DamageAgent owner;
+        public event Action<int, int> maxValueChanged;
+        public event Action<int, int> valueChanged;
+        public event Action<int> damaged;
+        public event Action<int> healed;
         
-        public event Action<int, int> MaxValueChanged;
-        public event Action<int, int> ValueChanged;
-        public event Action<int> Damaged;
-        public event Action<int> Healed;
-
-        public DamageAgent GetOwner()
-        {
-            return owner;
-        }
-
         public void ChangeMaxValue(int newMaxValue)
         {
-            var oldMaxValue = MaxValue;
             newMaxValue = Mathf.Max(1, newMaxValue);
             
+            var oldMaxValue = MaxValue;
             if (oldMaxValue == newMaxValue) return;
+            
             MaxValue = newMaxValue;
 
             if (Value > MaxValue)
@@ -37,18 +30,19 @@ namespace CucuTools.DamageSystem
                 ChangeValue(MaxValue);
             }
             
-            MaxValueChanged?.Invoke(oldMaxValue, newMaxValue);
+            maxValueChanged?.Invoke(oldMaxValue, newMaxValue);
         }
         
         public void ChangeValue(int newValue)
         {
-            var oldValue = Value;
             newValue = Mathf.Clamp(newValue, 0, MaxValue);
             
+            var oldValue = Value;
             if (oldValue == newValue) return;
+            
             Value = newValue;
                 
-            ValueChanged?.Invoke(oldValue, newValue);
+            valueChanged?.Invoke(oldValue, newValue);
         }
         
         public void Damage(int amount)
@@ -56,12 +50,13 @@ namespace CucuTools.DamageSystem
             if (amount <= 0) return;
 
             var oldValue = Value;
+            
             ChangeValue(Value - amount);
+            
             var delta = oldValue - Value;
-
             if (delta > 0)
             {
-                Damaged?.Invoke(amount);
+                damaged?.Invoke(amount);
             }
         }
         
@@ -70,33 +65,14 @@ namespace CucuTools.DamageSystem
             if (amount <= 0) return;
             
             var oldValue = Value;
+            
             ChangeValue(Value + amount);
+            
             var delta = Value - oldValue;
-
             if (delta > 0)
             {
-                Healed?.Invoke(amount);
+                healed?.Invoke(amount);
             }
-        }
-        
-        private void OnDamageReceived(DamageEvent damageEvent)
-        {
-            Damage(damageEvent.Damage.Amount);
-        }
-
-        private void Awake()
-        {
-            owner = GetComponent<DamageAgent>();
-        }
-
-        private void OnEnable()
-        {
-            owner.DamageReceived += OnDamageReceived;
-        }
-
-        private void OnDisable()
-        {
-            owner.DamageReceived -= OnDamageReceived;
         }
 
         private void OnValidate()
