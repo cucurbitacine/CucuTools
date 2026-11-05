@@ -14,18 +14,18 @@ namespace CucuTools.SensorSystem
         public LayerMask GetSensorMask() => _layerMask;
         public IReadOnlyList<string> GetTags() => _tags;
 
-        public bool CheckGameObject(GameObject gameObject)
+        public bool IsValidGameObject(GameObject gameObject)
         {
-            return CheckLayer(gameObject.layer) && CheckTag(gameObject.tag);
+            return IsValidLayer(gameObject.layer) && IsValidTag(gameObject.tag);
         }
         
-        public bool CheckLayer(int layer)
+        public bool IsValidLayer(int layer)
         {
             var mask = GetSensorMask();
             return (mask.value & (1 << layer)) != 0;
         }
         
-        public bool CheckTag(string tag)
+        public bool IsValidTag(string tag)
         {
             if (string.IsNullOrWhiteSpace(tag)) return true;
 
